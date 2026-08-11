@@ -25,7 +25,7 @@ export function About() {
               className={cn(
                 // `pb-20` reserva espaço para o selo que avança sobre a base do card
                 "relative flex aspect-[4/3] flex-col justify-end overflow-hidden p-8 pb-20",
-                "rounded-brand border border-premium-gold/30 bg-gradient-to-br from-premium-emerald-deep via-premium-black to-premium-black",
+                "rounded-brand border border-premium-emerald/35 bg-gradient-to-br from-premium-emerald-deep via-premium-black to-premium-black",
               )}
             >
               <SunBurst className="absolute -right-16 -top-16 h-64 w-64 opacity-25" />
@@ -73,7 +73,7 @@ export function About() {
             <ul className="mt-8 space-y-3">
               {about.bullets.map((bullet) => (
                 <li key={bullet} className="flex items-start gap-3 text-sm text-brand-text">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-accent/15 text-brand-accent">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-green/15 text-brand-green">
                     <Check className="h-3 w-3" aria-hidden="true" />
                   </span>
                   {bullet}

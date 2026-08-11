@@ -8,23 +8,31 @@
 export const site = {
   name: "RBS Uniformes",
   legalName: "RBS Uniformes Ltda",
-  tagline: "Uniformes profissionais sob medida para a sua empresa",
+  tagline: "Uniformes de alta qualidade e confecção própria",
   description:
     "Confecção de uniformes corporativos, industriais, hospitalares e escolares com tecidos de alta performance, modelagem sob medida e entrega no prazo.",
 
-  // --- Contato (PLACEHOLDER) ---
-  phoneDisplay: "(11) 90000-0000",
-  /** Formato internacional, somente dígitos — usado nos links wa.me. */
-  whatsapp: "5511900000000",
-  email: "contato@rbsuniformes.com.br",
+  // --- Contato ---
+  /** Telefone fixo. */
+  phoneDisplay: "(31) 3653-9241",
+  /** Mesmo fixo em formato internacional, para o link `tel:`. */
+  phoneDigits: "553136539241",
+  /** WhatsApp padrão (formato internacional, só dígitos) — usado nos links wa.me. */
+  whatsapp: "5531999913191",
+  /** Todos os WhatsApp divulgados. O primeiro é o número padrão acima. */
+  whatsappNumbers: [
+    { display: "(31) 99991-3191", digits: "5531999913191" },
+    { display: "(31) 9 9249-6669", digits: "5531992496669" },
+  ],
+  email: "rbs.uniformes@gmail.com",
   address: {
     street: "Rua Exemplo, 000 — Sala 00",
     district: "Centro",
-    city: "São Paulo",
-    state: "SP",
+    city: "Belo Horizonte",
+    state: "MG",
     zip: "00000-000",
   },
-  hours: "Segunda a sexta, das 8h às 18h",
+  hours: "Segunda a sábado, das 7h às 19h",
 
   // --- Redes sociais (PLACEHOLDER) ---
   social: {
@@ -35,16 +43,15 @@ export const site = {
 
   // --- Números institucionais (PLACEHOLDER) ---
   stats: [
-    { value: "+15", label: "anos de mercado" },
-    { value: "+500", label: "empresas atendidas" },
-    { value: "+200 mil", label: "peças produzidas por ano" },
-    { value: "100%", label: "das peças conferidas" },
+    { value: "+30", label: "anos de mercado" },
+    { value: "+2500", label: "Condomínios Atendidos" },
+    { value: "100%", label: "de experiência no ramo" },
   ],
 } as const;
 
 /** Monta um link wa.me com mensagem pré-preenchida. */
-export function whatsappLink(message: string) {
-  return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;
+export function whatsappLink(message: string, number: string = site.whatsapp) {
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 }
 
 export const defaultWhatsappMessage =

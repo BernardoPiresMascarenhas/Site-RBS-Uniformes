@@ -1,89 +1,29 @@
 import type { LucideIcon } from "lucide-react";
 import {
-  Boxes,
-  ChefHat,
+  CalendarCheck,
   ClipboardList,
   Clock,
   Factory,
-  GraduationCap,
-  HardHat,
+  Handshake,
   Headset,
   Layers,
   Package,
   Palette,
   Ruler,
   Scissors,
-  Shirt,
   ShieldCheck,
-  Stethoscope,
-  Briefcase,
+  Target,
 } from "lucide-react";
 
+/** Âncoras da home. O "/" na frente mantém os links funcionando nas páginas
+ *  de serviço, que não têm essas seções. */
 export const navLinks = [
-  { label: "Início", href: "#inicio" },
-  { label: "Sobre", href: "#sobre" },
-  { label: "Catálogo", href: "#catalogo" },
-  { label: "Diferenciais", href: "#diferenciais" },
-  { label: "Contato", href: "#contato" },
-];
-
-export interface Category {
-  slug: string;
-  title: string;
-  description: string;
-  items: string[];
-  icon: LucideIcon;
-}
-
-export const categories: Category[] = [
-  {
-    slug: "corporativos",
-    title: "Uniformes Corporativos",
-    description:
-      "Peças que traduzem a identidade da sua marca no atendimento, no escritório e no ponto de venda.",
-    items: ["Camisas sociais", "Polos", "Blazers e coletes", "Saias e calças"],
-    icon: Briefcase,
-  },
-  {
-    slug: "industriais",
-    title: "Uniformes Industriais",
-    description:
-      "Resistência para o chão de fábrica, com tecidos técnicos e conformidade com as normas de segurança.",
-    items: ["Macacões", "Calças de brim", "Camisas NR", "Jaquetas e coletes"],
-    icon: HardHat,
-  },
-  {
-    slug: "hospitalares",
-    title: "Uniformes Hospitalares",
-    description:
-      "Conforto para longos plantões e tecidos que suportam lavagem industrial sem perder a cor.",
-    items: ["Scrubs", "Jalecos", "Pijamas cirúrgicos", "Aventais"],
-    icon: Stethoscope,
-  },
-  {
-    slug: "escolares",
-    title: "Uniformes Escolares",
-    description:
-      "Kits completos para instituições de ensino, com malharia durável e reposição garantida no ano letivo.",
-    items: ["Camisetas", "Agasalhos", "Shorts e bermudas", "Mochilas"],
-    icon: GraduationCap,
-  },
-  {
-    slug: "gastronomia",
-    title: "Gastronomia e Hotelaria",
-    description:
-      "Uniformes de cozinha e serviço pensados para ambientes quentes e rotinas de alto giro.",
-    items: ["Dólmãs", "Aventais", "Chapéus e bandanas", "Camisas de salão"],
-    icon: ChefHat,
-  },
-  {
-    slug: "promocionais",
-    title: "Esportivos e Promocionais",
-    description:
-      "Linhas para eventos, campanhas internas e times, com personalização total em tempo reduzido.",
-    items: ["Camisetas de evento", "Abadás", "Jerseys esportivos", "Bonés"],
-    icon: Shirt,
-  },
+  { label: "Início", href: "/#inicio" },
+  { label: "Sobre", href: "/#sobre" },
+  { label: "Serviços", href: "/#catalogo" },
+  { label: "Diferenciais", href: "/#diferenciais" },
+  { label: "Visita", href: "/#visita" },
+  { label: "Contato", href: "/#contato" },
 ];
 
 export interface Differential {
@@ -166,6 +106,47 @@ export const processSteps: ProcessStep[] = [
     description:
       "Entrega separada por colaborador ou por unidade, com programa de reposição contínua.",
     icon: Package,
+  },
+];
+
+export interface VisitStep {
+  /** Rótulo da etapa, ex.: "1ª etapa". */
+  step: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+}
+
+/** Textos da seção "O que é a visita?" e do pop-up do hero. */
+export const visit = {
+  eyebrow: "Visita sem compromisso",
+  title: "O que é a visita?",
+  intro:
+    "Nossa equipe vai até seu condomínio com modelos, amostras de tecidos e cores para que você conheça tudo antes de decidir.",
+  subtitle: "A visita consiste em 3 etapas simples.",
+  note: "A visita é gratuita e não gera nenhum compromisso de compra.",
+};
+
+export const visitSteps: VisitStep[] = [
+  {
+    step: "1ª etapa",
+    title: "Solicitação da visita",
+    description: "A visita pode ser solicitada pelo nosso site ou WhatsApp.",
+    icon: CalendarCheck,
+  },
+  {
+    step: "2ª etapa",
+    title: "Definição do objetivo da visita",
+    description:
+      "Após a solicitação, identificamos o motivo do atendimento, que pode ser o conhecimento do nosso catálogo completo de uniformes ou a demanda que se fizer necessária para o condomínio e etc.",
+    icon: Target,
+  },
+  {
+    step: "3ª etapa",
+    title: "Atendimento no local",
+    description:
+      "Com o consentimento e a concordância do(a) síndico(a), nossa equipe especializada se desloca até o condomínio para apresentar as opções, esclarecer dúvidas e até na escolha de modelos e cores caso haja um interesse real.",
+    icon: Handshake,
   },
 ];
 

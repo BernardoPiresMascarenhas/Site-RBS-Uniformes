@@ -1,8 +1,17 @@
-import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import {
+  Facebook,
+  Instagram,
+  Linkedin,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Phone,
+} from "lucide-react";
 
 import { Logo } from "@/components/Logo";
 import { Container } from "@/components/ui/Section";
-import { categories, navLinks } from "@/lib/content";
+import { navLinks } from "@/lib/content";
+import { services, servicePath } from "@/lib/services";
 import { site } from "@/lib/site";
 
 /** O rodapé fecha em preto — a logo dourada brilha sobre o escuro. */
@@ -55,10 +64,12 @@ export function Footer() {
             ))}
           </FooterColumn>
 
-          <FooterColumn title="Linhas de uniformes">
-            {categories.map((category) => (
-              <li key={category.slug}>
-                <FooterLink href="#catalogo">{category.title}</FooterLink>
+          <FooterColumn title="Serviços atendidos">
+            {services.map((service) => (
+              <li key={service.slug}>
+                <FooterLink href={servicePath(service.slug)}>
+                  {service.title}
+                </FooterLink>
               </li>
             ))}
           </FooterColumn>
@@ -75,13 +86,23 @@ export function Footer() {
               </span>
             </li>
             <li>
-              <FooterLink href={`tel:+${site.whatsapp}`}>
+              <FooterLink href={`tel:+${site.phoneDigits}`}>
                 <span className="flex items-center gap-3">
                   <Phone className="h-4 w-4 opacity-70" aria-hidden="true" />
                   {site.phoneDisplay}
                 </span>
               </FooterLink>
             </li>
+            {site.whatsappNumbers.map((number) => (
+              <li key={number.digits}>
+                <FooterLink href={`https://wa.me/${number.digits}`}>
+                  <span className="flex items-center gap-3">
+                    <MessageCircle className="h-4 w-4 opacity-70" aria-hidden="true" />
+                    {number.display}
+                  </span>
+                </FooterLink>
+              </li>
+            ))}
             <li>
               <FooterLink href={`mailto:${site.email}`}>
                 <span className="flex items-center gap-3">

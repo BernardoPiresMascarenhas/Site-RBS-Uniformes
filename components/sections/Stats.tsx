@@ -5,22 +5,33 @@ import { cn } from "@/lib/utils";
 
 export function Stats() {
   return (
-    <section className="relative border-y border-premium-gold/20 bg-premium-ink">
+    <section className="relative overflow-hidden border-y border-premium-gold/20 bg-gradient-to-r from-premium-emerald-deep/70 via-premium-ink to-premium-emerald-deep/70">
+      {/* Fio esmeralda no topo — leva o verde da montanha para dentro da faixa. */}
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 block h-px bg-gradient-to-r from-transparent via-premium-emerald-light/60 to-transparent"
+      />
       <Container>
-        <dl className="grid grid-cols-2 divide-brand-border lg:grid-cols-4 lg:divide-x">
+        {/* No mobile os números viram uma lista empilhada com divisórias
+            horizontais — em duas colunas sobraria um item órfão e os rótulos
+            longos quebrariam em várias linhas. */}
+        <dl className="grid grid-cols-1 divide-y divide-brand-border/60 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
           {site.stats.map((stat) => (
-            <div key={stat.label} className="px-2 py-8 text-center sm:py-10">
+            <div
+              key={stat.label}
+              className="px-4 py-6 text-center sm:py-10"
+            >
               <dt className="sr-only">{stat.label}</dt>
               <dd>
                 <span
                   className={cn(
-                    "block text-3xl sm:text-4xl lg:text-5xl",
+                    "block text-4xl leading-none lg:text-5xl",
                     theme.ui.statValue,
                   )}
                 >
                   {stat.value}
                 </span>
-                <span className="mt-2 block text-xs uppercase tracking-[0.18em] text-brand-muted sm:text-sm sm:tracking-[0.12em]">
+                <span className="mx-auto mt-2 block max-w-[16rem] text-[0.7rem] uppercase leading-relaxed tracking-[0.16em] text-brand-muted sm:text-xs sm:tracking-[0.12em] lg:text-sm">
                   {stat.label}
                 </span>
               </dd>

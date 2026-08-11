@@ -1,9 +1,9 @@
-import { ArrowUpRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
+import { UniformMockup } from "@/components/decor/UniformMockup";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
-import { categories } from "@/lib/content";
-import { site, whatsappLink } from "@/lib/site";
+import { services, servicePath } from "@/lib/services";
 import { theme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
@@ -12,68 +12,95 @@ export function Catalog() {
     <Section id="catalogo" surface="light">
       <Container>
         <SectionHeading
-          eyebrow="Linhas de uniformes"
+          eyebrow="Nossos serviços"
           title={
             <>
-              Um catálogo para cada{" "}
-              <span className="text-accent-sheen">operação</span>
+              UNIFORMES PARA CADA{" "}
+              <span className="text-accent-sheen">FUNÇÃO</span>
             </>
           }
-          description="Desenvolvemos as peças a partir da rotina real da sua equipe: ambiente, jornada, frequência de lavagem e a imagem que a empresa quer transmitir."
+          description={
+            <>
+              Cada uniforme é confeccionado de acordo com a função e o tipo de uso, com alta qualidade e durabilidade, das condições mais simples até as mais extremas!
+              <span className="mt-3 block font-medium text-brand-text">
+                A RBS pensou nisso e essas são as opções que temos e recomendamos!
+              </span>
+            </>
+          }
         />
 
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {categories.map((category) => {
-            const Icon = category.icon;
-            const message = `Olá! Gostaria de um orçamento da linha de ${category.title} da ${site.name}.`;
+        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {services.map((service) => {
+            const Icon = service.icon;
+            const [firstColor] = service.colors;
+            const [firstModel] = service.models;
 
             return (
               <article
-                key={category.slug}
+                key={service.slug}
                 className={cn(
-                  "group flex flex-col p-7",
+                  "group flex flex-col overflow-hidden",
                   theme.ui.card,
                   theme.ui.cardHover,
                 )}
               >
-                <span
-                  className={cn(
-                    "mb-6 inline-flex h-14 w-14 items-center justify-center",
-                    theme.ui.iconBox,
-                  )}
+                {/* Vitrine da peça. Troque por foto quando houver material. */}
+                <div
+                  data-surface="dark"
+                  className="relative flex items-center justify-center overflow-hidden border-b border-brand-border/70 bg-gradient-to-br from-premium-emerald-deep via-premium-black to-premium-black px-8 py-8"
                 >
-                  <Icon className="h-7 w-7" aria-hidden="true" />
-                </span>
+                  <UniformMockup
+                    style={firstModel.style}
+                    body={firstColor.body}
+                    accent={firstColor.accent}
+                    label={`${firstModel.name} da linha ${service.title} na cor ${firstColor.name.toLowerCase()}`}
+                    className="h-44 w-auto transition-transform duration-500 group-hover:scale-105"
+                  />
 
-                <h3 className="font-display text-xl uppercase tracking-[0.08em]">
-                  {category.title}
-                </h3>
+                  <span
+                    className={cn(
+                      "absolute left-5 top-5 inline-flex h-11 w-11 items-center justify-center",
+                      theme.ui.iconBox,
+                    )}
+                  >
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                </div>
 
-                <p className="mt-3 text-sm leading-relaxed text-brand-muted">
-                  {category.description}
-                </p>
+                <div className="flex flex-1 flex-col p-7">
+                  <h3 className="font-display text-xl uppercase leading-tight tracking-[0.08em]">
+                    {service.title}
+                  </h3>
 
-                <ul className="mt-6 space-y-2 border-t border-brand-border/70 pt-5">
-                  {category.items.map((item) => (
-                    <li key={item} className="flex items-center gap-2 text-sm text-brand-text">
-                      <Check
-                        className="h-4 w-4 shrink-0 text-brand-accent"
-                        aria-hidden="true"
-                      />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+                  <p className="mt-3 text-sm leading-relaxed text-brand-muted">
+                    {service.shortDescription}
+                  </p>
 
-                <a
-                  href={whatsappLink(message)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-7 inline-flex items-center gap-1.5 font-display text-sm font-semibold uppercase tracking-[0.16em] text-brand-accent transition-colors hover:text-brand-accent-strong"
-                >
-                  Pedir orçamento
-                  <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </a>
+                  <ul className="mt-5 flex flex-wrap gap-2">
+                    {service.models.map((model) => (
+                      <li
+                        key={model.name}
+                        className="rounded-brand border border-brand-border/80 px-3 py-1 text-xs text-brand-muted"
+                      >
+                        {model.name}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* `mt-auto` alinha o botão na base dos três cards, mesmo com
+                      títulos e listas de tamanhos diferentes. */}
+                  <div className="mt-auto pt-7">
+                    <ButtonLink
+                      href={servicePath(service.slug)}
+                      className="w-full"
+                      icon={
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      }
+                    >
+                      Saiba mais
+                    </ButtonLink>
+                  </div>
+                </div>
               </article>
             );
           })}
@@ -83,8 +110,8 @@ export function Catalog() {
           <p className="text-sm text-brand-muted">
             Precisa de uma peça que não está na lista? Desenvolvemos modelos exclusivos sob demanda.
           </p>
-          <ButtonLink tone="secondary" href="#contato">
-            Ver todas as possibilidades
+          <ButtonLink tone="secondary" href="/#contato">
+            Falar com um consultor
           </ButtonLink>
         </div>
       </Container>

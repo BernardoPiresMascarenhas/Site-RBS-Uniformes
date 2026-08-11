@@ -53,7 +53,10 @@ const config: Config = {
           "gold-deep": "#846A1C",
           red: "#D62026",
           "red-deep": "#8E0209",
+          /* Verde da montanha do hero — o acento secundário da marca. */
           emerald: "#0A7A44",
+          "emerald-light": "#2FA76B",
+          "emerald-glow": "#7FCFA5",
           "emerald-deep": "#013C1E",
         },
       },
@@ -75,6 +78,9 @@ const config: Config = {
            alternam claro/escuro use `--sheen`, que acompanha a superfície. */
         "gold-sheen":
           "linear-gradient(100deg,#9C7F26 0%,#C9A227 28%,#E7D5A0 50%,#C9A227 72%,#846A1C 100%)",
+        /* Mesmo brilho, na versão esmeralda — botões e selos verdes. */
+        "emerald-sheen":
+          "linear-gradient(100deg,#013C1E 0%,#0A7A44 30%,#2FA76B 52%,#0A7A44 74%,#04502C 100%)",
       },
       keyframes: {
         "fade-up": {

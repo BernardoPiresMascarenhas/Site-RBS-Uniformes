@@ -26,9 +26,13 @@ export const theme = {
     /** Card em estado de destaque/hover. */
     cardHover:
       "transition duration-300 hover:-translate-y-1 hover:border-brand-accent/60 hover:shadow-brand-lg",
-    /** Container de ícone dentro dos cards. */
+    /**
+     * Container de ícone dentro dos cards — verde da montanha do hero. É o
+     * acento secundário: o ouro continua nos títulos, botões e etiquetas, e o
+     * verde carrega os ícones e as marcações de lista.
+     */
     iconBox:
-      "rounded-brand border border-brand-accent/35 bg-brand-accent/10 text-brand-accent",
+      "rounded-brand border border-brand-green/35 bg-brand-green/10 text-brand-green",
     /** Etiqueta acima dos títulos de seção. */
     eyebrow: "font-display text-xs uppercase tracking-[0.42em] text-brand-accent",
     /** Tipografia dos títulos de seção. */
@@ -45,8 +49,8 @@ export const theme = {
   },
   /** Trio de destaques exibido no hero. */
   heroHighlights: [
-    { icon: Gem, label: "Tecidos nobres" },
-    { icon: Award, label: "Acabamento premium" },
-    { icon: Sparkles, label: "Modelagem exclusiva" },
+    { icon: Gem, label: "Uniformes Sob Medida" },
+    { icon: Award, label: "Atendimento Local" },
+    { icon: Sparkles, label: "Entrega Própria Gratuita" },
   ] satisfies { icon: LucideIcon; label: string }[],
 } as const;

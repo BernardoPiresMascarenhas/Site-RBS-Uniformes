@@ -21,7 +21,7 @@ export function Sectors() {
             {sector}
             <span
               aria-hidden="true"
-              className="h-1.5 w-1.5 rounded-full bg-premium-red"
+              className="h-1.5 w-1.5 rounded-full bg-premium-emerald-light"
             />
           </span>
         ))}

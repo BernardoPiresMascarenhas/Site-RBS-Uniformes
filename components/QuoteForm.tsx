@@ -4,7 +4,7 @@ import { AlertCircle, MessageCircle, Send } from "lucide-react";
 import { useState, type FormEvent } from "react";
 
 import { Button } from "@/components/ui/Button";
-import { categories } from "@/lib/content";
+import { services } from "@/lib/services";
 import { site, whatsappLink } from "@/lib/site";
 import { theme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
@@ -24,7 +24,7 @@ const initialState: FormState = {
   company: "",
   phone: "",
   email: "",
-  segment: categories[0].title,
+  segment: services[0].title,
   quantity: "",
   message: "",
 };
@@ -78,7 +78,7 @@ export function QuoteForm() {
       `*Empresa:* ${values.company}`,
       `*Telefone:* ${values.phone}`,
       values.email ? `*E-mail:* ${values.email}` : null,
-      `*Linha de uniforme:* ${values.segment}`,
+      `*Serviço:* ${values.segment}`,
       values.quantity ? `*Quantidade estimada:* ${values.quantity}` : null,
       values.message ? `*Detalhes:* ${values.message}` : null,
     ].filter(Boolean);
@@ -152,7 +152,7 @@ export function QuoteForm() {
           />
         </Field>
 
-        <Field id="segment" label="Linha de uniforme" labelClass={labelClass}>
+        <Field id="segment" label="Serviço / função" labelClass={labelClass}>
           <select
             id="segment"
             name="segment"
@@ -160,9 +160,9 @@ export function QuoteForm() {
             onChange={update("segment")}
             className={fieldClass}
           >
-            {categories.map((category) => (
-              <option key={category.slug} value={category.title}>
-                {category.title}
+            {services.map((service) => (
+              <option key={service.slug} value={service.title}>
+                {service.title}
               </option>
             ))}
             <option value="Outro / modelo exclusivo">Outro / modelo exclusivo</option>
@@ -215,7 +215,7 @@ export function QuoteForm() {
         role="status"
         aria-live="polite"
         className={cn(
-          "mt-4 text-center text-sm text-brand-accent",
+          "mt-4 text-center text-sm text-brand-green",
           sent ? "block" : "hidden",
         )}
       >

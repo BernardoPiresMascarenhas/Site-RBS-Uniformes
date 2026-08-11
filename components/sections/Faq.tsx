@@ -21,7 +21,7 @@ export function Faq() {
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-6 font-display text-base uppercase tracking-[0.06em] text-brand-heading">
                 {item.question}
                 <Plus
-                  className="h-5 w-5 shrink-0 text-brand-accent transition-transform duration-300 group-open:rotate-45"
+                  className="h-5 w-5 shrink-0 text-brand-green transition-transform duration-300 group-open:rotate-45"
                   aria-hidden="true"
                 />
               </summary>

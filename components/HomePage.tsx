@@ -7,6 +7,7 @@ import { Hero } from "@/components/sections/Hero";
 import { Process } from "@/components/sections/Process";
 import { Sectors } from "@/components/sections/Sectors";
 import { Stats } from "@/components/sections/Stats";
+import { Visit } from "@/components/sections/Visit";
 import { SiteShell } from "@/components/SiteShell";
 
 export function HomePage() {
@@ -20,6 +21,7 @@ export function HomePage() {
       <Process />
       <Sectors />
       <Faq />
+      <Visit />
       <Contact />
     </SiteShell>
   );

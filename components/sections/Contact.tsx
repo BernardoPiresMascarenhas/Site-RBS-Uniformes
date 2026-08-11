@@ -1,3 +1,4 @@
+import type { LucideIcon } from "lucide-react";
 import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 
 import { QuoteForm } from "@/components/QuoteForm";
@@ -7,21 +8,29 @@ import { defaultWhatsappMessage, site, whatsappLink } from "@/lib/site";
 import { theme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
+interface Channel {
+  icon: LucideIcon;
+  label: string;
+  value: string;
+  href?: string;
+  external?: boolean;
+}
+
 export function Contact() {
-  const channels = [
+  const channels: Channel[] = [
     {
       icon: Phone,
-      label: "Telefone",
+      label: "Telefone fixo",
       value: site.phoneDisplay,
-      href: `tel:+${site.whatsapp}`,
+      href: `tel:+${site.phoneDigits}`,
     },
-    {
+    ...site.whatsappNumbers.map((number) => ({
       icon: MessageCircle,
       label: "WhatsApp",
-      value: site.phoneDisplay,
-      href: whatsappLink(defaultWhatsappMessage),
+      value: number.display,
+      href: whatsappLink(defaultWhatsappMessage, number.digits),
       external: true,
-    },
+    })),
     {
       icon: Mail,
       label: "E-mail",
@@ -86,7 +95,7 @@ export function Contact() {
                   );
 
                   return (
-                    <li key={channel.label}>
+                    <li key={`${channel.label}-${channel.value}`}>
                       {channel.href ? (
                         <a
                           href={channel.href}
@@ -109,8 +118,8 @@ export function Contact() {
             {/* Card de destaque sempre escuro, mesmo na seção clara. */}
             <div
               data-surface="dark"
-              // brilho dourado no canto superior direito, longe do texto
-              className="relative overflow-hidden rounded-brand border border-premium-gold/35 bg-gradient-to-tr from-premium-black via-premium-black to-premium-gold/20 p-7 sm:p-8"
+              // brilho esmeralda no canto superior direito, longe do texto
+              className="relative overflow-hidden rounded-brand border border-premium-emerald/40 bg-gradient-to-tr from-premium-black via-premium-black to-premium-emerald/35 p-7 sm:p-8"
             >
               <p className="font-display text-lg uppercase leading-snug tracking-[0.06em] text-premium-gold-glow">
                 Prefere resolver agora?

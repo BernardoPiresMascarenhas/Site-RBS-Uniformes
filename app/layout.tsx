@@ -26,11 +26,11 @@ export const metadata: Metadata = {
   },
   description: site.description,
   keywords: [
-    "uniformes profissionais",
-    "uniformes corporativos",
-    "uniformes industriais",
-    "uniformes hospitalares",
-    "uniformes escolares",
+    "uniformes para condomínios",
+    "uniforme de portaria",
+    "uniforme de zeladoria",
+    "uniforme ASG",
+    "auxiliar de serviços gerais",
     "confecção de uniformes",
   ],
   openGraph: {

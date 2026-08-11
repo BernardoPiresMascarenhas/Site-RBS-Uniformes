@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, MessageCircle, Phone, X } from "lucide-react";
+import { Mail, Menu, MessageCircle, Phone, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Logo } from "@/components/Logo";
@@ -46,23 +46,39 @@ export function Navbar() {
         )}
       >
         <Container className="flex items-center justify-between py-2 text-xs">
-          <p className="tracking-wide">
-            {site.tagline} · {site.hours}
-          </p>
+          <a
+            href={`mailto:${site.email}`}
+            className="flex items-center gap-2 tracking-wide hover:underline"
+          >
+            <Mail className="h-3.5 w-3.5" aria-hidden="true" />
+            {site.email}
+          </a>
+
           <div className="flex items-center gap-5">
-            <a href={`tel:+${site.whatsapp}`} className="flex items-center gap-2 hover:underline">
+            <a
+              href={`tel:+${site.phoneDigits}`}
+              className="flex items-center gap-2 hover:underline"
+            >
               <Phone className="h-3.5 w-3.5" aria-hidden="true" />
               {site.phoneDisplay}
             </a>
-            <a
-              href={whatsappLink(defaultWhatsappMessage)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:underline"
-            >
-              <MessageCircle className="h-3.5 w-3.5" aria-hidden="true" />
-              WhatsApp
-            </a>
+
+            {/* Um ícone do WhatsApp para os dois números */}
+            <span className="flex items-center gap-3">
+              <MessageCircle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+              {site.whatsappNumbers.map((number) => (
+                <a
+                  key={number.digits}
+                  href={whatsappLink(defaultWhatsappMessage, number.digits)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`WhatsApp ${number.display}`}
+                  className="hover:underline"
+                >
+                  {number.display}
+                </a>
+              ))}
+            </span>
           </div>
         </Container>
       </div>

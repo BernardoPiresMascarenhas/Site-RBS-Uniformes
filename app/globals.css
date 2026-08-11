@@ -35,8 +35,9 @@
   --c-sun: 201 162 39;
   --c-sun-soft: 58 46 13;
   --c-red: 214 32 38;
-  --c-green: 10 122 68;
-  --c-green-soft: 4 40 24;
+  /* Verde da montanha, clareado o suficiente para ícones e texto sobre preto. */
+  --c-green: 47 167 107;
+  --c-green-soft: 6 46 27;
   --c-gray: 120 112 98;
 
   /* Brilho metálico do ouro — usado em texto (.text-accent-sheen) e botões. */
@@ -80,7 +81,8 @@
   --c-sun: 176 143 42;
   --c-sun-soft: 246 238 216;
   --c-red: 178 20 24;
-  --c-green: 13 96 55;
+  /* Sobre marfim o verde escurece para manter contraste de texto. */
+  --c-green: 11 92 52;
   --c-green-soft: 228 240 232;
   --c-gray: 124 116 100;
 
