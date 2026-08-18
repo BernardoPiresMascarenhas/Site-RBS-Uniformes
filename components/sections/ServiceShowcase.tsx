@@ -1,13 +1,14 @@
 "use client";
 
 import { ChevronRight, MessageCircle } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
 import { UniformMockup } from "@/components/decor/UniformMockup";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container, Section } from "@/components/ui/Section";
-import type { UniformColor, UniformModel } from "@/lib/services";
+import type { ShowcaseModel, UniformColor } from "@/lib/services";
 import { site, whatsappLink } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +17,12 @@ import { cn } from "@/lib/utils";
  * venda: peça grande à esquerda, modelos e cores logo abaixo dela e a descrição
  * à direita. No mobile a ordem vira título → peça → seletores → descrição, para
  * que o visitante chegue nas opções sem rolar.
+ *
+ * Cada modelo pode ter uma foto (`photo`); quando ela ainda não existe em
+ * `public/`, o servidor manda `null` e o bloco desenha o mockup vetorial, que
+ * também é o único que acompanha a cor selecionada. As fotos são produzidas em
+ * uma cor só por modelo — daí a cartela de cores virar referência quando há
+ * foto. Veja `public/produtos/LEIA-ME.md`.
  *
  * Recebe só dados serializáveis (nada de ícones do lucide, que são componentes)
  * — é a fronteira entre a página server e este componente client.
@@ -34,11 +41,15 @@ export function ServiceShowcase({
   headline: string;
   intro: string;
   quickFacts: string[];
-  models: UniformModel[];
+  models: ShowcaseModel[];
   colors: UniformColor[];
 }) {
   const [model, setModel] = useState(models[0]);
   const [color, setColor] = useState(colors[0]);
+
+  // com foto, a cor deixa de ser uma prévia e passa a ser só a escolha que
+  // segue no WhatsApp — o texto de apoio muda junto
+  const hasPhoto = models.some((option) => option.photo);
 
   const message = `Olá! Vim pelo site da ${site.name} e tenho interesse na linha de ${title}. Modelo: ${model.name}. Cor: ${color.name}.`;
 
@@ -78,23 +89,47 @@ export function ServiceShowcase({
               data-surface="dark"
               // no mobile a peça fica um pouco mais baixa que quadrada, para os
               // seletores caberem na primeira rolada
-              className="relative flex aspect-[5/4] items-center justify-center overflow-hidden rounded-brand border border-premium-emerald/35 bg-gradient-to-br from-premium-emerald-deep via-premium-black to-premium-black p-6 sm:aspect-[4/3] sm:p-10"
+              className={cn(
+                "relative flex aspect-[5/4] items-center justify-center overflow-hidden rounded-brand border border-premium-emerald/35 bg-gradient-to-br from-premium-emerald-deep via-premium-black to-premium-black sm:aspect-[4/3]",
+                // a foto já vem com o fundo embutido e ocupa o card inteiro;
+                // o mockup desenhado precisa da folga interna
+                model.photo ? "p-0" : "p-6 sm:p-10",
+              )}
             >
-              <div
-                aria-hidden="true"
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "radial-gradient(60% 60% at 50% 45%, rgba(201,162,39,0.12) 0%, transparent 70%)",
-                }}
-              />
-              <UniformMockup
-                style={model.style}
-                body={color.body}
-                accent={color.accent}
-                label={`${model.name} na cor ${color.name.toLowerCase()}`}
-                className="relative h-full max-h-72 w-auto drop-shadow-2xl transition-all duration-500 sm:max-h-80"
-              />
+              {model.photo ? (
+                <Image
+                  key={model.photo}
+                  src={model.photo}
+                  alt={`${model.name} da linha ${title}`}
+                  fill
+                  // largura da coluna esquerda no desktop; abaixo disso ela
+                  // ocupa a largura do container
+                  sizes="(min-width: 1024px) 530px, (min-width: 640px) 90vw, 100vw"
+                  // acima do padrão (75): o fundo é um gradiente escuro e liso,
+                  // onde a compressão vira faixa e mancha visíveis
+                  quality={90}
+                  priority
+                  className="animate-fade-up object-cover"
+                />
+              ) : (
+                <>
+                  <div
+                    aria-hidden="true"
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        "radial-gradient(60% 60% at 50% 45%, rgba(201,162,39,0.12) 0%, transparent 70%)",
+                    }}
+                  />
+                  <UniformMockup
+                    style={model.style}
+                    body={color.body}
+                    accent={color.accent}
+                    label={`${model.name} na cor ${color.name.toLowerCase()}`}
+                    className="relative h-full max-h-72 w-auto drop-shadow-2xl transition-all duration-500 sm:max-h-80"
+                  />
+                </>
+              )}
             </div>
 
             {/* Modelos — miniaturas na cor escolhida */}
@@ -120,18 +155,34 @@ export function ServiceShowcase({
                           : "border-brand-border hover:border-brand-green/60",
                       )}
                     >
-                      <span
-                        data-surface="dark"
-                        className="flex w-full items-center justify-center rounded-brand bg-premium-black/95 py-3"
-                      >
-                        <UniformMockup
-                          style={option.style}
-                          body={color.body}
-                          accent={color.accent}
-                          label=""
-                          className="h-14 w-auto"
-                        />
-                      </span>
+                      {option.photo ? (
+                        <span
+                          data-surface="dark"
+                          className="relative block aspect-[4/3] w-full overflow-hidden rounded-brand bg-premium-black/95"
+                        >
+                          <Image
+                            src={option.photo}
+                            alt=""
+                            fill
+                            sizes="160px"
+                            quality={90}
+                            className="object-cover"
+                          />
+                        </span>
+                      ) : (
+                        <span
+                          data-surface="dark"
+                          className="flex w-full items-center justify-center rounded-brand bg-premium-black/95 py-3"
+                        >
+                          <UniformMockup
+                            style={option.style}
+                            body={color.body}
+                            accent={color.accent}
+                            label=""
+                            className="h-14 w-auto"
+                          />
+                        </span>
+                      )}
                       <span
                         className={cn(
                           "px-1 pb-1 text-center text-[0.65rem] leading-tight",
@@ -185,6 +236,14 @@ export function ServiceShowcase({
                   );
                 })}
               </div>
+
+              {hasPhoto ? (
+                <p className="mt-3 text-xs leading-relaxed text-brand-muted">
+                  A foto mostra o modelo em uma cor de referência. Toda a cartela
+                  acima é produzida sob encomenda — a cor escolhida aqui segue
+                  junto no seu pedido de orçamento.
+                </p>
+              ) : null}
             </fieldset>
           </div>
 
@@ -240,9 +299,9 @@ export function ServiceShowcase({
             </div>
 
             <p className="mt-5 text-xs leading-relaxed text-brand-muted">
-              A prévia é uma simulação para alinhar a conversa: a cor final é
-              confirmada na cartela de tecidos durante a visita, e o modelo
-              escolhido já vai junto na mensagem do WhatsApp.
+              {hasPhoto
+                ? "As imagens são ilustrativas do modelo e do acabamento: a cor final é confirmada na cartela de tecidos durante a visita, e o modelo escolhido já vai junto na mensagem do WhatsApp."
+                : "A prévia é uma simulação para alinhar a conversa: a cor final é confirmada na cartela de tecidos durante a visita, e o modelo escolhido já vai junto na mensagem do WhatsApp."}
             </p>
           </div>
         </div>

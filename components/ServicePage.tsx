@@ -9,6 +9,7 @@ import { ServiceShowcase } from "@/components/sections/ServiceShowcase";
 import { SiteShell } from "@/components/SiteShell";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
+import { resolveModelPhotos } from "@/lib/photos";
 import { services, servicePath, type Service } from "@/lib/services";
 import { site, whatsappLink } from "@/lib/site";
 import { theme } from "@/lib/theme";
@@ -30,7 +31,9 @@ export function ServicePage({ service }: { service: Service }) {
         headline={service.headline}
         intro={service.intro}
         quickFacts={service.quickFacts}
-        models={service.models}
+        // a checagem dos arquivos acontece aqui, no servidor, porque
+        // ServiceShowcase é um componente client
+        models={resolveModelPhotos(service.models)}
         colors={service.colors}
       />
 

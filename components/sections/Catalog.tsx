@@ -12,11 +12,11 @@ export function Catalog() {
     <Section id="catalogo" surface="light">
       <Container>
         <SectionHeading
-          eyebrow="Nossos serviços"
+          eyebrow="LINHAS DE UNIFORMES"
           title={
             <>
               UNIFORMES PARA CADA{" "}
-              <span className="text-accent-sheen">FUNÇÃO</span>
+              <span className="text-accent-sheen">Área</span>
             </>
           }
           description={

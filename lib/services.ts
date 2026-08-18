@@ -42,7 +42,18 @@ export interface UniformModel {
   description: string;
   /** Silhueta usada no mockup. */
   style: "social" | "polo" | "tshirt";
+  /**
+   * Foto do modelo, em `public/`. Enquanto o arquivo não existir a página cai
+   * de volta no mockup desenhado (`UniformMockup`) — veja `resolveModelPhotos`.
+   */
+  photo: string;
 }
+
+/**
+ * Modelo já preparado para exibição. `photo` vira `null` quando o arquivo ainda
+ * não foi colocado em `public/` — nesse caso o visualizador desenha o mockup.
+ */
+export type ShowcaseModel = Omit<UniformModel, "photo"> & { photo: string | null };
 
 export interface ServiceHighlight {
   title: string;
@@ -91,7 +102,7 @@ export const services: Service[] = [
     slug: "portaria",
     title: "Portaria",
     shortDescription:
-      "O uniforme que recebe morador e visitante. Alfaiataria leve, caimento impecável e apresentação de primeira em todos os turnos.",
+      "A uniformização da portaria é essencial para agregar mais valor à imagem do seu condomínio, e um uniforme alinhado e resistente faz toda a diferença para passar uma boa impressão na hora. Conheça a Linha de Portaria",
     icon: DoorOpen,
 
     eyebrow: "Linha Portaria",
@@ -142,17 +153,20 @@ export const services: Service[] = [
         description:
           "O clássico da portaria: tecido misto com toque macio, punho abotoado e caimento reto.",
         style: "social",
+        photo: "/produtos/portaria-camisa-social-manga-longa.webp",
       },
       {
         name: "Camisa social manga curta",
         description: "Mesma alfaiataria, pensada para o verão e para guaritas sem climatização.",
         style: "social",
+        photo: "/produtos/portaria-camisa-social-manga-curta.webp",
       },
       {
         name: "Polo institucional",
         description:
           "Piquê de alta gramatura para portarias com dress code mais leve, sem perder a formalidade.",
         style: "polo",
+        photo: "/produtos/portaria-polo-institucional.webp",
       },
     ],
     colors: [marinho, preto, grafite, bordo, branco],
@@ -167,7 +181,7 @@ export const services: Service[] = [
     slug: "zeladoria",
     title: "Zeladoria",
     shortDescription:
-      "Resistência para quem circula o dia inteiro entre garagem, casa de máquinas e área comum — sem perder a aparência de equipe.",
+      "Uniformes de alta resistência e confortáveis é mais que o essencial para alguém que zela pelo condomínio, pensados em quem e nas condições em que vai ser utilizado. Um uniforme coringa para quem atua em várias áreas do prédio. Conheça a Linha de Zeladoria.",
     icon: Wrench,
 
     eyebrow: "Linha Zeladoria",
@@ -218,17 +232,20 @@ export const services: Service[] = [
         description:
           "Brim leve com botões reforçados e bolso com aba — proteção sem esquentar demais.",
         style: "social",
+        photo: "/produtos/zeladoria-camisa-brim-manga-longa.webp",
       },
       {
         name: "Polo piquê reforçada",
         description:
           "Piquê de alta gramatura com gola que não enrola, ideal para quem alterna serviço e atendimento.",
         style: "polo",
+        photo: "/produtos/zeladoria-polo-pique-reforcada.webp",
       },
       {
         name: "Camiseta em malha",
         description: "Malha penteada para os serviços mais pesados e para o segundo uniforme do dia.",
         style: "tshirt",
+        photo: "/produtos/zeladoria-camiseta-malha.webp",
       },
     ],
     colors: [royal, grafite, verdeBandeira, marinho, bege],
@@ -243,7 +260,7 @@ export const services: Service[] = [
     slug: "asg",
     title: "Auxiliar de Serviços Gerais (ASG)",
     shortDescription:
-      "Conforto e higiene para a equipe de limpeza: tecidos leves, secagem rápida e cor que aguenta produto químico.",
+      "Pensado para quem trabalha com produtos de limpeza, água e mais. Trabalhamos com tecidos leves e próprios para prevenir manchas, secagem rápida e conforto. Tudo em um só uniforme. Conheça a Linha de Limpeza.",
     icon: SprayCan,
 
     eyebrow: "Linha ASG",
@@ -294,16 +311,19 @@ export const services: Service[] = [
         description:
           "Malha penteada com gola reforçada — a peça mais usada no dia a dia da equipe de limpeza.",
         style: "tshirt",
+        photo: "/produtos/asg-camiseta-malha.webp",
       },
       {
         name: "Polo piquê",
         description: "Um degrau acima na apresentação, para a equipe que circula em área social.",
         style: "polo",
+        photo: "/produtos/asg-polo-pique.webp",
       },
       {
         name: "Conjunto em brim leve",
         description: "Camisa e calça combinando, para serviços externos e limpeza pesada.",
         style: "social",
+        photo: "/produtos/asg-conjunto-brim-leve.webp",
       },
     ],
     colors: [cinzaClaro, royal, verdeBandeira, branco, grafite],
