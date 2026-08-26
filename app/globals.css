@@ -61,6 +61,36 @@
   --font-sans: var(--font-inter);
 }
 
+/* ------------------------------------------------------------------ *
+ * Altura do header fixo.
+ *
+ * A navbar é `fixed`, então o conteúdo abaixo dela precisa reservar esse
+ * espaço. Os valores acompanham o que o Navbar realmente mede:
+ *   barra principal = logo (h-20 / sm:h-24) + py-3  → 104px / 120px
+ *   barra utilitária (só em lg, some ao rolar)      → +32px
+ *
+ * `--header-h-compact` é a altura com a barra utilitária recolhida — é ela
+ * que vale para as âncoras, porque ao navegar a página já está rolada.
+ * ------------------------------------------------------------------ */
+:root {
+  --header-h: 104px;
+  --header-h-compact: 104px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --header-h: 120px;
+    --header-h-compact: 120px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --header-h: 152px;
+    --header-h-compact: 120px;
+  }
+}
+
 /* ---------- Superfície CLARA ---------- *
  * Marfim quente (não branco puro) para não brigar com o ouro. O acento
  * vira bronze, que tem contraste suficiente sobre fundo claro.          */
@@ -110,7 +140,7 @@
   html {
     scroll-behavior: smooth;
     /* compensa o header fixo ao navegar por âncoras */
-    scroll-padding-top: 7rem;
+    scroll-padding-top: calc(var(--header-h-compact) + 1.5rem);
   }
 
   body {
@@ -149,6 +179,61 @@
     @apply bg-gold-sheen bg-clip-text text-transparent;
   }
 
+  /* ---------- Revelação no scroll ----------
+   * O estado escondido é só uma classe: o conteúdo já vem no HTML do
+   * servidor. O componente `Reveal` liga o `data-visible` quando o elemento
+   * entra na viewport, e o `<noscript>` do layout devolve a visibilidade se
+   * o JavaScript não rodar.                                              */
+  .reveal {
+    opacity: 0;
+    transition:
+      opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveal-up {
+    transform: translateY(26px);
+  }
+  .reveal-down {
+    transform: translateY(-26px);
+  }
+  /* No celular as colunas laterais empilham, então entrar "do lado" não diz
+     nada — e o deslocamento horizontal do estado escondido furava a viewport
+     nas seções sem `overflow-hidden`. Abaixo de lg elas entram de baixo. */
+  .reveal-left,
+  .reveal-right {
+    transform: translateY(26px);
+  }
+
+  @media (min-width: 1024px) {
+    .reveal-left {
+      transform: translateX(-30px);
+    }
+    .reveal-right {
+      transform: translateX(30px);
+    }
+  }
+  .reveal-scale {
+    transform: scale(0.94);
+  }
+
+  .reveal[data-visible="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Sublinhado que cresce a partir da esquerda no hover. */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+
   /* Grão sutil para dar profundidade ao fundo escuro. */
   .grain::after {
     content: "";
@@ -163,6 +248,18 @@
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  /* Sem movimento: o conteúdo revelado aparece direto, já posicionado. */
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* A faixa de segmentos é decorativa — parar é melhor que acelerar. */
+  .animate-marquee {
+    animation: none !important;
   }
 
   *,

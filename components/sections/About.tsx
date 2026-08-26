@@ -2,6 +2,7 @@ import { Check, Scissors } from "lucide-react";
 
 import { SunBurst } from "@/components/decor/Scenery";
 import { ButtonLink } from "@/components/ui/Button";
+import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { about } from "@/lib/content";
 import { site } from "@/lib/site";
@@ -17,7 +18,7 @@ export function About() {
             Bloco visual. Substitua por uma foto da fábrica/equipe quando houver
             material fotográfico — o container já está no formato correto.
           */}
-          <div className="relative order-last lg:order-first">
+          <Reveal variant="left" className="relative order-last lg:order-first">
             {/* Este card é sempre escuro, mesmo dentro da seção clara —
                 `data-surface="dark"` devolve os tokens escuros ao subconjunto. */}
             <div
@@ -40,7 +41,8 @@ export function About() {
               </p>
               <p className="relative mt-3 max-w-[14rem] text-sm text-brand-muted">
                 {/* herda os tokens escuros do card acima */}
-                Corte, costura, bordado e controle de qualidade sob o mesmo teto.
+                Corte, costura, bordado e controle de qualidade sob o mesmo
+                teto.
               </p>
             </div>
 
@@ -55,7 +57,7 @@ export function About() {
                 {site.stats[0].label}
               </p>
             </div>
-          </div>
+          </Reveal>
 
           <div>
             <SectionHeading
@@ -64,28 +66,39 @@ export function About() {
               title={about.title}
             />
 
-            <div className="mt-6 space-y-5 text-base leading-relaxed text-brand-muted">
+            <Reveal className="mt-6 space-y-5 text-base leading-relaxed text-brand-muted">
               {about.paragraphs.map((paragraph) => (
                 <p key={paragraph.slice(0, 24)}>{paragraph}</p>
               ))}
-            </div>
+            </Reveal>
 
             <ul className="mt-8 space-y-3">
-              {about.bullets.map((bullet) => (
-                <li key={bullet} className="flex items-start gap-3 text-sm text-brand-text">
+              {about.bullets.map((bullet, index) => (
+                <Reveal
+                  as="li"
+                  key={bullet}
+                  variant="right"
+                  delay={index * 90}
+                  className="flex items-start gap-3 text-sm text-brand-text"
+                >
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-green/15 text-brand-green">
                     <Check className="h-3 w-3" aria-hidden="true" />
                   </span>
                   {bullet}
-                </li>
+                </Reveal>
               ))}
             </ul>
 
-            <ButtonLink href="#contato" className="mt-9">
-              Conversar com um consultor
-            </ButtonLink>
+            <Reveal variant="scale" className="mt-9">
+              <ButtonLink href="#contato">
+                Conversar com um consultor
+              </ButtonLink>
+            </Reveal>
 
-            <span className={cn("mt-10 block", theme.ui.divider)} aria-hidden="true" />
+            <span
+              className={cn("mt-10 block", theme.ui.divider)}
+              aria-hidden="true"
+            />
           </div>
         </div>
       </Container>

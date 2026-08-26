@@ -8,6 +8,7 @@ import { Process } from "@/components/sections/Process";
 import { ServiceShowcase } from "@/components/sections/ServiceShowcase";
 import { SiteShell } from "@/components/SiteShell";
 import { ButtonLink } from "@/components/ui/Button";
+import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { resolveModelPhotos } from "@/lib/photos";
 import { services, servicePath, type Service } from "@/lib/services";
@@ -51,12 +52,13 @@ export function ServicePage({ service }: { service: Service }) {
           />
 
           <div className="mt-14 grid gap-6 md:grid-cols-2">
-            {service.highlights.map((highlight) => {
+            {service.highlights.map((highlight, index) => {
               const HighlightIcon = highlight.icon;
 
               return (
-                <div
+                <Reveal
                   key={highlight.title}
+                  delay={(index % 2) * 120}
                   className={cn(
                     "flex flex-col gap-5 p-7 sm:flex-row",
                     theme.ui.card,
@@ -79,7 +81,7 @@ export function ServicePage({ service }: { service: Service }) {
                       {highlight.description}
                     </p>
                   </div>
-                </div>
+                </Reveal>
               );
             })}
           </div>
@@ -140,7 +142,7 @@ export function ServicePage({ service }: { service: Service }) {
           />
 
           <div className="mt-14 grid gap-6 md:grid-cols-2">
-            <div className={cn("p-7 sm:p-8", theme.ui.card)}>
+            <Reveal variant="left" className={cn("p-7 sm:p-8", theme.ui.card)}>
               <span
                 className={cn(
                   "inline-flex h-12 w-12 items-center justify-center",
@@ -166,9 +168,13 @@ export function ServicePage({ service }: { service: Service }) {
                   </li>
                 ))}
               </ul>
-            </div>
+            </Reveal>
 
-            <div className={cn("p-7 sm:p-8", theme.ui.card)}>
+            <Reveal
+              variant="right"
+              delay={120}
+              className={cn("p-7 sm:p-8", theme.ui.card)}
+            >
               <span
                 className={cn(
                   "inline-flex h-12 w-12 items-center justify-center",
@@ -194,7 +200,7 @@ export function ServicePage({ service }: { service: Service }) {
                   </li>
                 ))}
               </ul>
-            </div>
+            </Reveal>
           </div>
         </Container>
       </Section>
@@ -211,40 +217,41 @@ export function ServicePage({ service }: { service: Service }) {
           />
 
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
-            {others.map((other) => {
+            {others.map((other, index) => {
               const OtherIcon = other.icon;
 
               return (
-                <Link
-                  key={other.slug}
-                  href={servicePath(other.slug)}
-                  className={cn(
-                    "group flex items-start gap-5 p-7",
-                    theme.ui.card,
-                    theme.ui.cardHover,
-                  )}
-                >
-                  <span
+                <Reveal key={other.slug} delay={index * 120}>
+                  <Link
+                    href={servicePath(other.slug)}
                     className={cn(
-                      "inline-flex h-12 w-12 shrink-0 items-center justify-center",
-                      theme.ui.iconBox,
+                      "group flex h-full items-start gap-5 p-7",
+                      theme.ui.card,
+                      theme.ui.cardHover,
                     )}
                   >
-                    <OtherIcon className="h-6 w-6" aria-hidden="true" />
-                  </span>
-                  <span>
-                    <span className="flex items-center gap-2 font-display text-lg uppercase tracking-[0.08em] text-brand-heading">
-                      {other.title}
-                      <ArrowRight
-                        className="h-4 w-4 shrink-0 text-brand-green transition-transform group-hover:translate-x-1"
-                        aria-hidden="true"
-                      />
+                    <span
+                      className={cn(
+                        "inline-flex h-12 w-12 shrink-0 items-center justify-center",
+                        theme.ui.iconBox,
+                      )}
+                    >
+                      <OtherIcon className="h-6 w-6" aria-hidden="true" />
                     </span>
-                    <span className="mt-2 block text-sm leading-relaxed text-brand-muted">
-                      {other.shortDescription}
+                    <span>
+                      <span className="flex items-center gap-2 font-display text-lg uppercase tracking-[0.08em] text-brand-heading">
+                        {other.title}
+                        <ArrowRight
+                          className="h-4 w-4 shrink-0 text-brand-green transition-transform group-hover:translate-x-1"
+                          aria-hidden="true"
+                        />
+                      </span>
+                      <span className="mt-2 block text-sm leading-relaxed text-brand-muted">
+                        {other.shortDescription}
+                      </span>
                     </span>
-                  </span>
-                </Link>
+                  </Link>
+                </Reveal>
               );
             })}
           </div>

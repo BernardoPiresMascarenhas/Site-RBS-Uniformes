@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 
 import { UniformMockup } from "@/components/decor/UniformMockup";
 import { ButtonLink } from "@/components/ui/Button";
+import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { services, servicePath } from "@/lib/services";
 import { theme } from "@/lib/theme";
@@ -21,23 +22,28 @@ export function Catalog() {
           }
           description={
             <>
-              Cada uniforme é confeccionado de acordo com a função e o tipo de uso, com alta qualidade e durabilidade, das condições mais simples até as mais extremas!
+              Cada uniforme é confeccionado de acordo com a função e o tipo de
+              uso, com alta qualidade e durabilidade, das condições mais simples
+              até as mais extremas!
               <span className="mt-3 block font-medium text-brand-text">
-                A RBS pensou nisso e essas são as opções que temos e recomendamos!
+                A RBS pensou nisso e essas são as opções que temos e
+                recomendamos!
               </span>
             </>
           }
         />
 
         <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => {
+          {services.map((service, index) => {
             const Icon = service.icon;
             const [firstColor] = service.colors;
             const [firstModel] = service.models;
 
             return (
-              <article
+              <Reveal
+                as="article"
                 key={service.slug}
+                delay={index * 120}
                 className={cn(
                   "group flex flex-col overflow-hidden",
                   theme.ui.card,
@@ -101,19 +107,20 @@ export function Catalog() {
                     </ButtonLink>
                   </div>
                 </div>
-              </article>
+              </Reveal>
             );
           })}
         </div>
 
-        <div className="mt-12 flex flex-col items-center gap-4 text-center">
+        <Reveal className="mt-12 flex flex-col items-center gap-4 text-center">
           <p className="text-sm text-brand-muted">
-            Precisa de uma peça que não está na lista? Desenvolvemos modelos exclusivos sob demanda.
+            Precisa de uma peça que não está na lista? Desenvolvemos modelos
+            exclusivos sob demanda.
           </p>
           <ButtonLink tone="secondary" href="/#contato">
             Falar com um consultor
           </ButtonLink>
-        </div>
+        </Reveal>
       </Container>
     </Section>
   );

@@ -49,6 +49,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className={`${inter.variable} ${cinzel.variable}`}>
+      <head>
+        {/* Sem JavaScript ninguém liga o `data-visible` das animações de
+            entrada — aqui o conteúdo revelado volta a aparecer. */}
+        <noscript>
+          <style>
+            {".reveal{opacity:1!important;transform:none!important}"}
+          </style>
+        </noscript>
+      </head>
       <body>{children}</body>
     </html>
   );

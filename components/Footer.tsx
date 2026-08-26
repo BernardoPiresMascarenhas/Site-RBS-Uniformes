@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import { Logo } from "@/components/Logo";
+import { Reveal } from "@/components/ui/Reveal";
 import { Container } from "@/components/ui/Section";
 import { navLinks } from "@/lib/content";
 import { services, servicePath } from "@/lib/services";
@@ -32,9 +33,9 @@ export function Footer() {
         className="absolute inset-x-0 top-0 block h-1 w-full bg-gradient-to-r from-premium-emerald via-premium-gold to-premium-red"
       />
 
-      <Container className="py-16">
+      <Container size="wide" className="py-16">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
-          <div className="lg:col-span-1">
+          <Reveal className="lg:col-span-1">
             <Logo sizeClassName="h-24 sm:h-28" />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-brand-muted">
               {site.description}
@@ -54,9 +55,9 @@ export function Footer() {
                 </a>
               ))}
             </div>
-          </div>
+          </Reveal>
 
-          <FooterColumn title="Navegação">
+          <FooterColumn title="Navegação" delay={100}>
             {navLinks.map((link) => (
               <li key={link.href}>
                 <FooterLink href={link.href}>{link.label}</FooterLink>
@@ -74,13 +75,17 @@ export function Footer() {
             ))}
           </FooterColumn>
 
-          <FooterColumn title="Contato">
+          <FooterColumn title="Contato" delay={260}>
             <li className="flex items-start gap-3">
-              <MapPin className="mt-0.5 h-4 w-4 shrink-0 opacity-70" aria-hidden="true" />
+              <MapPin
+                className="mt-0.5 h-4 w-4 shrink-0 opacity-70"
+                aria-hidden="true"
+              />
               <span>
                 {site.address.street}
                 <br />
-                {site.address.district} — {site.address.city}/{site.address.state}
+                {site.address.district} — {site.address.city}/
+                {site.address.state}
                 <br />
                 CEP {site.address.zip}
               </span>
@@ -97,7 +102,10 @@ export function Footer() {
               <li key={number.digits}>
                 <FooterLink href={`https://wa.me/${number.digits}`}>
                   <span className="flex items-center gap-3">
-                    <MessageCircle className="h-4 w-4 opacity-70" aria-hidden="true" />
+                    <MessageCircle
+                      className="h-4 w-4 opacity-70"
+                      aria-hidden="true"
+                    />
                     {number.display}
                   </span>
                 </FooterLink>
@@ -117,7 +125,7 @@ export function Footer() {
       </Container>
 
       <div className="border-t border-premium-gold/15">
-        <Container className="py-6 text-center text-xs text-brand-muted">
+        <Container size="wide" className="py-6 text-center text-xs text-brand-muted">
           <p>
             © {year} {site.legalName}. Todos os direitos reservados.
           </p>
@@ -130,17 +138,19 @@ export function Footer() {
 function FooterColumn({
   title,
   children,
+  delay = 0,
 }: {
   title: string;
   children: React.ReactNode;
+  delay?: number;
 }) {
   return (
-    <div>
+    <Reveal delay={delay}>
       <h3 className="font-display text-sm uppercase tracking-[0.24em] text-premium-gold">
         {title}
       </h3>
       <ul className="mt-5 space-y-3 text-sm text-brand-text">{children}</ul>
-    </div>
+    </Reveal>
   );
 }
 

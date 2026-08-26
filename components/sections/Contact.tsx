@@ -3,6 +3,7 @@ import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 
 import { QuoteForm } from "@/components/QuoteForm";
 import { ButtonLink } from "@/components/ui/Button";
+import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { defaultWhatsappMessage, site, whatsappLink } from "@/lib/site";
 import { theme } from "@/lib/theme";
@@ -50,21 +51,27 @@ export function Contact() {
   ];
 
   return (
-    <Section id="contato" tone="alt" surface="light" className="overflow-hidden">
+    <Section
+      id="contato"
+      tone="alt"
+      surface="light"
+      className="overflow-hidden"
+    >
       <Container>
         <SectionHeading
           eyebrow="Orçamento sem compromisso"
           title={
             <>
-              Vamos vestir a sua <span className="text-accent-sheen">equipe</span>
+              Vamos vestir a sua{" "}
+              <span className="text-accent-sheen">equipe</span>
             </>
           }
           description="Preencha o formulário ou fale direto com um consultor. Respondemos em horário comercial."
         />
 
         <div className="mt-14 grid gap-8 lg:grid-cols-[1fr_1.1fr]">
-          <div className="flex flex-col gap-6">
-            <div className={cn("p-7 sm:p-8", theme.ui.card)}>
+          <div className="flex min-w-0 flex-col gap-6">
+            <Reveal variant="left" className={cn("p-7 sm:p-8", theme.ui.card)}>
               <h3 className="font-display text-xl uppercase tracking-[0.08em]">
                 Canais de atendimento
               </h3>
@@ -113,10 +120,12 @@ export function Contact() {
                   );
                 })}
               </ul>
-            </div>
+            </Reveal>
 
             {/* Card de destaque sempre escuro, mesmo na seção clara. */}
-            <div
+            <Reveal
+              variant="left"
+              delay={120}
               data-surface="dark"
               // brilho esmeralda no canto superior direito, longe do texto
               className="relative overflow-hidden rounded-brand border border-premium-emerald/40 bg-gradient-to-tr from-premium-black via-premium-black to-premium-emerald/35 p-7 sm:p-8"
@@ -136,10 +145,12 @@ export function Contact() {
               >
                 Chamar no WhatsApp
               </ButtonLink>
-            </div>
+            </Reveal>
           </div>
 
-          <QuoteForm />
+          <Reveal variant="right" delay={100} className="min-w-0">
+            <QuoteForm />
+          </Reveal>
         </div>
       </Container>
     </Section>

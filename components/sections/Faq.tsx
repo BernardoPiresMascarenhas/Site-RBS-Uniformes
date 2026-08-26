@@ -1,5 +1,6 @@
 import { Plus } from "lucide-react";
 
+import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { faq } from "@/lib/content";
 import { theme } from "@/lib/theme";
@@ -8,7 +9,7 @@ import { cn } from "@/lib/utils";
 export function Faq() {
   return (
     <Section surface="light">
-      <Container className="max-w-4xl">
+      <Container size="content">
         <SectionHeading
           eyebrow="Dúvidas frequentes"
           title="O que as empresas costumam perguntar"
@@ -16,8 +17,13 @@ export function Faq() {
 
         {/* <details> nativo: acessível e funcional sem JavaScript. */}
         <div className="mt-12 space-y-3">
-          {faq.map((item) => (
-            <details key={item.question} className={cn("group", theme.ui.card)}>
+          {faq.map((item, index) => (
+            <Reveal
+              as="details"
+              key={item.question}
+              delay={index * 80}
+              className={cn("group", theme.ui.card)}
+            >
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-6 font-display text-base uppercase tracking-[0.06em] text-brand-heading">
                 {item.question}
                 <Plus
@@ -28,7 +34,7 @@ export function Faq() {
               <p className="border-t border-brand-border/70 px-6 py-5 text-sm leading-relaxed text-brand-muted">
                 {item.answer}
               </p>
-            </details>
+            </Reveal>
           ))}
         </div>
       </Container>

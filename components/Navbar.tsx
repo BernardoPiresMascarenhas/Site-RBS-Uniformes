@@ -45,7 +45,7 @@ export function Navbar() {
           scrolled ? "max-h-0 overflow-hidden opacity-0" : "max-h-12 opacity-100",
         )}
       >
-        <Container className="flex items-center justify-between py-2 text-xs">
+        <Container size="wide" className="flex items-center justify-between py-2 text-xs">
           <a
             href={`mailto:${site.email}`}
             className="flex items-center gap-2 tracking-wide hover:underline"
@@ -83,7 +83,7 @@ export function Navbar() {
         </Container>
       </div>
 
-      <Container className="flex items-center justify-between gap-4 py-3">
+      <Container size="wide" className="flex items-center justify-between gap-4 py-3">
         <Logo sizeClassName="h-20 sm:h-24" />
 
         <nav className="hidden items-center gap-8 lg:flex" aria-label="Navegação principal">
@@ -132,7 +132,7 @@ export function Navbar() {
           open ? "max-h-[80vh] opacity-100" : "max-h-0 border-transparent opacity-0",
         )}
       >
-        <Container className="flex flex-col gap-1 py-4">
+        <Container size="wide" className="flex flex-col gap-1 py-4">
           {navLinks.map((link) => (
             <a
               key={link.href}

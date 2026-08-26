@@ -7,6 +7,7 @@ import { useState } from "react";
 
 import { UniformMockup } from "@/components/decor/UniformMockup";
 import { ButtonLink } from "@/components/ui/Button";
+import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section } from "@/components/ui/Section";
 import type { ShowcaseModel, UniformColor } from "@/lib/services";
 import { site, whatsappLink } from "@/lib/site";
@@ -66,7 +67,10 @@ export function ServiceShowcase({
             Início
           </Link>
           <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
-          <Link href="/#catalogo" className="transition-colors hover:text-brand-accent">
+          <Link
+            href="/#catalogo"
+            className="transition-colors hover:text-brand-accent"
+          >
             Serviços
           </Link>
           <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -74,17 +78,24 @@ export function ServiceShowcase({
         </nav>
 
         <div className="mt-7 max-w-3xl">
-          <span className="inline-flex items-center rounded-full border border-brand-green/40 bg-brand-green/10 px-4 py-1.5 text-[0.65rem] uppercase tracking-[0.28em] text-brand-green">
+          <Reveal
+            as="span"
+            className="inline-flex items-center rounded-full border border-brand-green/40 bg-brand-green/10 px-4 py-1.5 text-[0.65rem] uppercase tracking-[0.28em] text-brand-green"
+          >
             {eyebrow}
-          </span>
-          <h1 className="mt-5 font-display text-3xl uppercase leading-[1.12] tracking-[0.04em] sm:text-4xl lg:text-5xl">
+          </Reveal>
+          <Reveal
+            as="h1"
+            delay={90}
+            className="mt-5 font-display text-3xl uppercase leading-[1.12] tracking-[0.04em] sm:text-4xl lg:text-5xl"
+          >
             {headline}
-          </h1>
+          </Reveal>
         </div>
 
         <div className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
           {/* ---------- Coluna visual: peça + seletores ---------- */}
-          <div className="lg:sticky lg:top-28 lg:self-start">
+          <Reveal variant="left" className="lg:sticky lg:top-28 lg:self-start">
             <div
               data-surface="dark"
               // no mobile a peça fica um pouco mais baixa que quadrada, para os
@@ -239,16 +250,16 @@ export function ServiceShowcase({
 
               {hasPhoto ? (
                 <p className="mt-3 text-xs leading-relaxed text-brand-muted">
-                  A foto mostra o modelo em uma cor de referência. Toda a cartela
-                  acima é produzida sob encomenda — a cor escolhida aqui segue
-                  junto no seu pedido de orçamento.
+                  A foto mostra o modelo em uma cor de referência. Toda a
+                  cartela acima é produzida sob encomenda — a cor escolhida aqui
+                  segue junto no seu pedido de orçamento.
                 </p>
               ) : null}
             </fieldset>
-          </div>
+          </Reveal>
 
           {/* ---------- Coluna de conteúdo ---------- */}
-          <div className="flex flex-col">
+          <Reveal variant="right" delay={120} className="flex flex-col">
             <p className="font-display text-[0.65rem] uppercase tracking-[0.24em] text-brand-muted">
               Modelo selecionado
             </p>
@@ -268,7 +279,10 @@ export function ServiceShowcase({
 
             <ul className="mt-7 space-y-3">
               {quickFacts.map((fact) => (
-                <li key={fact} className="flex items-start gap-3 text-sm text-brand-text">
+                <li
+                  key={fact}
+                  className="flex items-start gap-3 text-sm text-brand-text"
+                >
                   <span
                     aria-hidden="true"
                     className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-green"
@@ -303,7 +317,7 @@ export function ServiceShowcase({
                 ? "As imagens são ilustrativas do modelo e do acabamento: a cor final é confirmada na cartela de tecidos durante a visita, e o modelo escolhido já vai junto na mensagem do WhatsApp."
                 : "A prévia é uma simulação para alinhar a conversa: a cor final é confirmada na cartela de tecidos durante a visita, e o modelo escolhido já vai junto na mensagem do WhatsApp."}
             </p>
-          </div>
+          </Reveal>
         </div>
       </Container>
     </Section>

@@ -1,7 +1,14 @@
-import { ArrowRight, BadgeCheck, MessageCircle, Palette, Truck } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  MessageCircle,
+  Palette,
+  Truck,
+} from "lucide-react";
 
 import { MountainScape } from "@/components/decor/Scenery";
 import { ButtonLink } from "@/components/ui/Button";
+import { Reveal } from "@/components/ui/Reveal";
 import { Container } from "@/components/ui/Section";
 import { visit, visitSteps } from "@/lib/content";
 import { site, whatsappLink } from "@/lib/site";
@@ -37,22 +44,40 @@ export function Visit() {
 
       <Container className="relative">
         <div className="flex flex-col items-center text-center">
-          <span className="font-display text-xs uppercase tracking-[0.42em] text-premium-gold">
+          <Reveal
+            as="span"
+            className="font-display text-xs uppercase tracking-[0.42em] text-premium-gold"
+          >
             {visit.eyebrow}
-          </span>
-          <h2 className="mt-4 max-w-3xl font-display text-3xl uppercase tracking-[0.06em] text-premium-gold-light sm:text-4xl lg:text-5xl">
+          </Reveal>
+          <Reveal
+            as="h2"
+            delay={80}
+            className="mt-4 max-w-3xl font-display text-3xl uppercase tracking-[0.06em] text-premium-gold-light sm:text-4xl lg:text-5xl"
+          >
             {visit.title}
-          </h2>
-          <span
+          </Reveal>
+          <Reveal
+            as="span"
+            variant="scale"
+            delay={160}
             aria-hidden="true"
             className="mt-4 block h-px w-full max-w-xs bg-gradient-to-r from-transparent via-premium-gold/60 to-transparent"
           />
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-brand-text sm:text-lg">
+          <Reveal
+            as="p"
+            delay={220}
+            className="mt-6 max-w-2xl text-base leading-relaxed text-brand-text sm:text-lg"
+          >
             {visit.intro}
-          </p>
-          <p className="mt-3 font-display text-sm uppercase tracking-[0.16em] text-premium-emerald-glow">
+          </Reveal>
+          <Reveal
+            as="p"
+            delay={280}
+            className="mt-3 font-display text-sm uppercase tracking-[0.16em] text-premium-emerald-glow"
+          >
             {visit.subtitle}
-          </p>
+          </Reveal>
         </div>
 
         {/* Etapas */}
@@ -63,12 +88,14 @@ export function Visit() {
             className="absolute left-0 right-0 top-14 hidden h-px bg-gradient-to-r from-transparent via-premium-emerald/45 to-transparent lg:block"
           />
 
-          {visitSteps.map((step) => {
+          {visitSteps.map((step, index) => {
             const Icon = step.icon;
 
             return (
-              <li
+              <Reveal
+                as="li"
                 key={step.step}
+                delay={index * 130}
                 className="relative flex flex-col rounded-brand border border-premium-gold/20 bg-premium-black/80 p-7 backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-premium-emerald/50"
               >
                 <span className="inline-flex h-14 w-14 items-center justify-center rounded-brand border border-premium-emerald/40 bg-premium-emerald/10 text-premium-emerald-light">
@@ -84,13 +111,13 @@ export function Visit() {
                 <p className="mt-3 text-sm leading-relaxed text-brand-muted">
                   {step.description}
                 </p>
-              </li>
+              </Reveal>
             );
           })}
         </ol>
 
         {/* Promessas + chamada */}
-        <div className="mt-12 flex flex-col items-center gap-8 rounded-brand border border-premium-emerald/25 bg-premium-emerald-deep/25 p-7 sm:p-9 lg:flex-row lg:justify-between">
+        <Reveal className="mt-12 flex flex-col items-center gap-8 rounded-brand border border-premium-emerald/25 bg-premium-emerald-deep/25 p-7 sm:p-9 lg:flex-row lg:justify-between">
           <ul className="grid w-full gap-4 sm:grid-cols-3 lg:max-w-2xl">
             {promises.map(({ icon: Icon, label }) => (
               <li
@@ -127,9 +154,11 @@ export function Visit() {
               Solicitar pelo wpp
             </ButtonLink>
           </div>
-        </div>
+        </Reveal>
 
-        <p className="mt-6 text-center text-xs text-brand-muted">{visit.note}</p>
+        <Reveal as="p" className="mt-6 text-center text-xs text-brand-muted">
+          {visit.note}
+        </Reveal>
       </Container>
 
       <MountainScape className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-24 opacity-70 sm:h-32" />
