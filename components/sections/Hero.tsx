@@ -79,7 +79,7 @@ export function Hero() {
         className="absolute inset-x-0 bottom-0 top-[var(--header-h)] -z-30 overflow-hidden"
       >
         <Image
-          src="/hero/imagemFundoHero2.png"
+          src="/hero/imagemFundoHero4.png"
           alt=""
           fill
           priority
@@ -87,7 +87,7 @@ export function Hero() {
           sizes="100vw"
           className="
             object-cover
-            object-[42%_center]
+            object-[70%_center]
             lg:object-center
           "
         />
@@ -104,7 +104,7 @@ export function Hero() {
         className="absolute inset-x-0 top-[var(--header-h)] -z-20 h-24"
         style={{
           background:
-            "linear-gradient(180deg, #050605 0%, rgba(5,6,5,0.78) 22%, rgba(5,6,5,0.30) 58%, transparent 100%)",
+            "linear-gradient(180deg, #050605 0%, rgba(5,14,9,0.80) 24%, rgba(5,16,10,0.34) 60%, transparent 100%)",
         }}
       />
 
@@ -113,24 +113,32 @@ export function Hero() {
 
           Começa junto com a fotografia, em vez de cobrir também
           todo o Header.
+
+          Opacidade baixa no desktop porque a foto do ateliê já
+          é escura por natureza.
       ====================================================== */}
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 top-[var(--header-h)] -z-20 bg-[#050604]/50 lg:bg-[#050604]/22"
+        className="absolute inset-x-0 bottom-0 top-[var(--header-h)] -z-20 bg-[#04120b]/45 lg:bg-[#04120b]/14"
       />
 
       {/* ======================================================
           GRADIENTE DA ESQUERDA
 
-          Mantém uma área limpa para o título sem apagar demais
-          a camisa que já está embutida na fotografia.
+          A própria fotografia já chega com um fade escuro à
+          esquerda, então aqui o pico de opacidade fica no MEIO
+          (45%), onde o chão do ateliê começa a clarear e o
+          texto ainda passa por cima.
+
+          Nas bordas a opacidade é baixa de propósito: reforçar
+          o canto esquerdo só apagaria o verde da imagem.
       ====================================================== */}
       <div
         aria-hidden="true"
         className="absolute inset-x-0 bottom-0 top-[var(--header-h)] -z-20"
         style={{
           background:
-            "linear-gradient(90deg, rgba(4,5,4,0.95) 0%, rgba(5,6,5,0.90) 23%, rgba(5,6,5,0.70) 42%, rgba(6,7,6,0.32) 60%, rgba(6,7,6,0.08) 76%, transparent 91%)",
+            "linear-gradient(90deg, rgba(4,10,6,0.30) 0%, rgba(4,10,6,0.34) 26%, rgba(5,11,7,0.44) 45%, rgba(5,11,7,0.36) 60%, rgba(5,11,7,0.16) 74%, transparent 88%)",
         }}
       />
 
@@ -147,14 +155,14 @@ export function Hero() {
           background: `
             linear-gradient(
               180deg,
-              rgba(4,5,4,0.45) 0%,
-              rgba(4,5,4,0.14) 10%,
+              rgba(4,11,7,0.42) 0%,
+              rgba(4,11,7,0.13) 10%,
               transparent 23%
             ),
             linear-gradient(
               0deg,
-              rgba(4,5,4,0.76) 0%,
-              rgba(4,5,4,0.32) 10%,
+              rgba(4,11,7,0.78) 0%,
+              rgba(4,11,7,0.34) 10%,
               transparent 28%
             )
           `,
@@ -172,7 +180,7 @@ export function Hero() {
         className="absolute inset-x-0 bottom-0 top-[var(--header-h)] -z-10 hidden lg:block"
         style={{
           background:
-            "radial-gradient(ellipse 28% 54% at 75% 38%, rgba(212,170,72,0.06) 0%, rgba(158,111,31,0.025) 42%, transparent 75%)",
+            "radial-gradient(ellipse 30% 50% at 79% 30%, rgba(212,170,72,0.07) 0%, rgba(158,111,31,0.03) 42%, transparent 75%)",
         }}
       />
 
@@ -326,11 +334,11 @@ export function Hero() {
               LADO DIREITO
 
               Desktop:
-              a camisa já faz parte da própria foto.
+              a fotografia do ateliê já preenche esse lado.
 
               Mobile:
               exibimos a camisa PNG porque o crop vertical da
-              fotografia não consegue preservar bem o manequim.
+              fotografia mostra só um recorte das mesas.
           ==================================================== */}
           <Reveal
             variant="right"
