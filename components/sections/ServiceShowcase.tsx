@@ -46,7 +46,22 @@ export function ServiceShowcase({
   colors: UniformColor[];
 }) {
   const [model, setModel] = useState(models[0]);
-  const [color, setColor] = useState(colors[0]);
+  const [color, setColor] = useState(models[0].colors?.[0] ?? colors[0]);
+
+  // acessórios não saem em toda a cartela da linha (cinto e calçado, por
+  // exemplo, só em preto e marrom): o modelo pode trazer a sua própria
+  const palette = model.colors ?? colors;
+
+  /** Troca o modelo e, se a cor atual não existir na cartela dele, reposiciona. */
+  function selectModel(option: ShowcaseModel) {
+    setModel(option);
+
+    const options = option.colors ?? colors;
+
+    if (!options.some((item) => item.name === color.name)) {
+      setColor(options[0]);
+    }
+  }
 
   // com foto, a cor deixa de ser uma prévia e passa a ser só a escolha que
   // segue no WhatsApp — o texto de apoio muda junto
@@ -149,15 +164,22 @@ export function ServiceShowcase({
                 Modelo
               </legend>
 
-              <div className="mt-3 grid grid-cols-3 gap-3">
+              <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {models.map((option) => {
                   const active = option.name === model.name;
+                  // a miniatura desenhada segue a cor escolhida, desde que a
+                  // peça saia nela
+                  const preview =
+                    !option.colors ||
+                    option.colors.some((item) => item.name === color.name)
+                      ? color
+                      : option.colors[0];
 
                   return (
                     <button
                       key={option.name}
                       type="button"
-                      onClick={() => setModel(option)}
+                      onClick={() => selectModel(option)}
                       aria-pressed={active}
                       className={cn(
                         "group flex flex-col items-center gap-2 rounded-brand border p-2 transition-all",
@@ -187,8 +209,8 @@ export function ServiceShowcase({
                         >
                           <UniformMockup
                             style={option.style}
-                            body={color.body}
-                            accent={color.accent}
+                            body={preview.body}
+                            accent={preview.accent}
                             label=""
                             className="h-14 w-auto"
                           />
@@ -220,7 +242,7 @@ export function ServiceShowcase({
               </div>
 
               <div className="mt-3 flex flex-wrap gap-3">
-                {colors.map((option) => {
+                {palette.map((option) => {
                   const active = option.name === color.name;
 
                   return (

@@ -36,17 +36,43 @@ export interface UniformColor {
   accent: string;
 }
 
+/**
+ * Silhuetas que o mockup vetorial (`components/decor/UniformMockup.tsx`) sabe
+ * desenhar. Para oferecer uma peça nova, acrescente o estilo aqui e o desenho
+ * correspondente lá.
+ */
+export type UniformStyle =
+  | "social"
+  | "social-feminina"
+  | "polo"
+  | "tshirt"
+  | "calca"
+  | "calca-feminina"
+  | "jaqueta"
+  | "sapato"
+  | "meia"
+  | "gravata"
+  | "cinto"
+  | "bone"
+  | "bota";
+
 /** Um modelo dentro da linha — muda o desenho exibido no visualizador. */
 export interface UniformModel {
   name: string;
   description: string;
   /** Silhueta usada no mockup. */
-  style: "social" | "polo" | "tshirt";
+  style: UniformStyle;
   /**
    * Foto do modelo, em `public/`. Enquanto o arquivo não existir a página cai
    * de volta no mockup desenhado (`UniformMockup`) — veja `resolveModelPhotos`.
    */
   photo: string;
+  /**
+   * Cartela própria da peça, quando ela não sai em todas as cores da linha —
+   * calçado e cinto, por exemplo, só existem em preto e marrom. Sem isso, vale
+   * a cartela da linha (`Service.colors`).
+   */
+  colors?: UniformColor[];
 }
 
 /**
@@ -80,7 +106,10 @@ export interface Service {
   pieces: string[];
   /** Modelos oferecidos — alimentam o seletor do visualizador. */
   models: UniformModel[];
-  /** Cores disponíveis — alimentam o seletor do visualizador. */
+  /**
+   * Cartela padrão da linha — vale para todo modelo que não declara a sua.
+   * Alimenta o seletor de cores do visualizador.
+   */
   colors: UniformColor[];
   /** Personalizações possíveis (bordado, silk, etiqueta...). */
   customizations: string[];
@@ -95,6 +124,7 @@ const royal = { name: "Azul royal", body: "#1D4ED8", accent: "#153BA6" };
 const verdeBandeira = { name: "Verde bandeira", body: "#0A7A44", accent: "#04502C" };
 const cinzaClaro = { name: "Cinza claro", body: "#9AA1A9", accent: "#6E757D" };
 const bege = { name: "Bege", body: "#B9A88C", accent: "#8E7F66" };
+const marrom = { name: "Marrom", body: "#4A3324", accent: "#2C1E14" };
 const branco = { name: "Branco", body: "#F1F0EC", accent: "#C9C6BC" };
 
 export const services: Service[] = [
@@ -102,7 +132,7 @@ export const services: Service[] = [
     slug: "portaria",
     title: "Portaria",
     shortDescription:
-      "A uniformização da portaria é essencial para agregar mais valor à imagem do seu condomínio, e um uniforme alinhado e resistente faz toda a diferença para passar uma boa impressão na hora. Conheça a Linha de Portaria",
+      "A uniformização da portaria é essencial para agregar mais valor á imagem do seu condomínio, e um uniforme alinhado e resistente faz toda a diferença para passar uma boa impressão na hora.",
     icon: DoorOpen,
 
     eyebrow: "Linha Portaria",
@@ -110,6 +140,7 @@ export const services: Service[] = [
     intro:
       "Quem chega ao condomínio vê a portaria antes de ver qualquer outra coisa. A linha Portaria da RBS é pensada para isso: tecido que segura o caimento no plantão de 12 horas, cor que não desbota na lavagem semanal e um acabamento que passa autoridade sem parecer engessado.",
     quickFacts: [
+      "Kit completo: da camisa ao cinto, sem precisar de outro fornecedor",
       "Modelagem masculina, feminina e plus size",
       "Tecidos que aceitam lavagem frequente sem desbotar",
       "Bordado do brasão do condomínio incluso",
@@ -141,32 +172,84 @@ export const services: Service[] = [
       },
     ],
     pieces: [
-      "Camisa social manga longa ou curta",
-      "Calça social ou de brim leve",
-      "Colete ou blazer institucional",
-      "Gravata e acessórios",
+      "Camisa social masculina e feminina",
+      "Calça social masculina e feminina",
       "Jaqueta para o turno da noite",
+      "Calçado social masculino e feminino",
+      "Meia social",
+      "Gravata",
+      "Cinto",
     ],
     models: [
       {
-        name: "Camisa social manga longa",
+        name: "Camisa social masculina",
         description:
-          "O clássico da portaria: tecido misto com toque macio, punho abotoado e caimento reto.",
+          "O clássico da portaria: tecido misto com toque macio, punho abotoado, bolso no peito e caimento reto. Sai em manga longa ou curta.",
         style: "social",
-        photo: "/produtos/portaria-camisa-social-manga-longa.webp",
+        photo: "/produtos/portaria-camisa-social-masculina.webp",
       },
       {
-        name: "Camisa social manga curta",
-        description: "Mesma alfaiataria, pensada para o verão e para guaritas sem climatização.",
-        style: "social",
-        photo: "/produtos/portaria-camisa-social-manga-curta.webp",
+        name: "Camisa social feminina",
+        description:
+          "Mesmo tecido e mesma cartela da masculina, em modelagem própria: pences na cintura, cava mais alta e decote acabado. Manga longa ou curta.",
+        style: "social-feminina",
+        photo: "/produtos/portaria-camisa-social-feminina.webp",
       },
       {
-        name: "Polo institucional",
+        name: "Calça social masculina",
         description:
-          "Piquê de alta gramatura para portarias com dress code mais leve, sem perder a formalidade.",
-        style: "polo",
-        photo: "/produtos/portaria-polo-institucional.webp",
+          "Corte reto com vinco, cós com passantes e bolsos embutidos. Tecido que segura o caimento no plantão de 12 horas.",
+        style: "calca",
+        photo: "/produtos/portaria-calca-social-masculina.webp",
+        colors: [marinho, preto, grafite],
+      },
+      {
+        name: "Calça social feminina",
+        description:
+          "Cós ajustado ao quadril e perna levemente afunilada, no mesmo tecido da masculina — o conjunto da equipe fica idêntico.",
+        style: "calca-feminina",
+        photo: "/produtos/portaria-calca-social-feminina.webp",
+        colors: [marinho, preto, grafite],
+      },
+      {
+        name: "Jaqueta",
+        description:
+          "Para o turno da noite e o posto externo: fechamento em zíper, gola alta, punho e barra em ribana. Aceita o brasão bordado no peito.",
+        style: "jaqueta",
+        photo: "/produtos/portaria-jaqueta.webp",
+        colors: [marinho, preto, grafite, bordo],
+      },
+      {
+        name: "Calçado social",
+        description:
+          "Solado antiderrapante e palmilha acolchoada para quem passa o turno em pé, com acabamento de sapato social. Numeração masculina e feminina.",
+        style: "sapato",
+        photo: "/produtos/portaria-calcado-social.webp",
+        colors: [preto, marrom],
+      },
+      {
+        name: "Meia social",
+        description:
+          "Meia de cano alto em algodão com punho que não marca a perna, com reforço no calcanhar e na ponta. Vai no kit para o visual fechar até embaixo.",
+        style: "meia",
+        photo: "/produtos/portaria-meia-social.webp",
+        colors: [preto, marinho, grafite, branco],
+      },
+      {
+        name: "Gravata",
+        description:
+          "Gravata em tecido que não amassa, lisa ou com listra na cor do condomínio. Também sai na versão com nó pronto e elástico, mais prática na troca de turno.",
+        style: "gravata",
+        photo: "/produtos/portaria-gravata.webp",
+        colors: [marinho, preto, bordo, grafite],
+      },
+      {
+        name: "Cinto",
+        description:
+          "Cinto social com fivela discreta, na largura certa para os passantes da calça — combina com o calçado e fecha a padronização do uniforme.",
+        style: "cinto",
+        photo: "/produtos/portaria-cinto.webp",
+        colors: [preto, marrom],
       },
     ],
     colors: [marinho, preto, grafite, bordo, branco],
@@ -181,7 +264,7 @@ export const services: Service[] = [
     slug: "zeladoria",
     title: "Zeladoria",
     shortDescription:
-      "Uniformes de alta resistência e confortáveis é mais que o essencial para alguém que zela pelo condomínio, pensados em quem e nas condições em que vai ser utilizado. Um uniforme coringa para quem atua em várias áreas do prédio. Conheça a Linha de Zeladoria.",
+      "Uniformes de alta resistência e confortável é mais que o essencial para alguém que zela pelo condomínio, pensado em quem e nas condições que vai ser utilizado. Um uniforme coringa para quem atua em várias áreas do prédio.",
     icon: Wrench,
 
     eyebrow: "Linha Zeladoria",
@@ -189,6 +272,7 @@ export const services: Service[] = [
     intro:
       "Zelador não fica parado: sobe escada, mexe em bomba d'água, recebe fornecedor e ainda atende morador. A linha Zeladoria usa tecidos de trama fechada e reforço nos pontos de maior atrito, para a peça durar o contrato inteiro e continuar apresentável na área comum.",
     quickFacts: [
+      "Kit completo: do jaleco à bota, sem precisar de outro fornecedor",
       "Brim e sarja de alta gramatura com reforço nas costuras",
       "Bolsos dimensionados para ferramenta e rádio",
       "Faixas refletivas opcionais para serviço noturno",
@@ -220,32 +304,59 @@ export const services: Service[] = [
       },
     ],
     pieces: [
-      "Camisa de brim manga longa ou curta",
-      "Calça de brim com reforço",
-      "Polo em piquê para o dia a dia",
-      "Jaqueta ou colete de trabalho",
-      "Boné e acessórios",
+      "Jaleco com 3 bolsos",
+      "Camisa em malha",
+      "Calça com elástico",
+      "Jaqueta de trabalho",
+      "Bota em couro",
+      "Boné",
     ],
     models: [
       {
-        name: "Camisa de brim manga longa",
+        name: "Jaleco com 3 bolsos",
         description:
-          "Brim leve com botões reforçados e bolso com aba — proteção sem esquentar demais.",
+          "Três bolsos dimensionados para ferramenta, rádio e caneta, com botões reforçados. Protege a roupa no serviço sujo e sai do corpo em um segundo para atender morador.",
         style: "social",
-        photo: "/produtos/zeladoria-camisa-brim-manga-longa.webp",
+        photo: "/produtos/zeladoria-jaleco-3-bolsos.webp",
+        colors: [branco, cinzaClaro, royal, marinho],
       },
       {
-        name: "Polo piquê reforçada",
+        name: "Camisa em malha",
         description:
-          "Piquê de alta gramatura com gola que não enrola, ideal para quem alterna serviço e atendimento.",
-        style: "polo",
-        photo: "/produtos/zeladoria-polo-pique-reforcada.webp",
+          "Malha penteada que respira no serviço pesado, com gola reforçada que não enrola na lavagem. É a peça mais usada no dia a dia da zeladoria.",
+        style: "tshirt",
+        photo: "/produtos/zeladoria-camisa-malha.webp",
       },
       {
-        name: "Camiseta em malha",
-        description: "Malha penteada para os serviços mais pesados e para o segundo uniforme do dia.",
-        style: "tshirt",
-        photo: "/produtos/zeladoria-camiseta-malha.webp",
+        name: "Calça com elástico",
+        description:
+          "Cós com elástico e cordão: veste rápido, não aperta ao agachar e dispensa ajuste de cinto. Reforço no joelho e no fundo, onde a calça rasga primeiro.",
+        style: "calca",
+        photo: "/produtos/zeladoria-calca-elastico.webp",
+        colors: [marinho, grafite, preto, royal],
+      },
+      {
+        name: "Jaqueta",
+        description:
+          "Para o serviço externo e o começo da manhã: fechamento em zíper, punho e barra em ribana e bolsos na altura da cintura.",
+        style: "jaqueta",
+        photo: "/produtos/zeladoria-jaqueta.webp",
+        colors: [marinho, grafite, royal, preto],
+      },
+      {
+        name: "Bota em couro",
+        description:
+          "Couro com solado antiderrapante e bico reforçado, para quem sobe escada, mexe em bomba d'água e circula em área molhada. Numeração masculina e feminina.",
+        style: "bota",
+        photo: "/produtos/zeladoria-bota-couro.webp",
+        colors: [preto, marrom],
+      },
+      {
+        name: "Boné",
+        description:
+          "Boné em brim com aba estruturada e regulagem atrás, para o serviço no sol. Recebe o bordado do condomínio na frente.",
+        style: "bone",
+        photo: "/produtos/zeladoria-bone.webp",
       },
     ],
     colors: [royal, grafite, verdeBandeira, marinho, bege],
@@ -260,7 +371,7 @@ export const services: Service[] = [
     slug: "asg",
     title: "Auxiliar de Serviços Gerais (ASG)",
     shortDescription:
-      "Pensado para quem trabalha com produtos de limpeza, água e mais. Trabalhamos com tecidos leves e próprios para prevenir manchas, secagem rápida e conforto. Tudo em um só uniforme. Conheça a Linha de Limpeza.",
+      "Pensado para quem trabalha com produtos de limpeza, água e mais. Trabalhamos com tecidos leves e próprios para prevenir manchas, secagem rápida e conforto. Tudo em um só uniforme.",
     icon: SprayCan,
 
     eyebrow: "Linha ASG",
@@ -268,6 +379,7 @@ export const services: Service[] = [
     intro:
       "A equipe de serviços gerais lava, varre, encera e ainda encara produto químico todo dia. A linha ASG prioriza tecido leve com secagem rápida, modelagem que permite agachar e esticar sem repuxar, e cores escolhidas para disfarçar o desgaste natural do trabalho.",
     quickFacts: [
+      "Kit completo: da camisa ao calçado, sem precisar de outro fornecedor",
       "Malha leve com secagem rápida",
       "Modelagem ampla, pensada para agachar e alcançar",
       "Cores testadas contra respingo de produto de limpeza",
@@ -299,31 +411,60 @@ export const services: Service[] = [
       },
     ],
     pieces: [
-      "Camiseta ou polo em malha",
-      "Calça em brim leve ou tactel",
-      "Avental de proteção",
-      "Jaleco para serviços internos",
-      "Boné e touca",
+      "Camisa em malha",
+      "Jaleco com 3 bolsos",
+      "Jaqueta",
+      "Calça com elástico",
+      "Calçado antiderrapante",
+      "Bota impermeável",
     ],
     models: [
       {
-        name: "Camiseta em malha",
+        name: "Camisa em malha",
         description:
-          "Malha penteada com gola reforçada — a peça mais usada no dia a dia da equipe de limpeza.",
+          "Malha leve com secagem rápida e gola reforçada. Modelagem ampla para agachar e alcançar sem repuxar — é a peça mais usada no dia a dia da equipe.",
         style: "tshirt",
-        photo: "/produtos/asg-camiseta-malha.webp",
+        photo: "/produtos/asg-camisa-malha.webp",
       },
       {
-        name: "Polo piquê",
-        description: "Um degrau acima na apresentação, para a equipe que circula em área social.",
-        style: "polo",
-        photo: "/produtos/asg-polo-pique.webp",
-      },
-      {
-        name: "Conjunto em brim leve",
-        description: "Camisa e calça combinando, para serviços externos e limpeza pesada.",
+        name: "Jaleco com 3 bolsos",
+        description:
+          "Três bolsos para pano, borrifador e celular, em tecido que segura o respingo de produto de limpeza. Protege a roupa e sai do corpo em um segundo.",
         style: "social",
-        photo: "/produtos/asg-conjunto-brim-leve.webp",
+        photo: "/produtos/asg-jaleco-3-bolsos.webp",
+        colors: [branco, cinzaClaro, royal, marinho],
+      },
+      {
+        name: "Jaqueta",
+        description:
+          "Para a limpeza de área externa e o começo da manhã: fechamento em zíper, punho e barra em ribana e bolsos na altura da cintura.",
+        style: "jaqueta",
+        photo: "/produtos/asg-jaqueta.webp",
+        colors: [marinho, grafite, royal, preto],
+      },
+      {
+        name: "Calça com elástico",
+        description:
+          "Cós com elástico e cordão: veste rápido, não aperta ao agachar e dispensa cinto. Tecido leve que seca depressa para quem trabalha perto d'água.",
+        style: "calca",
+        photo: "/produtos/asg-calca-elastico.webp",
+        colors: [marinho, grafite, preto, royal],
+      },
+      {
+        name: "Calçado antiderrapante",
+        description:
+          "Solado com aderência em piso molhado e ensaboado, fechado na frente para conter respingo de produto. Numeração masculina e feminina.",
+        style: "sapato",
+        photo: "/produtos/asg-calcado-antiderrapante.webp",
+        colors: [preto, branco],
+      },
+      {
+        name: "Bota impermeável",
+        description:
+          "Cano alto e material impermeável para lavagem de garagem, escada e área comum — o pé fica seco no turno inteiro, com o mesmo solado antiderrapante.",
+        style: "bota",
+        photo: "/produtos/asg-bota-impermeavel.webp",
+        colors: [preto, branco, verdeBandeira],
       },
     ],
     colors: [cinzaClaro, royal, verdeBandeira, branco, grafite],

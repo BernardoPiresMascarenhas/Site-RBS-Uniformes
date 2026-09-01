@@ -20,22 +20,22 @@ const highlights = [
   {
     icon: UsersRound,
     title: "Atendimento especializado",
-    description: "Foco total em condomínios e seus profissionais.",
+    description: "Contamos com equipes especializadas desde a cotação até a entrega.",
   },
   {
     icon: Ruler,
-    title: "Visita para medição",
-    description: "Vamos até seu condomínio sem compromisso.",
+    title: "MEDIÇÃO LOCAL",
+    description: "Deslocamos um profissional da área para tirar as medidas de cada colaborador individualmente e sem custos adicionais.",
   },
   {
     icon: Shirt,
-    title: "Uniformes sob medida",
-    description: "Conforto, qualidade e padronização para sua equipe.",
+    title: "VISITA SEM COMPROMISSO",
+    description: "Apresentamos as opções de uniformes de acordo com o que for solicitado mediante interesse e contato.",
   },
   {
     icon: BadgeCheck,
-    title: "Qualidade garantida",
-    description: "Materiais selecionados e acabamento profissional.",
+    title: "ENTREGA GRATUITA",
+    description: "Entrega realizada pela RBS com acompanhamento da localização em tempo real.",
   },
 ];
 
@@ -224,9 +224,7 @@ export function Hero() {
               delay={240}
               className="mt-4 max-w-[620px] text-[0.95rem] leading-7 text-white/70 sm:text-[1.08rem] sm:leading-8 xl:max-w-[680px]"
             >
-              Uniformes profissionais sob medida para portaria, limpeza,
-              manutenção e administração. Mais organização, padronização e
-              valorização para o seu condomínio.
+              Conheça os diferenciais da RBS Uniformes, uma empresa com foco principal em atendimento à condomínios, simplificando a gestão de uniformes para Síndicos e Administradoras.
             </Reveal>
 
             {/* ==================================================

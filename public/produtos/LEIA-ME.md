@@ -1,7 +1,8 @@
 # Fotos dos modelos de uniforme
 
-As nove imagens desta pasta alimentam o visualizador das páginas de serviço
-(`/servicos/portaria`, `/servicos/zeladoria`, `/servicos/asg`).
+As imagens desta pasta alimentam o visualizador das páginas de serviço
+(`/servicos/portaria`, `/servicos/zeladoria`, `/servicos/asg`) — uma por modelo
+oferecido, 21 no total.
 
 O site funciona com a pasta vazia: enquanto o arquivo não existir, aquele modelo
 continua exibindo o mockup vetorial. Basta soltar o arquivo aqui **com o nome
@@ -12,15 +13,27 @@ de código é necessária. Dá para entregar as imagens uma a uma.
 
 | Linha | Modelo | Arquivo |
 | --- | --- | --- |
-| Portaria | Camisa social manga longa | `portaria-camisa-social-manga-longa.webp` |
-| Portaria | Camisa social manga curta | `portaria-camisa-social-manga-curta.webp` |
-| Portaria | Polo institucional | `portaria-polo-institucional.webp` |
-| Zeladoria | Camisa de brim manga longa | `zeladoria-camisa-brim-manga-longa.webp` |
-| Zeladoria | Polo piquê reforçada | `zeladoria-polo-pique-reforcada.webp` |
-| Zeladoria | Camiseta em malha | `zeladoria-camiseta-malha.webp` |
-| ASG | Camiseta em malha | `asg-camiseta-malha.webp` |
-| ASG | Polo piquê | `asg-polo-pique.webp` |
-| ASG | Conjunto em brim leve | `asg-conjunto-brim-leve.webp` |
+| Portaria | Camisa social masculina | `portaria-camisa-social-masculina.webp` |
+| Portaria | Camisa social feminina | `portaria-camisa-social-feminina.webp` |
+| Portaria | Calça social masculina | `portaria-calca-social-masculina.webp` |
+| Portaria | Calça social feminina | `portaria-calca-social-feminina.webp` |
+| Portaria | Jaqueta | `portaria-jaqueta.webp` |
+| Portaria | Calçado social | `portaria-calcado-social.webp` |
+| Portaria | Meia social | `portaria-meia-social.webp` |
+| Portaria | Gravata | `portaria-gravata.webp` |
+| Portaria | Cinto | `portaria-cinto.webp` |
+| Zeladoria | Jaleco com 3 bolsos | `zeladoria-jaleco-3-bolsos.webp` |
+| Zeladoria | Camisa em malha | `zeladoria-camisa-malha.webp` |
+| Zeladoria | Calça com elástico | `zeladoria-calca-elastico.webp` |
+| Zeladoria | Jaqueta | `zeladoria-jaqueta.webp` |
+| Zeladoria | Bota em couro | `zeladoria-bota-couro.webp` |
+| Zeladoria | Boné | `zeladoria-bone.webp` |
+| ASG | Camisa em malha | `asg-camisa-malha.webp` |
+| ASG | Jaleco com 3 bolsos | `asg-jaleco-3-bolsos.webp` |
+| ASG | Jaqueta | `asg-jaqueta.webp` |
+| ASG | Calça com elástico | `asg-calca-elastico.webp` |
+| ASG | Calçado antiderrapante | `asg-calcado-antiderrapante.webp` |
+| ASG | Bota impermeável | `asg-bota-impermeavel.webp` |
 
 Os caminhos ficam declarados em `lib/services.ts`, no campo `photo` de cada
 modelo. Para trocar um nome, altere lá.
@@ -56,8 +69,11 @@ HD**, nunca a prévia — a prévia é justamente esse arquivo leve e manchado.
 
 ## Prompt para o gerador de imagens
 
-Troque só a primeira frase pela peça desejada (os nove modelos estão na tabela
-acima).
+Troque só a primeira frase pela peça desejada (todos os modelos estão na tabela
+acima). Para os acessórios — calçado, bota, meia, gravata, cinto e boné — troque
+também "em cabide invisível (ghost mannequin), vista frontal" por "sobre
+superfície invisível, vista de três quartos" (calçado, bota e boné) ou "vista
+frontal, peça solta" (meia, gravata e cinto); o resto do prompt continua igual.
 
 ```
 Foto de produto profissional de uma camisa social masculina manga
