@@ -1,6 +1,5 @@
-import { Check, Scissors } from "lucide-react";
+import Image from "next/image";
 
-import { SunBurst } from "@/components/decor/Scenery";
 import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
@@ -14,10 +13,7 @@ export function About() {
     <Section id="sobre" tone="alt" surface="light" className="overflow-hidden">
       <Container>
         <div className="grid items-center gap-14 lg:grid-cols-2">
-          {/*
-            Bloco visual. Substitua por uma foto da fábrica/equipe quando houver
-            material fotográfico — o container já está no formato correto.
-          */}
+          {/* Bloco visual: foto da produção com a chamada sobreposta. */}
           <Reveal variant="left" className="relative order-last lg:order-first">
             {/* Este card é sempre escuro, mesmo dentro da seção clara —
                 `data-surface="dark"` devolve os tokens escuros ao subconjunto. */}
@@ -25,25 +21,52 @@ export function About() {
               data-surface="dark"
               className={cn(
                 // `pb-20` reserva espaço para o selo que avança sobre a base do card
-                "relative flex aspect-[4/3] flex-col justify-end overflow-hidden p-8 pb-20",
-                "rounded-brand border border-premium-emerald/35 bg-gradient-to-br from-premium-emerald-deep via-premium-black to-premium-black",
+                "relative flex flex-col justify-end overflow-hidden p-8 pb-20",
+                // No celular a coluna é estreita e o texto ocupa mais linhas do
+                // que cabe em 4:3 — ali o card cresce com o conteúdo. De sm em
+                // diante a proporção fixa volta, para alinhar com o texto ao lado.
+                "min-h-[24rem] sm:aspect-[4/3] sm:min-h-0",
+                "rounded-brand border border-premium-emerald/35 bg-premium-black",
               )}
             >
-              <SunBurst className="absolute -right-16 -top-16 h-64 w-64 opacity-25" />
-
-              <Scissors
-                className="absolute left-8 top-8 h-10 w-10 text-premium-gold/70"
-                aria-hidden="true"
+              <Image
+                src={about.showcase.photo}
+                alt={about.showcase.alt}
+                fill
+                // a coluna é metade do Container (1440px) menos o gap-14
+                sizes="(min-width: 1024px) 692px, (min-width: 640px) calc(100vw - 64px), calc(100vw - 40px)"
+                quality={90}
+                className="object-cover"
               />
 
-              <p className="relative max-w-xs font-display text-2xl uppercase leading-snug tracking-[0.08em] text-premium-gold-light">
-                Do croqui à entrega, tudo acontece dentro de casa.
+              {/* Escurecimento de baixo para cima — sem ele o texto brigaria
+                  com as áreas claras da máquina. */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-gradient-to-t from-premium-black via-premium-black/80 to-premium-black/10"
+              />
+
+              <p className="relative font-display text-xl uppercase leading-snug tracking-[0.08em] text-premium-gold-light sm:text-2xl lg:text-3xl">
+                {about.showcase.headline}
               </p>
-              <p className="relative mt-3 max-w-[14rem] text-sm text-brand-muted">
-                {/* herda os tokens escuros do card acima */}
-                Corte, costura, bordado e controle de qualidade sob o mesmo
-                teto.
+
+              {/* Subtítulo: mesmo tipo, um degrau menor e em branco, para não
+                  competir com a chamada dourada acima. */}
+              <p className="relative mt-3 font-display text-base uppercase leading-snug tracking-[0.08em] text-brand-heading sm:text-lg lg:text-xl">
+                {about.showcase.title}
               </p>
+
+              <ul className="relative mt-4 space-y-2 text-sm text-brand-text">
+                {about.showcase.items.map((item) => (
+                  <li key={item} className="flex items-start gap-2.5">
+                    <span
+                      aria-hidden="true"
+                      className="mt-[0.45rem] h-1 w-1 shrink-0 rounded-full bg-premium-gold"
+                    />
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
 
             <div
@@ -64,6 +87,10 @@ export function About() {
               align="left"
               eyebrow={about.eyebrow}
               title={about.title}
+              // a frase do "sobre" é longa: no degrau padrão (lg:text-5xl) ela
+              // quebra em 5 linhas dentro da coluna de ~692px do grid de 2
+              // colunas. Um degrau abaixo fecha em 3.
+              titleClassName="lg:text-4xl"
             />
 
             <Reveal className="mt-6 space-y-5 text-base leading-relaxed text-brand-muted">
@@ -71,23 +98,6 @@ export function About() {
                 <p key={paragraph.slice(0, 24)}>{paragraph}</p>
               ))}
             </Reveal>
-
-            <ul className="mt-8 space-y-3">
-              {about.bullets.map((bullet, index) => (
-                <Reveal
-                  as="li"
-                  key={bullet}
-                  variant="right"
-                  delay={index * 90}
-                  className="flex items-start gap-3 text-sm text-brand-text"
-                >
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-green/15 text-brand-green">
-                    <Check className="h-3 w-3" aria-hidden="true" />
-                  </span>
-                  {bullet}
-                </Reveal>
-              ))}
-            </ul>
 
             <Reveal variant="scale" className="mt-9">
               <ButtonLink href="#contato">

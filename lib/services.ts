@@ -94,6 +94,12 @@ export interface Service {
   /** Frase de apoio do card na home. */
   shortDescription: string;
   icon: LucideIcon;
+  /**
+   * Foto de capa do card no catálogo da home, em `public/`. Sem ela, a capa
+   * continua sendo a foto do primeiro modelo da linha — e, na falta das duas,
+   * o mockup desenhado. Veja `resolveCover`.
+   */
+  cover?: string;
 
   /** ---- Página de venda ---- */
   eyebrow: string;
@@ -134,6 +140,7 @@ export const services: Service[] = [
     shortDescription:
       "A uniformização da portaria é essencial para agregar mais valor á imagem do seu condomínio, e um uniforme alinhado e resistente faz toda a diferença para passar uma boa impressão na hora.",
     icon: DoorOpen,
+    cover: "/produtos/portaria-camisa-social-masculina.png",
 
     eyebrow: "Linha Portaria",
     headline: "O porteiro é o cartão de visita do condomínio",
@@ -266,7 +273,7 @@ export const services: Service[] = [
     shortDescription:
       "Uniformes de alta resistência e confortável é mais que o essencial para alguém que zela pelo condomínio, pensado em quem e nas condições que vai ser utilizado. Um uniforme coringa para quem atua em várias áreas do prédio.",
     icon: Wrench,
-
+    cover: "/produtos/zeladoriaCapa2.png",
     eyebrow: "Linha Zeladoria",
     headline: "O uniforme que aguenta o dia inteiro de zeladoria",
     intro:
@@ -373,7 +380,7 @@ export const services: Service[] = [
     shortDescription:
       "Pensado para quem trabalha com produtos de limpeza, água e mais. Trabalhamos com tecidos leves e próprios para prevenir manchas, secagem rápida e conforto. Tudo em um só uniforme.",
     icon: SprayCan,
-
+    cover: "/produtos/asgCapa2.png",
     eyebrow: "Linha ASG",
     headline: "Limpeza pesada, uniforme leve",
     intro:

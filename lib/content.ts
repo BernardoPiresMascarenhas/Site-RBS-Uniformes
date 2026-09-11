@@ -3,9 +3,8 @@ import {
   CalendarCheck,
   ClipboardList,
   Clock,
-  Factory,
+  FileText,
   Handshake,
-  Headset,
   Layers,
   Package,
   Palette,
@@ -13,6 +12,7 @@ import {
   Scissors,
   ShieldCheck,
   Target,
+  Users,
 } from "lucide-react";
 
 /** Âncoras da home. O "/" na frente mantém os links funcionando nas páginas
@@ -34,40 +34,40 @@ export interface Differential {
 
 export const differentials: Differential[] = [
   {
-    title: "Atendimento personalizado",
+    title: "Tecidos profissionais selecionados",
     description:
-      "Um consultor acompanha o pedido do briefing à reposição — sem central de atendimento, sem retrabalho.",
-    icon: Headset,
-  },
-  {
-    title: "Tecidos de alta qualidade",
-    description:
-      "Trabalhamos com fornecedores homologados e testamos encolhimento, solidez de cor e resistência antes de produzir.",
+      "Tecidos de alta durabilidade e qualidade, conforto e que preservam a cor original por mais tempo.",
     icon: Layers,
   },
   {
-    title: "Pontualidade na entrega",
+    title: "Pontualidade e rapidez na entrega",
     description:
-      "Cronograma acordado por escrito e produção acompanhada por etapas, com status enviado ao cliente.",
+      "Do início da produção até a entrega, mantemos um processo rápido, organizado e dentro do prazo combinado.",
     icon: Clock,
   },
   {
-    title: "Modelagem sob medida",
+    title: "Acabamento pensado e impecável",
     description:
-      "Grade completa, modelagens masculina, feminina e plus size, com peça piloto aprovada antes da produção.",
+      "Além do uniforme ser bonito, precisa durar, por isso cada costura tem um propósito e reforços onde é de mais facilidade rasgar.",
+    icon: Scissors,
+  },
+  {
+    title: "Modelagem e tamanho",
+    description:
+      "Veste bem e comporta da forma ideal no corpo, por isso o procedimento de tirar medidas no local. Garantindo mais conforto e praticidade nos movimentos do dia a dia.",
     icon: Ruler,
   },
   {
-    title: "Personalização completa",
+    title: "Bordados e identidade",
     description:
-      "Bordado computadorizado, silkscreen, transfer e etiquetas personalizadas feitos internamente.",
+      "Utilizamos das máquinas de mais alta qualidade e tecnologia para os bordados de nossos clientes. Garantindo e preservando da melhor forma a imagem do condomínio e facilitando a identificação dos colaboradores.",
     icon: Palette,
   },
   {
-    title: "Capacidade para grandes volumes",
+    title: "Equipes de colaboradores da RBS",
     description:
-      "Estrutura preparada para pedidos recorrentes e contratos de longo prazo, com estoque de reposição.",
-    icon: Factory,
+      "Para tudo isso, contamos com profissionais de muita competência e seriedade com o que fazem. Garantindo profissionalismo, cuidado e dedicação com cada cliente e serviços prestados.",
+    icon: Users,
   },
 ];
 
@@ -81,30 +81,30 @@ export interface ProcessStep {
 export const processSteps: ProcessStep[] = [
   {
     step: "01",
-    title: "Briefing e orçamento",
+    title: "VISITA E COTAÇÃO",
     description:
-      "Entendemos a operação, o ambiente de uso e a identidade da marca para indicar tecido e modelagem.",
+      "Nosso diferencial é analisarmos o que está sendo solicitado, fazemos a visita sem compromisso para conhecimento dos uniformes solicitados ou apenas fazemos o orçamento das peças solicitadas.",
     icon: ClipboardList,
   },
   {
     step: "02",
-    title: "Modelagem e piloto",
+    title: "medição dos colaboradores",
     description:
-      "Desenvolvemos a peça piloto e ajustamos a grade de tamanhos até a aprovação formal do cliente.",
+      "Efetuamos o processo de medidas dos colaboradores no local do condomínio com uma equipe especializada, sem deslocá-los para a loja, trazendo conforto e praticidade.",
     icon: Scissors,
   },
   {
     step: "03",
-    title: "Produção e controle",
+    title: "CONFECÇÃO DOS UNIFORMES",
     description:
-      "Corte, costura e personalização com conferência de qualidade peça a peça antes da embalagem.",
+      "Fabricamos os uniformes de acordo com o conversado e firmado na visita ou via WhatsApp, de forma dinâmica, organizada e mantendo o mais alto padrão de qualidade.",
     icon: ShieldCheck,
   },
   {
     step: "04",
-    title: "Entrega e reposição",
+    title: "ENTREGA E IDENTIFICAÇÃO",
     description:
-      "Entrega separada por colaborador ou por unidade, com programa de reposição contínua.",
+      "Fazemos a entrega dos uniformes com entrega própria e gratuita, mantendo livre de qualquer tipo de dano. Os uniformes são embalados com o nome de cada colaborador, junto com a quantidade para melhor identificação.",
     icon: Package,
   },
 ];
@@ -113,7 +113,8 @@ export interface VisitStep {
   /** Rótulo da etapa, ex.: "1ª etapa". */
   step: string;
   title: string;
-  description: string;
+  /** Um ou mais parágrafos — cada item vira um <p> na seção e no pop-up. */
+  paragraphs: string[];
   icon: LucideIcon;
 }
 
@@ -122,8 +123,8 @@ export const visit = {
   eyebrow: "Visita sem compromisso",
   title: "O que é a visita?",
   intro:
-    "Nossa equipe vai até seu condomínio com modelos, amostras de tecidos e cores para que você conheça tudo antes de decidir.",
-  subtitle: "A visita consiste em 3 etapas simples.",
+    "A visita é uma etapa de atendimento pensada para entender de perto o que o condomínio precisa e apresentar nossos uniformes de acordo com que vai ser solicitado. Todo o processo é simples, organizado e feito de acordo com a necessidade de cada condomínio.",
+  subtitle: "A visita consiste em 4 etapas simples.",
   note: "A visita é gratuita e não gera nenhum compromisso de compra.",
 };
 
@@ -131,81 +132,116 @@ export const visitSteps: VisitStep[] = [
   {
     step: "1ª etapa",
     title: "Solicitação da visita",
-    description: "A visita pode ser solicitada pelo nosso site ou WhatsApp.",
+    paragraphs: [
+      "O primeiro passo é simples: o síndico ou responsável pode solicitar o atendimento diretamente pelo nosso site ou pelo WhatsApp. A partir disso, nossa equipe entra em contato para entender melhor a solicitação e alinhar os próximos passos.",
+    ],
     icon: CalendarCheck,
   },
   {
     step: "2ª etapa",
-    title: "Definição do objetivo da visita",
-    description:
-      "Após a solicitação, identificamos o motivo do atendimento, que pode ser o conhecimento do nosso catálogo completo de uniformes ou a demanda que se fizer necessária para o condomínio e etc.",
+    title: "Entendimento da necessidade e demanda",
+    paragraphs: [
+      "Antes da visita, buscamos compreender o objetivo do atendimento. Pode ser apenas o interesse em conhecer nosso catálogo e nossas opções de uniformes, uma necessidade específica do condomínio ou até mesmo uma demanda já definida para renovação ou aquisição de peças.",
+      "Essa etapa nos permite preparar um atendimento mais direcionado, evitando apresentações desnecessárias e tornando a visita mais objetiva.",
+    ],
     icon: Target,
   },
   {
     step: "3ª etapa",
-    title: "Atendimento no local",
-    description:
-      "Com o consentimento e a concordância do(a) síndico(a), nossa equipe especializada se desloca até o condomínio para apresentar as opções, esclarecer dúvidas e até na escolha de modelos e cores caso haja um interesse real.",
+    title: "Atendimento no condomínio",
+    paragraphs: [
+      "Com a autorização e concordância do(a) síndico(a) ou responsável, nossa equipe se desloca até o condomínio para realizar o atendimento presencial.",
+      "Durante a visita, apresentamos as opções disponíveis, esclarecemos dúvidas e, quando houver interesse, ajudamos a definir modelos, tecidos, cores e demais detalhes que farão parte do pedido.",
+      "O objetivo é que o responsável tenha segurança para avaliar as opções antes de tomar qualquer decisão.",
+    ],
     icon: Handshake,
+  },
+  {
+    step: "4ª etapa",
+    title: "Cotação e proposta",
+    paragraphs: [
+      "Caso exista uma demanda definida, reunimos as informações necessárias e elaboramos uma cotação de acordo com o que foi conversado e alinhado durante o atendimento.",
+      "A proposta é então enviada para avaliação do condomínio, com as especificações e condições referentes ao pedido.",
+      "A visita não representa nenhum compromisso de compra. Ela é uma oportunidade para conhecer nosso trabalho, tirar dúvidas e entender como podemos atender às necessidades do condomínio.",
+    ],
+    icon: FileText,
   },
 ];
 
 export const sectors = [
-  "Indústria",
-  "Saúde",
-  "Educação",
-  "Varejo",
-  "Logística",
-  "Alimentação",
-  "Construção civil",
-  "Serviços",
-  "Hotelaria",
-  "Automotivo",
+  "PORTARIA",
+  "ZELADORIA ",
+  "ASG´S ",
+  "VIGILÂNCIA ",
+  "HIGIENIZAÇÃO",
 ];
 
 export const faq = [
   {
-    question: "Qual é a quantidade mínima por pedido?",
+    question: "QUAL O PRAZO DE ENTREGA DOS UNIFORMES?",
     answer:
-      "O mínimo varia conforme a linha e o tipo de personalização. Peças de malha costumam ter mínimos menores que peças de alfaiataria. Envie a sua necessidade que retornamos com a viabilidade e o orçamento.",
+      "O prazo é estipulado junto à cotação, tendo em vista a demanda e a quantidade solicitada, não depende de nenhum tipo de terceiros pois a entrega somos nós da RBS que efetuamos.",
   },
   {
-    question: "Qual é o prazo de produção?",
+    question: "CONSIGO COMPRAR A MESMA COR NA PRÓXIMA NECESSIDADE?",
     answer:
-      "O prazo é definido junto com o orçamento, considerando volume, tecido e tipo de personalização. Ele é registrado em contrato e acompanhado por etapas até a entrega.",
+      "Todos os tecidos que utilizamos tem uma garantia de até 5 anos após última compra, resumindo, nossos clientes têm até 5 anos para comprar a mesma cor solicitada anteriormente uma vez.",
   },
   {
-    question: "É possível criar um modelo exclusivo para a minha empresa?",
+    question: "A VISITA É COBRADA JUNTO DA COTAÇÃO?",
     answer:
-      "Sim. Desenvolvemos modelagem exclusiva a partir da identidade visual da marca, incluindo escolha de tecido, cores, recortes e etiqueta personalizada.",
+      "De forma alguma! A visita é gratuita e com o intuito de conhecer nossos uniformes. Nossos valores são justificados no serviço prestado e ainda sim oferecemos o melhor do mercado para nossos clientes.",
   },
   {
-    question: "Vocês fazem peça piloto antes da produção?",
+    question: "COMO FUNCIONA O PROCEDIMENTO DE MEDIDAS?",
     answer:
-      "Sim. A peça piloto é produzida e aprovada pelo cliente antes de liberarmos a produção em escala — é o que garante o caimento correto de toda a grade.",
+      "Tiramos as medidas de cada funcionário individualmente no local do condomínio, também sem custos, e na troca de plantão de cada funcionário.",
   },
   {
-    question: "Vocês atendem outras cidades e estados?",
+    question: "VOCÊS ATENDEM QUAIS CIDADES?",
     answer:
-      "Atendemos empresas em todo o Brasil, com envio por transportadora ou correio e a possibilidade de entrega separada por unidade.",
+      "Atendemos a toda Belo Horizonte e região metropolitana.",
   },
   {
-    question: "Como funciona a reposição de peças?",
+    question: "QUAL O VALOR MÍNIMO PARA O PEDIDO?",
     answer:
-      "Mantemos a ficha técnica e a modelagem do cliente registradas, o que permite repor peças ao longo do contrato com o mesmo padrão do pedido original.",
+      "Não trabalhamos com pedido mínimo, é possível pedir em toda e qualquer valor e quantidade.",
+  },
+  {
+    question: "O BORDADO É INCLUSO NO VALOR?",
+    answer:
+      "Sim, os bordados são inclusos no valor de cada item que pode ser bordado.",
+  },
+  {
+    question: "QUAIS AS CONDIÇÕES DE PAGAMENTO E DESCONTOS?",
+    answer:
+      "Nossas condições de pagamento variam do valor total da cotação e com o desconto é o mesmo, quanto maior o pedido, maior o desconto que pode ser aplicável.",
   },
 ];
 
 export const about = {
   eyebrow: "Sobre a RBS Uniformes",
-  title: "Uniforme é a primeira impressão que a sua empresa causa",
+  title:
+    "Planejamento, compromisso e dedicação, são os pilares da nossa empresa.",
   paragraphs: [
-    "A RBS Uniformes nasceu para resolver um problema comum: uniformes que desbotam, encolhem e não voltam a tempo. Cuidamos de todas as etapas — desenvolvimento, modelagem, corte, costura e personalização — para que a peça entregue seja exatamente a peça aprovada.",
-    "Trabalhamos com tecidos homologados e controle de qualidade em cada lote, atendendo indústrias, hospitais, escolas, redes de varejo e empresas de serviços. Do primeiro pedido à reposição do quinto ano de contrato, o padrão é o mesmo.",
+    "Mediante pesquisa de mercado, nós da RBS percebemos que os condomínios enfrentam grande dificuldade em encontrar empresas de uniformes que ofereçam um atendimento presencial, exclusivo e prático.",
+    "A partir dessas informações, criamos a RBS Uniformes, oferecendo diversos serviços em um só lugar. Realizamos visitas para apresentar nossa linha completa de produtos, sem custo de deslocamento, além de realizar a retirada das medidas de cada colaborador diretamente no condomínio e de acordo com seus respectivos turnos — porteiros, zeladores, recepcionistas e ASGs.",
+    "Dessa forma, proporcionamos mais praticidade, economia de tempo e redução de custos para nossos clientes.",
+    "Vale salientar que não há necessidade de os colaboradores se deslocarem até nossa empresa, como é comum no nosso ramo. Todo o processo pode ser realizado de forma prática e organizada diretamente no condomínio.",
+    "Esta é apenas uma demonstração de como trabalhamos, com excelência, experiência e conhecimento especializado no atendimento a condomínios.",
+    "Conosco, você encontrará uma solução completa em uniformes, com produtos para as mais diversas áreas e necessidades do seu condomínio.",
   ],
-  bullets: [
-    "Ficha técnica e modelagem arquivadas para reposição idêntica",
-    "Controle de qualidade peça a peça antes da expedição",
-    "Consultor dedicado do briefing ao pós-venda",
-  ],
+  /** Bloco visual ao lado do texto: foto da produção com a chamada por cima. */
+  showcase: {
+    photo: "/sobreRBS.jpeg",
+    alt: "Bordadeira industrial da RBS Uniformes bordando peças em produção",
+    headline: "Há décadas facilitando a gestão de uniformes.",
+    title:
+      "Nossos uniformes utilizam dos melhores equipamentos, de mais alta tecnologia.",
+    items: [
+      "Qualidade garantida em bordados e silks.",
+      "Tecidos selecionados de grande duração.",
+      "Produtos de marcas renomadas do mercado nacional.",
+    ],
+  },
 };

@@ -94,12 +94,19 @@ export function SectionHeading({
   description,
   align = "center",
   className,
+  titleClassName,
 }: {
   eyebrow?: string;
   title: ReactNode;
   description?: ReactNode;
   align?: "center" | "left";
   className?: string;
+  /**
+   * Ajuste pontual do tamanho do título, para as seções cuja frase é longa
+   * demais e quebraria em linhas demais no degrau padrão. Passa por `cn`, então
+   * um `lg:text-4xl` aqui substitui o `lg:text-5xl` do token.
+   */
+  titleClassName?: string;
 }) {
   // As partes entram em cascata: etiqueta, título, divisor e texto. Como todo
   // cabeçalho de seção passa por aqui, o site inteiro herda o mesmo ritmo.
@@ -119,7 +126,11 @@ export function SectionHeading({
         </Reveal>
       ) : null}
 
-      <Reveal as="h2" delay={80} className={cn(theme.ui.heading, "max-w-3xl")}>
+      <Reveal
+        as="h2"
+        delay={80}
+        className={cn(theme.ui.heading, "max-w-3xl", titleClassName)}
+      >
         {title}
       </Reveal>
 

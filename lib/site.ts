@@ -9,14 +9,23 @@ export const site = {
   name: "RBS Uniformes",
   legalName: "RBS Uniformes Ltda",
   tagline: "Uniformes de alta qualidade e confecção própria",
+  /** Descrição usada nas meta tags (SEO) e nos compartilhamentos. */
   description:
     "Confecção de uniformes corporativos, industriais, hospitalares e escolares com tecidos de alta performance, modelagem sob medida e entrega no prazo.",
+  /** Frase curta exibida abaixo da logo no rodapé. */
+  footerText:
+    "Empresa especializada no atendimento a condomínios, a única em Belo Horizonte.",
 
   // --- Contato ---
-  /** Telefone fixo. */
+  /** Telefone fixo principal — é o que aparece no menu e no rodapé. */
   phoneDisplay: "(31) 3653-9241",
   /** Mesmo fixo em formato internacional, para o link `tel:`. */
   phoneDigits: "553136539241",
+  /** Todos os fixos divulgados. O primeiro é o número padrão acima. */
+  phoneNumbers: [
+    { display: "(31) 3653-9241", digits: "553136539241" },
+    { display: "(31) 3586-0793", digits: "553135860793" },
+  ],
   /** WhatsApp padrão (formato internacional, só dígitos) — usado nos links wa.me. */
   whatsapp: "5531999913191",
   /** Todos os WhatsApp divulgados. O primeiro é o número padrão acima. */
@@ -26,11 +35,12 @@ export const site = {
   ],
   email: "rbs.uniformes@gmail.com",
   address: {
-    street: "Rua Exemplo, 000 — Sala 00",
-    district: "Centro",
+    street: "Rua Sabará, 350",
+    district: "Colégio Batista",
     city: "Belo Horizonte",
     state: "MG",
-    zip: "00000-000",
+    /** Vazio esconde a linha do CEP no rodapé. */
+    zip: "",
   },
   hours: "Segunda a sábado, das 7h às 19h",
 

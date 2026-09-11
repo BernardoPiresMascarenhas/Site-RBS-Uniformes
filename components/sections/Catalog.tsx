@@ -5,7 +5,7 @@ import { UniformMockup } from "@/components/decor/UniformMockup";
 import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
-import { resolveModelPhotos } from "@/lib/photos";
+import { resolveCover, resolveModelPhotos } from "@/lib/photos";
 import { services, servicePath } from "@/lib/services";
 import { theme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
@@ -18,7 +18,7 @@ export function Catalog() {
           eyebrow="LINHAS DE UNIFORMES"
           title={
             <>
-              UNIFORMES PARA CADA{" "}
+              Linhas de UNIFORMES PARA CADA{" "}
               <span className="text-accent-sheen">Área</span>
             </>
           }
@@ -27,10 +27,6 @@ export function Catalog() {
               Cada uniforme é confeccionado de acordo com a função e o tipo de
               uso, com alta qualidade e durabilidade, das condições mais simples
               até as mais extremas!
-              <span className="mt-3 block font-medium text-brand-text">
-                A RBS pensou nisso e essas são as opções que temos e
-                recomendamos!
-              </span>
             </>
           }
         />
@@ -38,11 +34,13 @@ export function Catalog() {
         <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => {
             const Icon = service.icon;
-            // a capa do card é a foto do primeiro modelo da linha; enquanto o
-            // arquivo não existir em `public/`, o card desenha o mockup — a
-            // checagem roda aqui porque a seção é um componente server
+            // a capa do card é a foto declarada em `cover`; sem ela, cai na
+            // foto do primeiro modelo da linha e, na falta das duas, no mockup
+            // desenhado — a checagem roda aqui porque a seção é server
             const [firstModel] = resolveModelPhotos(service.models.slice(0, 1));
             const [firstColor] = firstModel.colors ?? service.colors;
+            const coverPhoto = resolveCover(service.cover);
+            const cover = coverPhoto ?? firstModel.photo;
 
             return (
               <Reveal
@@ -63,13 +61,17 @@ export function Catalog() {
                   className={cn(
                     "relative flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-brand-border/70 bg-gradient-to-br from-premium-emerald-deep via-premium-black to-premium-black",
                     // a foto já traz o fundo embutido e ocupa o card inteiro
-                    firstModel.photo ? "p-0" : "px-8 py-8",
+                    cover ? "p-0" : "px-8 py-8",
                   )}
                 >
-                  {firstModel.photo ? (
+                  {cover ? (
                     <Image
-                      src={firstModel.photo}
-                      alt={`${firstModel.name} da linha ${service.title}`}
+                      src={cover}
+                      alt={
+                        coverPhoto
+                          ? `Uniformes da linha ${service.title}`
+                          : `${firstModel.name} da linha ${service.title}`
+                      }
                       fill
                       sizes="(min-width: 1024px) 480px, (min-width: 768px) 45vw, 100vw"
                       // acima do padrão (75): o fundo escuro e liso das fotos é

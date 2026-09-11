@@ -19,12 +19,12 @@ interface Channel {
 
 export function Contact() {
   const channels: Channel[] = [
-    {
+    ...site.phoneNumbers.map((number) => ({
       icon: Phone,
       label: "Telefone fixo",
-      value: site.phoneDisplay,
-      href: `tel:+${site.phoneDigits}`,
-    },
+      value: number.display,
+      href: `tel:+${number.digits}`,
+    })),
     ...site.whatsappNumbers.map((number) => ({
       icon: MessageCircle,
       label: "WhatsApp",

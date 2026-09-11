@@ -17,9 +17,9 @@ const message = `Olá! Vim pelo site da ${site.name} e gostaria de agendar uma v
 
 /** Argumentos curtos que reforçam o convite, ao lado das etapas. */
 const promises = [
-  { icon: Truck, label: "Consultor vai até o condomínio" },
-  { icon: Palette, label: "Mostruário de tecidos e cores" },
-  { icon: BadgeCheck, label: "Gratuita e sem compromisso" },
+  { icon: Truck, label: "Uma equipe especializada se dirige até o condomínio" },
+  { icon: Palette, label: "Apresenta o catálogo, tecidos, cores e modelos." },
+  { icon: BadgeCheck, label: "Sem compromisso de compra" },
 ];
 
 /**
@@ -81,8 +81,8 @@ export function Visit() {
         </div>
 
         {/* Etapas */}
-        <ol className="relative mt-14 grid gap-6 lg:grid-cols-3">
-          {/* Linha que costura as três etapas no desktop */}
+        <ol className="relative mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {/* Linha que costura as quatro etapas no desktop */}
           <span
             aria-hidden="true"
             className="absolute left-0 right-0 top-14 hidden h-px bg-gradient-to-r from-transparent via-premium-emerald/45 to-transparent lg:block"
@@ -108,9 +108,11 @@ export function Visit() {
                 <h3 className="mt-2 font-display text-lg uppercase leading-tight tracking-[0.06em] text-brand-heading">
                   {step.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-brand-muted">
-                  {step.description}
-                </p>
+                <div className="mt-3 space-y-3 text-sm leading-relaxed text-brand-muted">
+                  {step.paragraphs.map((paragraph) => (
+                    <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+                  ))}
+                </div>
               </Reveal>
             );
           })}

@@ -128,12 +128,15 @@ export function ServiceShowcase({
                   src={model.photo}
                   alt={`${model.name} da linha ${title}`}
                   fill
-                  // largura da coluna esquerda no desktop; abaixo disso ela
-                  // ocupa a largura do container
-                  sizes="(min-width: 1024px) 530px, (min-width: 640px) 90vw, 100vw"
-                  // acima do padrão (75): o fundo é um gradiente escuro e liso,
+                  // Largura REAL da coluna esquerda — subestimar aqui faz o
+                  // navegador pedir um degrau menor e o CSS esticar a foto.
+                  // No teto do Container (100rem) sobram 1440px de conteúdo;
+                  // menos o gap-14 (56px), o grid 1.05fr/1fr deixa ~709px.
+                  // Abaixo de lg a coluna some e o card ocupa o container.
+                  sizes="(min-width: 1536px) 710px, (min-width: 1024px) 52vw, (min-width: 640px) calc(100vw - 64px), calc(100vw - 40px)"
+                  // acima do padrão (75): o fundo da foto é um gradiente liso,
                   // onde a compressão vira faixa e mancha visíveis
-                  quality={90}
+                  quality={95}
                   priority
                   className="animate-fade-up object-cover"
                 />
@@ -197,7 +200,9 @@ export function ServiceShowcase({
                             src={option.photo}
                             alt=""
                             fill
-                            sizes="160px"
+                            // 3 colunas dentro da coluna de ~709px, menos o
+                            // gap-3 e o p-2 do botão: ~210px no desktop
+                            sizes="(min-width: 1024px) 215px, (min-width: 640px) 30vw, 45vw"
                             quality={90}
                             className="object-cover"
                           />

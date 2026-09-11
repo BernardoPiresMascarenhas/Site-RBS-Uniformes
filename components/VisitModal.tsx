@@ -133,9 +133,11 @@ export function VisitModal() {
                             <h3 className="mt-1 font-display text-sm uppercase tracking-[0.1em] text-brand-heading">
                               {step.title}
                             </h3>
-                            <p className="mt-1.5 text-sm leading-relaxed text-brand-muted">
-                              {step.description}
-                            </p>
+                            <div className="mt-1.5 space-y-2 text-sm leading-relaxed text-brand-muted">
+                              {step.paragraphs.map((paragraph) => (
+                                <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+                              ))}
+                            </div>
                           </div>
                         </li>
                       );

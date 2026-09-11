@@ -38,7 +38,7 @@ export function Footer() {
           <Reveal className="lg:col-span-1">
             <Logo sizeClassName="h-24 sm:h-28" />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-brand-muted">
-              {site.description}
+              {site.footerText}
             </p>
 
             <div className="mt-6 flex gap-3">
@@ -86,8 +86,12 @@ export function Footer() {
                 <br />
                 {site.address.district} — {site.address.city}/
                 {site.address.state}
-                <br />
-                CEP {site.address.zip}
+                {site.address.zip ? (
+                  <>
+                    <br />
+                    CEP {site.address.zip}
+                  </>
+                ) : null}
               </span>
             </li>
             <li>

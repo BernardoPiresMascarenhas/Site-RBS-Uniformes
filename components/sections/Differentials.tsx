@@ -12,13 +12,13 @@ export function Differentials() {
           eyebrow="Por que escolher a RBS"
           title={
             <>
-              O que separa um uniforme comum
+              O QUE DIFERENCIA OS UNIFORMES DA RBS COM 
               <span className="block text-accent-sheen">
-                de um uniforme RBS
+                O DE OUTRAS EMPRESAS?
               </span>
             </>
           }
-          description="Seis compromissos que valem para o pedido de 30 peças e para o contrato de 30 mil."
+          description="Seis fatores que mostram o que temos que diferente."
         />
 
         <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">

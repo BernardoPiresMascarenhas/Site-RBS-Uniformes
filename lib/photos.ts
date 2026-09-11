@@ -25,6 +25,19 @@ function encontrarFoto(photo: string): string | null {
 }
 
 /**
+ * Resolve a foto de capa de uma linha (`Service.cover`), quando declarada.
+ *
+ * Mesma tolerância de `resolveModelPhotos`: vale o nome do arquivo, não a
+ * extensão declarada, e um arquivo ausente devolve `null` — o chamador cai na
+ * capa padrão (a foto do primeiro modelo) sem quebrar.
+ *
+ * ⚠️ Usa `node:fs` — só pode ser chamado de Server Component.
+ */
+export function resolveCover(cover?: string): string | null {
+  return cover ? encontrarFoto(cover) : null;
+}
+
+/**
  * Confere, no build, quais fotos de modelo já existem em `public/`.
  *
  * Isso deixa o site tolerante a uma entrega parcial das imagens: cada modelo

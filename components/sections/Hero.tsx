@@ -209,13 +209,13 @@ export function Hero() {
               delay={90}
               className="font-display text-[2.1rem] uppercase leading-[1.05] tracking-[0.015em] text-[#f0e3c2] sm:text-[2.9rem] lg:text-[3.15rem] xl:text-[3.6rem]"
             >
-              Os uniformes
+              A praticidade
               <br />
-              são o espelho
+              que todo
               <br />
 
               <span className="text-[#d1ad4c]">
-                do seu condomínio.
+                Síndico procura
               </span>
             </Reveal>
 

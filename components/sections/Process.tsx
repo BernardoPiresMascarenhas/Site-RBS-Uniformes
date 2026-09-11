@@ -9,8 +9,8 @@ export function Process() {
     <Section tone="alt">
       <Container>
         <SectionHeading
-          eyebrow="Como funciona"
-          title="Quatro etapas do briefing à entrega"
+          eyebrow="LOGÍSTICA DA RBS"
+          title="APENAS QUATRO ETAPAS DA COTAÇÃO Á ENTREGA."
           description="Um processo previsível: você sabe em que fase o pedido está do começo ao fim."
         />
 

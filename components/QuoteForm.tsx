@@ -35,7 +35,8 @@ function validate(values: FormState): Errors {
   const errors: Errors = {};
 
   if (values.name.trim().length < 3) errors.name = "Informe o seu nome completo.";
-  if (values.company.trim().length < 2) errors.company = "Informe o nome da empresa.";
+  if (values.company.trim().length < 2)
+    errors.company = "Informe o nome do condomínio.";
 
   const digits = values.phone.replace(/\D/g, "");
   if (digits.length < 10) errors.phone = "Informe um telefone com DDD.";
@@ -75,7 +76,7 @@ export function QuoteForm() {
       `*Solicitação de orçamento — ${site.name}*`,
       "",
       `*Nome:* ${values.name}`,
-      `*Empresa:* ${values.company}`,
+      `*Condomínio:* ${values.company}`,
       `*Telefone:* ${values.phone}`,
       values.email ? `*E-mail:* ${values.email}` : null,
       `*Serviço:* ${values.segment}`,
@@ -95,10 +96,11 @@ export function QuoteForm() {
   return (
     <form onSubmit={handleSubmit} noValidate className={cn("p-7 sm:p-9", theme.ui.card)}>
       <h3 className="font-display text-2xl uppercase tracking-[0.08em]">
-        Solicite seu orçamento
+        Solicite sua cotação
       </h3>
       <p className="mt-2 text-sm text-brand-muted">
-        Responda em menos de um minuto. Retornamos com tecidos, prazos e valores.
+        Preencha em um minuto e respondemos em menos de 5. Confira preços,
+        prazos e a resposta de suas dúvidas.
       </p>
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2">
@@ -114,15 +116,28 @@ export function QuoteForm() {
           />
         </Field>
 
-        <Field id="company" label="Empresa*" error={errors.company} labelClass={labelClass}>
+        <Field id="company" label="Condomínio*" error={errors.company} labelClass={labelClass}>
           <input
             id="company"
             name="company"
             value={values.company}
             onChange={update("company")}
             className={fieldClass}
-            placeholder="Razão social ou nome fantasia"
+            placeholder="Nome do condomínio."
             autoComplete="organization"
+          />
+        </Field>
+
+        <Field id="email" label="E-mail" error={errors.email} labelClass={labelClass}>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            value={values.email}
+            onChange={update("email")}
+            className={fieldClass}
+            placeholder="condominio@gmail.com"
+            autoComplete="email"
           />
         </Field>
 
@@ -136,19 +151,6 @@ export function QuoteForm() {
             placeholder="(00) 00000-0000"
             inputMode="tel"
             autoComplete="tel"
-          />
-        </Field>
-
-        <Field id="email" label="E-mail" error={errors.email} labelClass={labelClass}>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            value={values.email}
-            onChange={update("email")}
-            className={fieldClass}
-            placeholder="voce@empresa.com.br"
-            autoComplete="email"
           />
         </Field>
 
@@ -176,13 +178,17 @@ export function QuoteForm() {
             value={values.quantity}
             onChange={update("quantity")}
             className={fieldClass}
-            placeholder="Ex.: 120 peças"
+            placeholder="Ex.: 90 peças"
             inputMode="numeric"
           />
         </Field>
 
         <div className="sm:col-span-2">
-          <Field id="message" label="Detalhes do pedido" labelClass={labelClass}>
+          <Field
+            id="message"
+            label="Detalhes do pedido de cotação"
+            labelClass={labelClass}
+          >
             <textarea
               id="message"
               name="message"
@@ -190,7 +196,7 @@ export function QuoteForm() {
               onChange={update("message")}
               rows={4}
               className={cn(fieldClass, "resize-y")}
-              placeholder="Conte sobre cores, tecidos, personalização (bordado ou silk) e prazo desejado."
+              placeholder="Tire dúvidas, escolha cores, quantidade, agende a visita e mais."
             />
           </Field>
         </div>
