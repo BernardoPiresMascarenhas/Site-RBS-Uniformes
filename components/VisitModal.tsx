@@ -5,10 +5,14 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { ButtonLink } from "@/components/ui/Button";
-import { visit, visitSteps } from "@/lib/content";
+import { visit, visitStepsShort } from "@/lib/content";
 
 /**
  * Botão do hero + pop-up explicando como funciona a visita técnica.
+ *
+ * Aqui entra só o RESUMO (`visitStepsShort`): uma frase por etapa. O
+ * detalhamento completo vive na seção `#visita`, para onde o botão
+ * "Ver mais detalhes" do rodapé leva.
  *
  * Diálogo próprio (sem lib): fecha no Esc, no clique fora e no X, e trava o
  * scroll do body enquanto está aberto — mesmo padrão do menu mobile.
@@ -118,7 +122,7 @@ export function VisitModal() {
                   </p>
 
                   <ol className="mt-6 space-y-5">
-                    {visitSteps.map((step) => {
+                    {visitStepsShort.map((step) => {
                       const Icon = step.icon;
 
                       return (

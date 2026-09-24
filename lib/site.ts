@@ -14,7 +14,9 @@ export const site = {
     "Confecção de uniformes corporativos, industriais, hospitalares e escolares com tecidos de alta performance, modelagem sob medida e entrega no prazo.",
   /** Frase curta exibida abaixo da logo no rodapé. */
   footerText:
-    "Empresa especializada no atendimento a condomínios, a única em Belo Horizonte.",
+    "Empresa especializada no atendimento a condomínios, a única em Belo Horizonte, trazendo comodidade e satisfação aos nossos clientes há mais de 30 anos.",
+  /** Slogan exibido logo abaixo do `footerText`, em linha própria. */
+  footerSlogan: "“Trabalhamos para quem trabalha”",
 
   // --- Contato ---
   /** Telefone fixo principal — é o que aparece no menu e no rodapé. */

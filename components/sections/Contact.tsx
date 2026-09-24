@@ -59,14 +59,14 @@ export function Contact() {
     >
       <Container>
         <SectionHeading
-          eyebrow="Orçamento sem compromisso"
+          eyebrow="SOLICITE UMA COTAÇÃO"
           title={
             <>
-              Vamos vestir a sua{" "}
-              <span className="text-accent-sheen">equipe</span>
+              UNIFORMIZE JÁ OS SEUS {" "}
+              <span className="text-accent-sheen">COLABORADORES</span>
             </>
           }
-          description="Preencha o formulário ou fale direto com um consultor. Respondemos em horário comercial."
+          description="Preencha o formulário com as informações solicitadas para um atendimento direcionado ou clique no botão do WhatsApp flutuante para um atendimento rápido."
         />
 
         <div className="mt-14 grid gap-8 lg:grid-cols-[1fr_1.1fr]">

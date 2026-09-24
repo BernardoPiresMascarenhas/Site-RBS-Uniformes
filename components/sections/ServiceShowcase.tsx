@@ -5,25 +5,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-import { UniformMockup } from "@/components/decor/UniformMockup";
 import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section } from "@/components/ui/Section";
-import type { ShowcaseModel, UniformColor } from "@/lib/services";
+import type { PhotoModel } from "@/lib/services";
 import { site, whatsappLink } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 /**
  * Bloco de produto que abre a página do serviço — no formato de uma página de
- * venda: peça grande à esquerda, modelos e cores logo abaixo dela e a descrição
- * à direita. No mobile a ordem vira título → peça → seletores → descrição, para
- * que o visitante chegue nas opções sem rolar.
+ * venda: peça grande à esquerda, modelos logo abaixo dela e a descrição à
+ * direita. No mobile a ordem vira título → peça → modelos → descrição, para que
+ * o visitante chegue nas opções sem rolar.
  *
- * Cada modelo pode ter uma foto (`photo`); quando ela ainda não existe em
- * `public/`, o servidor manda `null` e o bloco desenha o mockup vetorial, que
- * também é o único que acompanha a cor selecionada. As fotos são produzidas em
- * uma cor só por modelo — daí a cartela de cores virar referência quando há
- * foto. Veja `public/produtos/LEIA-ME.md`.
+ * Só chegam aqui os modelos que já têm foto em `public/` — o servidor filtra os
+ * demais (`resolvePhotoModels`). Veja `public/produtos/LEIA-ME.md`.
  *
  * Recebe só dados serializáveis (nada de ícones do lucide, que são componentes)
  * — é a fronteira entre a página server e este componente client.
@@ -33,41 +29,47 @@ export function ServiceShowcase({
   eyebrow,
   headline,
   intro,
+  introClosing,
   quickFacts,
   models,
-  colors,
 }: {
   title: string;
   eyebrow: string;
   headline: string;
   intro: string;
+  introClosing?: string;
   quickFacts: string[];
-  models: ShowcaseModel[];
-  colors: UniformColor[];
+  models: PhotoModel[];
 }) {
   const [model, setModel] = useState(models[0]);
-  const [color, setColor] = useState(models[0].colors?.[0] ?? colors[0]);
 
-  // acessórios não saem em toda a cartela da linha (cinto e calçado, por
-  // exemplo, só em preto e marrom): o modelo pode trazer a sua própria
-  const palette = model.colors ?? colors;
+  // Todas as fotos da linha ficam montadas no palco, empilhadas, e baixam junto
+  // com a página: o clique só troca a opacidade. Enquanto a foto do modelo novo
+  // não termina de carregar, a anterior continua na tela — nunca aparece o
+  // palco vazio.
+  const photos = Array.from(new Set(models.map((option) => option.photo)));
+  const [loaded, setLoaded] = useState<ReadonlySet<string>>(() => new Set());
+  const [shown, setShown] = useState(models[0].photo);
 
-  /** Troca o modelo e, se a cor atual não existir na cartela dele, reposiciona. */
-  function selectModel(option: ShowcaseModel) {
-    setModel(option);
+  const visiblePhoto = loaded.has(model.photo) ? model.photo : shown;
 
-    const options = option.colors ?? colors;
+  function handlePhotoLoad(src: string) {
+    setLoaded((current) => new Set(current).add(src));
 
-    if (!options.some((item) => item.name === color.name)) {
-      setColor(options[0]);
+    if (src === model.photo) {
+      setShown(src);
     }
   }
 
-  // com foto, a cor deixa de ser uma prévia e passa a ser só a escolha que
-  // segue no WhatsApp — o texto de apoio muda junto
-  const hasPhoto = models.some((option) => option.photo);
+  function selectModel(option: PhotoModel) {
+    setModel(option);
 
-  const message = `Olá! Vim pelo site da ${site.name} e tenho interesse na linha de ${title}. Modelo: ${model.name}. Cor: ${color.name}.`;
+    if (loaded.has(option.photo)) {
+      setShown(option.photo);
+    }
+  }
+
+  const message = `Olá! Vim pelo site da ${site.name} e tenho interesse na linha de ${title}. Modelo: ${model.name}.`;
 
   return (
     // padding-top maior que o normal: a navbar é fixa e mais alta no desktop,
@@ -116,52 +118,43 @@ export function ServiceShowcase({
               // no mobile a peça fica um pouco mais baixa que quadrada, para os
               // seletores caberem na primeira rolada
               className={cn(
-                "relative flex aspect-[5/4] items-center justify-center overflow-hidden rounded-brand border border-premium-emerald/35 bg-gradient-to-br from-premium-emerald-deep via-premium-black to-premium-black sm:aspect-[4/3]",
-                // a foto já vem com o fundo embutido e ocupa o card inteiro;
-                // o mockup desenhado precisa da folga interna
-                model.photo ? "p-0" : "p-6 sm:p-10",
+                "relative aspect-[5/4] overflow-hidden rounded-brand border border-premium-emerald/35 bg-gradient-to-br from-premium-emerald-deep via-premium-black to-premium-black sm:aspect-[4/3]",
               )}
             >
-              {model.photo ? (
-                <Image
-                  key={model.photo}
-                  src={model.photo}
-                  alt={`${model.name} da linha ${title}`}
-                  fill
-                  // Largura REAL da coluna esquerda — subestimar aqui faz o
-                  // navegador pedir um degrau menor e o CSS esticar a foto.
-                  // No teto do Container (100rem) sobram 1440px de conteúdo;
-                  // menos o gap-14 (56px), o grid 1.05fr/1fr deixa ~709px.
-                  // Abaixo de lg a coluna some e o card ocupa o container.
-                  sizes="(min-width: 1536px) 710px, (min-width: 1024px) 52vw, (min-width: 640px) calc(100vw - 64px), calc(100vw - 40px)"
-                  // acima do padrão (75): o fundo da foto é um gradiente liso,
-                  // onde a compressão vira faixa e mancha visíveis
-                  quality={95}
-                  priority
-                  className="animate-fade-up object-cover"
-                />
-              ) : (
-                <>
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-0"
-                    style={{
-                      background:
-                        "radial-gradient(60% 60% at 50% 45%, rgba(201,162,39,0.12) 0%, transparent 70%)",
-                    }}
+              {photos.map((photo) => {
+                const visible = photo === visiblePhoto;
+
+                return (
+                  <Image
+                    key={photo}
+                    src={photo}
+                    alt={visible ? `${model.name} da linha ${title}` : ""}
+                    aria-hidden={visible ? undefined : true}
+                    fill
+                    // Largura REAL da coluna esquerda — subestimar aqui faz o
+                    // navegador pedir um degrau menor e o CSS esticar a foto.
+                    // No teto do Container (100rem) sobram 1440px de conteúdo;
+                    // menos o gap-14 (56px), o grid 1.05fr/1fr deixa ~709px.
+                    // Abaixo de lg a coluna some e o card ocupa o container.
+                    sizes="(min-width: 1536px) 710px, (min-width: 1024px) 52vw, (min-width: 640px) calc(100vw - 64px), calc(100vw - 40px)"
+                    // acima do padrão (75): o fundo da foto é um gradiente
+                    // liso, onde a compressão vira faixa e mancha visíveis
+                    quality={95}
+                    // a primeira foto é a que aparece ao abrir a página; as
+                    // demais baixam logo em seguida, antes do clique
+                    priority={photo === models[0].photo}
+                    loading={photo === models[0].photo ? undefined : "eager"}
+                    onLoad={() => handlePhotoLoad(photo)}
+                    className={cn(
+                      "object-cover transition-opacity duration-300 motion-reduce:transition-none",
+                      visible ? "opacity-100" : "opacity-0",
+                    )}
                   />
-                  <UniformMockup
-                    style={model.style}
-                    body={color.body}
-                    accent={color.accent}
-                    label={`${model.name} na cor ${color.name.toLowerCase()}`}
-                    className="relative h-full max-h-72 w-auto drop-shadow-2xl transition-all duration-500 sm:max-h-80"
-                  />
-                </>
-              )}
+                );
+              })}
             </div>
 
-            {/* Modelos — miniaturas na cor escolhida */}
+            {/* Modelos */}
             <fieldset className="mt-6">
               <legend className="font-display text-[0.65rem] uppercase tracking-[0.24em] text-brand-muted">
                 Modelo
@@ -170,13 +163,6 @@ export function ServiceShowcase({
               <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {models.map((option) => {
                   const active = option.name === model.name;
-                  // a miniatura desenhada segue a cor escolhida, desde que a
-                  // peça saia nela
-                  const preview =
-                    !option.colors ||
-                    option.colors.some((item) => item.name === color.name)
-                      ? color
-                      : option.colors[0];
 
                   return (
                     <button
@@ -191,36 +177,21 @@ export function ServiceShowcase({
                           : "border-brand-border hover:border-brand-green/60",
                       )}
                     >
-                      {option.photo ? (
-                        <span
-                          data-surface="dark"
-                          className="relative block aspect-[4/3] w-full overflow-hidden rounded-brand bg-premium-black/95"
-                        >
-                          <Image
-                            src={option.photo}
-                            alt=""
-                            fill
-                            // 3 colunas dentro da coluna de ~709px, menos o
-                            // gap-3 e o p-2 do botão: ~210px no desktop
-                            sizes="(min-width: 1024px) 215px, (min-width: 640px) 30vw, 45vw"
-                            quality={90}
-                            className="object-cover"
-                          />
-                        </span>
-                      ) : (
-                        <span
-                          data-surface="dark"
-                          className="flex w-full items-center justify-center rounded-brand bg-premium-black/95 py-3"
-                        >
-                          <UniformMockup
-                            style={option.style}
-                            body={preview.body}
-                            accent={preview.accent}
-                            label=""
-                            className="h-14 w-auto"
-                          />
-                        </span>
-                      )}
+                      <span
+                        data-surface="dark"
+                        className="relative block aspect-[4/3] w-full overflow-hidden rounded-brand bg-premium-black/95"
+                      >
+                        <Image
+                          src={option.photo}
+                          alt=""
+                          fill
+                          // 3 colunas dentro da coluna de ~709px, menos o
+                          // gap-3 e o p-2 do botão: ~210px no desktop
+                          sizes="(min-width: 1024px) 215px, (min-width: 640px) 30vw, 45vw"
+                          quality={90}
+                          className="object-cover"
+                        />
+                      </span>
                       <span
                         className={cn(
                           "px-1 pb-1 text-center text-[0.65rem] leading-tight",
@@ -233,55 +204,6 @@ export function ServiceShowcase({
                   );
                 })}
               </div>
-            </fieldset>
-
-            {/* Cores */}
-            <fieldset className="mt-7">
-              <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <legend className="font-display text-[0.65rem] uppercase tracking-[0.24em] text-brand-muted">
-                  Cor
-                </legend>
-                <span className="text-xs uppercase tracking-[0.14em] text-brand-heading">
-                  {color.name}
-                </span>
-              </div>
-
-              <div className="mt-3 flex flex-wrap gap-3">
-                {palette.map((option) => {
-                  const active = option.name === color.name;
-
-                  return (
-                    <button
-                      key={option.name}
-                      type="button"
-                      onClick={() => setColor(option)}
-                      aria-pressed={active}
-                      aria-label={`Cor ${option.name}`}
-                      title={option.name}
-                      className={cn(
-                        "flex h-11 w-11 items-center justify-center rounded-full border-2 transition-all",
-                        active
-                          ? "border-brand-green"
-                          : "border-transparent hover:border-brand-green/40",
-                      )}
-                    >
-                      <span
-                        aria-hidden="true"
-                        className="h-8 w-8 rounded-full border border-black/25 shadow-inner"
-                        style={{ backgroundColor: option.body }}
-                      />
-                    </button>
-                  );
-                })}
-              </div>
-
-              {hasPhoto ? (
-                <p className="mt-3 text-xs leading-relaxed text-brand-muted">
-                  A foto mostra o modelo em uma cor de referência. Toda a
-                  cartela acima é produzida sob encomenda — a cor escolhida aqui
-                  segue junto no seu pedido de orçamento.
-                </p>
-              ) : null}
             </fieldset>
           </Reveal>
 
@@ -303,6 +225,12 @@ export function ServiceShowcase({
             />
 
             <p className="text-base leading-relaxed text-brand-text">{intro}</p>
+
+            {introClosing ? (
+              <p className="mt-4 font-display text-base uppercase leading-snug tracking-[0.06em] text-brand-green">
+                {introClosing}
+              </p>
+            ) : null}
 
             <ul className="mt-7 space-y-3">
               {quickFacts.map((fact) => (
@@ -327,7 +255,7 @@ export function ServiceShowcase({
                 className="w-full whitespace-normal text-sm leading-snug sm:w-auto"
                 icon={<MessageCircle className="h-4 w-4 shrink-0" />}
               >
-                Pedir orçamento desta peça
+                Pedir uma cotação desta peça
               </ButtonLink>
               <ButtonLink
                 tone="secondary"
@@ -340,9 +268,9 @@ export function ServiceShowcase({
             </div>
 
             <p className="mt-5 text-xs leading-relaxed text-brand-muted">
-              {hasPhoto
-                ? "As imagens são ilustrativas do modelo e do acabamento: a cor final é confirmada na cartela de tecidos durante a visita, e o modelo escolhido já vai junto na mensagem do WhatsApp."
-                : "A prévia é uma simulação para alinhar a conversa: a cor final é confirmada na cartela de tecidos durante a visita, e o modelo escolhido já vai junto na mensagem do WhatsApp."}
+              As imagens são meramente ilustrativas. Se quiser ver de perto e
+              confirmar a cor, agende uma visita ou nos envie uma mensagem que
+              enviamos um vídeo da peça escolhida.
             </p>
           </Reveal>
         </div>

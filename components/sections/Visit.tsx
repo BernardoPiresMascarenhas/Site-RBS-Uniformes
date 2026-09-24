@@ -23,9 +23,9 @@ const promises = [
 ];
 
 /**
- * Seção que explica a visita técnica. Fica logo depois do FAQ e é o
- * detalhamento do mesmo conteúdo resumido no pop-up do hero — os dois leem
- * `visitSteps`, então editar as etapas atualiza os dois lugares.
+ * Seção que explica a visita técnica. Fica logo depois do FAQ e é a versão
+ * COMPLETA (`visitSteps`) do que o pop-up do hero mostra resumido
+ * (`visitStepsShort`) — as duas listas vivem em `lib/content.ts`.
  */
 export function Visit() {
   return (

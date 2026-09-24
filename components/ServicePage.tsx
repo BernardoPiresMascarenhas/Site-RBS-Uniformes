@@ -10,7 +10,7 @@ import { SiteShell } from "@/components/SiteShell";
 import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
-import { resolveModelPhotos } from "@/lib/photos";
+import { resolvePhotoModels } from "@/lib/photos";
 import { services, servicePath, type Service } from "@/lib/services";
 import { site, whatsappLink } from "@/lib/site";
 import { theme } from "@/lib/theme";
@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * Página de venda de uma linha de uniforme. A ordem segue uma página de
- * produto: primeiro a peça com modelos e cores, depois os argumentos.
+ * produto: primeiro a peça com os modelos, depois os argumentos.
  */
 export function ServicePage({ service }: { service: Service }) {
   const message = `Olá! Vim pelo site da ${site.name} e gostaria de um orçamento da linha de ${service.title}.`;
@@ -31,21 +31,21 @@ export function ServicePage({ service }: { service: Service }) {
         eyebrow={service.eyebrow}
         headline={service.headline}
         intro={service.intro}
+        introClosing={service.introClosing}
         quickFacts={service.quickFacts}
         // a checagem dos arquivos acontece aqui, no servidor, porque
-        // ServiceShowcase é um componente client
-        models={resolveModelPhotos(service.models)}
-        colors={service.colors}
+        // ServiceShowcase é um componente client; modelos sem foto ficam de fora
+        models={resolvePhotoModels(service.models)}
       />
 
       {/* ---------------- Benefícios ---------------- */}
       <Section surface="light" tone="alt">
         <Container>
           <SectionHeading
-            eyebrow="Por que esta linha funciona"
+            eyebrow="O QUE CADA LINHA PROPORCIONA?"
             title={
               <>
-                Pensada para a rotina de{" "}
+                MAIS DO QUE UM UNIFORME PARA{" "}
                 <span className="text-accent-sheen">{service.title}</span>
               </>
             }
@@ -101,11 +101,10 @@ export function ServicePage({ service }: { service: Service }) {
 
         <Container className="relative text-center">
           <h2 className="mx-auto max-w-2xl font-display text-2xl uppercase leading-tight tracking-[0.05em] text-premium-gold-light sm:text-3xl">
-            Quer ver o tecido e o caimento de perto?
+            GOSTARIA DE CONHECER NOSSOS UNIFORMES, TECIDOS E CORES?
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-brand-text sm:text-base">
-            Um consultor leva o mostruário até o condomínio, tira as medidas da
-            equipe e monta a proposta na hora — sem custo e sem compromisso.
+            Um de nossos representantes se dirige até o condomínio para apresentar nossos uniformes, modelos e cores, solicite já!
           </p>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -116,7 +115,7 @@ export function ServicePage({ service }: { service: Service }) {
               className="w-full whitespace-normal text-sm leading-snug sm:w-auto"
               icon={<MessageCircle className="h-4 w-4 shrink-0" />}
             >
-              Agendar visita gratuita
+              Agendar visita
             </ButtonLink>
             <ButtonLink
               tone="secondary"
@@ -124,7 +123,7 @@ export function ServicePage({ service }: { service: Service }) {
               href="/#contato"
               className="w-full whitespace-normal text-sm leading-snug sm:w-auto"
             >
-              Solicitar orçamento
+              Solicitar cotação
             </ButtonLink>
           </div>
         </Container>

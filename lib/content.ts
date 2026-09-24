@@ -168,6 +168,48 @@ export const visitSteps: VisitStep[] = [
   },
 ];
 
+/**
+ * Versão resumida das etapas, exibida no pop-up do hero.
+ *
+ * O detalhamento completo fica só na seção `#visita` (`visitSteps`): aqui a
+ * ideia é dar o panorama em uma frase por etapa, sem transformar o pop-up
+ * numa segunda leitura longa.
+ */
+export const visitStepsShort: VisitStep[] = [
+  {
+    step: "1ª etapa",
+    title: "Solicitação da visita",
+    paragraphs: [
+      "A visita pode ser solicitada pelo nosso site ou WhatsApp.",
+    ],
+    icon: CalendarCheck,
+  },
+  {
+    step: "2ª etapa",
+    title: "Definição do objetivo da visita",
+    paragraphs: [
+      "Após a solicitação, identificamos o motivo do atendimento, que pode ser o conhecimento do nosso catálogo completo de uniformes ou a demanda que se fizer necessária para o condomínio etc.",
+    ],
+    icon: Target,
+  },
+  {
+    step: "3ª etapa",
+    title: "Atendimento no local",
+    paragraphs: [
+      "Com o consentimento e a concordância do(a) síndico(a), nossa equipe especializada se desloca até o condomínio para apresentar as opções, esclarecer dúvidas e até ajudar na escolha de modelos e cores, caso haja um interesse real.",
+    ],
+    icon: Handshake,
+  },
+  {
+    step: "4ª etapa",
+    title: "Cotação e proposta",
+    paragraphs: [
+      "Envio da cotação/proposta para avaliação, caso já haja uma demanda a ser cotada.",
+    ],
+    icon: FileText,
+  },
+];
+
 export const sectors = [
   "PORTARIA",
   "ZELADORIA ",

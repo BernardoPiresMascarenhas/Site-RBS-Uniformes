@@ -40,6 +40,9 @@ export function Footer() {
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-brand-muted">
               {site.footerText}
             </p>
+            <p className="mt-3 max-w-xs text-sm font-medium italic leading-relaxed text-premium-gold">
+              {site.footerSlogan}
+            </p>
 
             <div className="mt-6 flex gap-3">
               {socials.map(({ icon: Icon, href, label }) => (

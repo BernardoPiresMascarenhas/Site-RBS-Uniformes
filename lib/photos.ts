@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
 
-import type { ShowcaseModel, UniformModel } from "@/lib/services";
+import type { PhotoModel, ShowcaseModel, UniformModel } from "@/lib/services";
 
 /**
  * Extensões aceitas, na ordem de preferência. A extensão declarada em
@@ -53,4 +53,17 @@ export function resolveModelPhotos(models: UniformModel[]): ShowcaseModel[] {
     ...model,
     photo: encontrarFoto(model.photo),
   }));
+}
+
+/**
+ * Só os modelos que já têm foto em `public/` — a página de serviço esconde os
+ * demais. Os textos continuam em `lib/services.ts`: basta soltar a foto com o
+ * nome declarado e refazer o build para o modelo voltar a aparecer.
+ *
+ * ⚠️ Usa `node:fs` — só pode ser chamado de Server Component.
+ */
+export function resolvePhotoModels(models: UniformModel[]): PhotoModel[] {
+  return resolveModelPhotos(models).filter(
+    (model): model is PhotoModel => model.photo !== null,
+  );
 }
