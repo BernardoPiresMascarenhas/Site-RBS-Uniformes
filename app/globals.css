@@ -107,8 +107,10 @@
   --radius-brand: 0.5rem;
   --radius-brand-lg: 0.625rem;
 
-  --font-display: var(--font-manrope);
-  --font-sans: var(--font-inter);
+  /* O segundo valor do var() é a reserva: se a variável da fonte não existir,
+     o texto cai numa sem serifa do sistema — nunca na Times New Roman. */
+  --font-display: var(--font-manrope, ui-sans-serif, system-ui, sans-serif);
+  --font-sans: var(--font-inter, ui-sans-serif, system-ui, sans-serif);
 }
 
 /* ------------------------------------------------------------------ *

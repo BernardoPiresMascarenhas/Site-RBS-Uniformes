@@ -1,20 +1,30 @@
 import type { Metadata } from "next";
-import { Inter, Manrope } from "next/font/google";
+import localFont from "next/font/local";
 
 import { site } from "@/lib/site";
 
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
+/*
+ * Fontes servidas pelo próprio projeto (app/fonts), e não baixadas do Google
+ * no build: com `next/font/google`, uma falha de rede numa das compilações da
+ * Vercel gerou classes diferentes no HTML e no CSS, e o texto caiu em Times
+ * New Roman. Arquivos variáveis (todos os pesos num arquivo só), subconjunto
+ * latin — cobre o português. Origem: Fontsource, licença OFL-1.1.
+ */
+
+/** Texto corrido. */
+const inter = localFont({
+  src: "./fonts/Inter-latin-wght.woff2",
+  weight: "100 900",
   variable: "--font-inter",
   display: "swap",
 });
 
 /** Títulos, menu e botões — sem serifa, geométrica e firme. */
-const manrope = Manrope({
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+const manrope = localFont({
+  src: "./fonts/Manrope-latin-wght.woff2",
+  weight: "200 800",
   variable: "--font-manrope",
   display: "swap",
 });
