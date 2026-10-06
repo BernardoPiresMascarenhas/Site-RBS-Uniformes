@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cinzel, Inter } from "next/font/google";
+import { Inter, Manrope } from "next/font/google";
 
 import { site } from "@/lib/site";
 
@@ -11,11 +11,11 @@ const inter = Inter({
   display: "swap",
 });
 
-/** Display da marca — serifada, com ar de marca de luxo. */
-const cinzel = Cinzel({
+/** Títulos, menu e botões — sem serifa, geométrica e firme. */
+const manrope = Manrope({
   subsets: ["latin"],
-  weight: ["400", "600", "700", "900"],
-  variable: "--font-cinzel",
+  weight: ["500", "600", "700", "800"],
+  variable: "--font-manrope",
   display: "swap",
 });
 
@@ -48,7 +48,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className={`${inter.variable} ${cinzel.variable}`}>
+    <html lang="pt-BR" className={`${inter.variable} ${manrope.variable}`}>
       <head>
         {/* Sem JavaScript ninguém liga o `data-visible` das animações de
             entrada — aqui o conteúdo revelado volta a aparecer. */}

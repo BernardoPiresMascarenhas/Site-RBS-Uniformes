@@ -8,56 +8,106 @@
  * Todos os valores de cor são canais RGB crus para funcionar com o
  * `<alpha-value>` do Tailwind (ver tailwind.config.ts).
  *
- * Há DOIS jogos de tokens: escuro (o padrão) e claro. O atributo
- * `data-surface` alterna entre eles em qualquer ponto da árvore, o que
- * permite intercalar seções pretas e seções claras — e também colocar um
- * card escuro dentro de uma seção clara (`data-surface="dark"` aninhado).
+ * Duas camadas:
+ *   1. `--rbs-*`: a paleta da marca, fixa. É a única fonte dos valores.
+ *   2. `--c-*`: tokens semânticos (fundo, texto, primário…) que apontam
+ *      para a paleta e mudam conforme a superfície.
+ *
+ * A superfície CLARA é o padrão. `data-surface="dark"` troca os tokens
+ * para o verde escuro da marca em qualquer ponto da árvore (hero, etapas,
+ * rodapé, cards de contraste) — os mesmos componentes servem aos dois.
  * ------------------------------------------------------------------ */
 
-/* ---------- Superfície ESCURA (padrão) ---------- *
- * Vale para a raiz e para qualquer bloco marcado com `data-surface="dark"`
- * dentro de uma seção clara.                                            */
+:root {
+  /* ---------- Paleta da marca ---------- */
+  --rbs-green: 8 115 63; /* #08733F — verde principal */
+  --rbs-green-hover: 6 92 51; /* #065C33 */
+  --rbs-green-dark: 6 69 45; /* #06452D */
+  --rbs-green-deep: 5 59 39; /* #053B27 — seções de contraste */
+  --rbs-green-light: 221 238 228; /* #DDEEE4 */
+  --rbs-green-soft: 234 243 237; /* #EAF3ED — fundo suave */
+  --rbs-green-mint: 157 214 180; /* #9DD6B4 — acento sobre verde escuro */
+  --rbs-cream: 244 241 234; /* #F4F1EA — fundo principal */
+  --rbs-offwhite: 250 249 246; /* #FAF9F6 */
+  --rbs-ink: 36 40 36; /* #242824 — texto principal */
+  --rbs-gray: 102 108 104; /* #666C68 — texto secundário */
+  --rbs-line: 221 217 208; /* #DDD9D0 — borda neutra */
+  /* Amarelo e vermelho da logo: acentos de ritmo, nunca estrutura.
+     O amarelo puro não tem contraste para texto/ícone pequeno sobre claro —
+     ali entra o `yellow-ink`. O vermelho fica fora de campos e formulários. */
+  --rbs-yellow: 230 181 27; /* #E6B51B */
+  --rbs-yellow-hover: 211 164 19; /* #D3A413 */
+  --rbs-yellow-ink: 138 98 0; /* #8A6200 — amarelo legível sobre claro */
+  --rbs-yellow-soft: 255 244 204; /* #FFF4CC */
+  --rbs-red: 201 42 35; /* #C92A23 */
+  --rbs-red-light: 239 90 80; /* #EF5A50 — vermelho visível sobre verde escuro (ícones) */
+  --rbs-red-soft: 251 233 231; /* #FBE9E7 */
+
+  --header-h: 88px;
+  --header-h-compact: 88px;
+}
+
+/* ---------- Superfície CLARA (padrão) ---------- */
 :root,
+[data-surface="light"] {
+  --c-bg: var(--rbs-cream);
+  --c-bg-alt: var(--rbs-offwhite);
+  --c-surface: 255 255 255;
+  --c-surface-2: 247 246 242;
+  --c-border: var(--rbs-line);
+  --c-text: 52 58 54;
+  --c-heading: var(--rbs-ink);
+  --c-muted: var(--rbs-gray);
+  --c-primary: var(--rbs-green);
+  --c-primary-hover: var(--rbs-green-hover);
+  --c-on-primary: 255 255 255;
+  /* Palavras em destaque, etiquetas e divisores. */
+  --c-accent: var(--rbs-green);
+  /* Ícones e marcadores; `green-soft` é o fundo das caixas de ícone. */
+  --c-green: var(--rbs-green);
+  --c-green-soft: var(--rbs-green-soft);
+  /* Acentos amarelo/vermelho: cor do glyph e fundo da caixa de ícone. */
+  --c-yellow: var(--rbs-yellow-ink);
+  --c-yellow-soft: var(--rbs-yellow-soft);
+  --c-red: var(--rbs-red);
+  --c-red-soft: var(--rbs-red-soft);
+
+  --shadow-brand: 0 1px 2px rgb(var(--rbs-ink) / 0.04), 0 2px 8px -2px rgb(var(--rbs-ink) / 0.06);
+  --shadow-brand-lg: 0 12px 28px -14px rgb(var(--rbs-ink) / 0.2);
+}
+
+/* ---------- Superfície ESCURA (verde da marca) ---------- */
 [data-surface="dark"] {
-  --c-bg: 5 5 5;
-  --c-bg-alt: 12 11 9;
-  --c-surface: 21 19 15;
-  --c-surface-2: 29 26 20;
-  --c-border: 66 55 27;
-  --c-text: 203 196 181;
-  --c-heading: 243 237 224;
-  --c-muted: 150 142 126;
-  --c-primary: 201 162 39;
-  --c-primary-hover: 227 206 148;
-  --c-on-primary: 14 12 6;
-  --c-accent: 201 162 39;
-  --c-accent-strong: 227 206 148;
-  --c-sun: 201 162 39;
-  --c-sun-soft: 58 46 13;
-  --c-red: 214 32 38;
-  /* Verde da montanha, clareado o suficiente para ícones e texto sobre preto. */
-  --c-green: 47 167 107;
-  --c-green-soft: 6 46 27;
-  --c-gray: 120 112 98;
+  --c-bg: var(--rbs-green-deep);
+  --c-bg-alt: var(--rbs-green-dark);
+  --c-surface: 11 76 52; /* #0B4C34 */
+  --c-surface-2: 14 87 60;
+  --c-border: 37 101 75;
+  --c-text: 214 230 220;
+  --c-heading: var(--rbs-offwhite);
+  --c-muted: 199 216 206; /* #C7D8CE */
+  /* No verde escuro o botão principal inverte: branco com letra verde. */
+  --c-primary: 255 255 255;
+  --c-primary-hover: var(--rbs-green-light);
+  --c-on-primary: var(--rbs-green-dark);
+  --c-accent: var(--rbs-green-mint);
+  --c-green: var(--rbs-green-mint);
+  --c-green-soft: 14 87 60;
+  --c-yellow: var(--rbs-yellow);
+  --c-yellow-soft: 44 92 48; /* amarelo a 15% sobre o card verde */
+  --c-red: var(--rbs-red-light);
+  --c-red-soft: 46 85 64; /* vermelho a 15% sobre o card verde */
 
-  /* Brilho metálico do ouro — usado em texto (.text-accent-sheen) e botões. */
-  --sheen: linear-gradient(
-    100deg,
-    #9c7f26 0%,
-    #c9a227 28%,
-    #e7d5a0 50%,
-    #c9a227 72%,
-    #846a1c 100%
-  );
-  --btn-primary-bg: var(--sheen);
-  --btn-primary-fg: 14 12 6;
+  --shadow-brand: 0 1px 2px rgb(0 0 0 / 0.12), 0 2px 8px -2px rgb(0 0 0 / 0.16);
+  --shadow-brand-lg: 0 12px 28px -14px rgb(0 0 0 / 0.4);
+}
 
-  --radius-brand: 0.25rem;
-  --radius-brand-lg: 0.375rem;
-  --shadow-brand: 0 1px 0 rgba(201, 162, 39, 0.1), 0 18px 40px -24px rgba(0, 0, 0, 0.9);
-  --shadow-brand-lg: 0 40px 90px -44px rgba(201, 162, 39, 0.22), 0 30px 60px -30px rgba(0, 0, 0, 1);
+:root {
+  /* 8px em botões, campos e ícones; 10px nos cards. */
+  --radius-brand: 0.5rem;
+  --radius-brand-lg: 0.625rem;
 
-  --font-display: var(--font-cinzel);
+  --font-display: var(--font-manrope);
   --font-sans: var(--font-inter);
 }
 
@@ -66,70 +116,24 @@
  *
  * A navbar é `fixed`, então o conteúdo abaixo dela precisa reservar esse
  * espaço. Os valores acompanham o que o Navbar realmente mede:
- *   barra principal = logo (h-20 / sm:h-24) + py-3  → 104px / 120px
+ *   barra principal = logo (h-[4.5rem] / sm:h-20) + py-2 → 88px / 96px
  *   barra utilitária (só em lg, some ao rolar)      → +32px
  *
  * `--header-h-compact` é a altura com a barra utilitária recolhida — é ela
  * que vale para as âncoras, porque ao navegar a página já está rolada.
  * ------------------------------------------------------------------ */
-:root {
-  --header-h: 104px;
-  --header-h-compact: 104px;
-}
-
 @media (min-width: 640px) {
   :root {
-    --header-h: 120px;
-    --header-h-compact: 120px;
+    --header-h: 96px;
+    --header-h-compact: 96px;
   }
 }
 
 @media (min-width: 1024px) {
   :root {
-    --header-h: 152px;
-    --header-h-compact: 120px;
+    --header-h: 128px;
+    --header-h-compact: 96px;
   }
-}
-
-/* ---------- Superfície CLARA ---------- *
- * Marfim quente (não branco puro) para não brigar com o ouro. O acento
- * vira bronze, que tem contraste suficiente sobre fundo claro.          */
-[data-surface="light"] {
-  --c-bg: 250 248 243;
-  --c-bg-alt: 243 239 231;
-  --c-surface: 255 255 255;
-  --c-surface-2: 247 244 236;
-  --c-border: 227 220 203;
-  --c-text: 82 75 62;
-  --c-heading: 26 23 17;
-  --c-muted: 124 116 100;
-  --c-primary: 26 23 17;
-  --c-primary-hover: 45 39 26;
-  --c-on-primary: 233 214 160;
-  --c-accent: 138 108 20;
-  --c-accent-strong: 96 74 10;
-  --c-sun: 176 143 42;
-  --c-sun-soft: 246 238 216;
-  --c-red: 178 20 24;
-  /* Sobre marfim o verde escurece para manter contraste de texto. */
-  --c-green: 11 92 52;
-  --c-green-soft: 228 240 232;
-  --c-gray: 124 116 100;
-
-  --sheen: linear-gradient(
-    100deg,
-    #6e5612 0%,
-    #8a6c14 30%,
-    #b08f2a 52%,
-    #8a6c14 74%,
-    #5e4a0c 100%
-  );
-  /* Na seção clara o botão principal inverte: grafite com letra champanhe. */
-  --btn-primary-bg: linear-gradient(100deg, #1c1811 0%, #2b2417 50%, #151209 100%);
-  --btn-primary-fg: 233 214 160;
-
-  --shadow-brand: 0 1px 2px rgba(46, 38, 16, 0.06), 0 10px 28px -14px rgba(46, 38, 16, 0.2);
-  --shadow-brand-lg: 0 28px 60px -30px rgba(46, 38, 16, 0.3);
 }
 
 @layer base {
@@ -152,7 +156,8 @@
   h2,
   h3,
   h4 {
-    @apply font-display text-brand-heading;
+    @apply font-display font-bold text-brand-heading;
+    letter-spacing: -0.015em;
     text-wrap: balance;
   }
 
@@ -166,17 +171,29 @@
 }
 
 @layer components {
-  /* Texto metálico que acompanha a superfície: ouro no escuro, bronze no claro. */
-  .text-accent-sheen {
-    background-image: var(--sheen);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  /* ---------- Hero ----------
+   * Véus em verde escuro sobre a fotografia: forte à esquerda, onde fica o
+   * texto, e quase nulo à direita, para o produto aparecer. No celular o
+   * texto ocupa a largura toda, então o véu é mais uniforme.              */
+  .hero-scrim {
+    background:
+      linear-gradient(180deg, rgb(var(--rbs-green-deep) / 0.55) 0%, transparent 16%),
+      linear-gradient(0deg, rgb(var(--rbs-green-deep) / 0.85) 0%, transparent 32%),
+      linear-gradient(90deg, rgb(var(--rbs-green-deep) / 0.9) 0%, rgb(var(--rbs-green-deep) / 0.72) 60%, rgb(var(--rbs-green-deep) / 0.55) 100%);
   }
 
-  /* Ouro fixo — para blocos que são sempre escuros (hero, rodapé). */
-  .text-gold-sheen {
-    @apply bg-gold-sheen bg-clip-text text-transparent;
+  @media (min-width: 1024px) {
+    .hero-scrim {
+      background:
+        linear-gradient(180deg, rgb(var(--rbs-green-deep) / 0.34) 0%, transparent 12%),
+        linear-gradient(0deg, rgb(var(--rbs-green-deep) / 0.6) 0%, transparent 24%),
+        linear-gradient(90deg, rgb(var(--rbs-green-deep) / 0.94) 0%, rgb(var(--rbs-green-deep) / 0.78) 38%, rgb(var(--rbs-green-deep) / 0.17) 64%, rgb(var(--rbs-green-deep) / 0) 86%);
+    }
+  }
+
+  /* Brilho verde que sobe da base das faixas de chamada (Visita, serviço). */
+  .glow-green-bottom {
+    background: radial-gradient(120% 100% at 50% 100%, rgb(var(--rbs-green) / 0.22) 0%, rgb(var(--rbs-green-light) / 0.3) 42%, transparent 72%);
   }
 
   /* ---------- Revelação no scroll ----------
@@ -187,8 +204,8 @@
   .reveal {
     opacity: 0;
     transition:
-      opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
-      transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+      opacity 1200ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 1200ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .reveal-up {
@@ -234,15 +251,6 @@
     background-size: 100% 1px;
   }
 
-  /* Grão sutil para dar profundidade ao fundo escuro. */
-  .grain::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.35;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.32'/%3E%3C/svg%3E");
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

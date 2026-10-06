@@ -24,6 +24,13 @@ const variants = {
 export type RevealVariant = keyof typeof variants;
 
 /**
+ * Estica os atrasos escalonados (`delay`) junto com a duração da transição
+ * em `globals.css`, para que os elementos entrem um após o outro de forma
+ * perceptível.
+ */
+const DELAY_SCALE = 1.7;
+
+/**
  * Revela o conteúdo quando ele entra na viewport.
  *
  * O estado escondido é só uma classe CSS (`.reveal`), então o HTML do servidor
@@ -87,7 +94,9 @@ export function Reveal({
       ...rest,
       ref: setNode,
       "data-visible": visible ? "true" : "false",
-      style: delay ? { transitionDelay: `${delay}ms` } : undefined,
+      style: delay
+        ? { transitionDelay: `${Math.round(delay * DELAY_SCALE)}ms` }
+        : undefined,
       className: cn("reveal", variants[variant], className),
     },
     children,

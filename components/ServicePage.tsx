@@ -13,13 +13,16 @@ import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { resolvePhotoModels } from "@/lib/photos";
 import { services, servicePath, type Service } from "@/lib/services";
 import { site, whatsappLink } from "@/lib/site";
-import { theme } from "@/lib/theme";
+import { theme, tones, type Tone } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 /**
  * Página de venda de uma linha de uniforme. A ordem segue uma página de
  * produto: primeiro a peça com os modelos, depois os argumentos.
  */
+const cycle: Tone[] = ["green", "yellow", "red"];
+const toneAt = (index: number) => tones[cycle[index % cycle.length]].box;
+
 export function ServicePage({ service }: { service: Service }) {
   const message = `Olá! Vim pelo site da ${site.name} e gostaria de um orçamento da linha de ${service.title}.`;
   const others = services.filter((item) => item.slug !== service.slug);
@@ -45,8 +48,8 @@ export function ServicePage({ service }: { service: Service }) {
             eyebrow="O QUE CADA LINHA PROPORCIONA?"
             title={
               <>
-                MAIS DO QUE UM UNIFORME PARA{" "}
-                <span className="text-accent-sheen">{service.title}</span>
+                Mais do que um uniforme para{" "}
+                <span className="text-brand-accent">{service.title}</span>
               </>
             }
           />
@@ -69,12 +72,13 @@ export function ServicePage({ service }: { service: Service }) {
                     className={cn(
                       "inline-flex h-12 w-12 shrink-0 items-center justify-center",
                       theme.ui.iconBox,
+                      toneAt(index),
                     )}
                   >
                     <HighlightIcon className="h-6 w-6" aria-hidden="true" />
                   </span>
                   <div>
-                    <h3 className="font-display text-lg uppercase tracking-[0.08em]">
+                    <h3 className="text-lg">
                       {highlight.title}
                     </h3>
                     <p className="mt-2.5 text-sm leading-relaxed text-brand-muted">
@@ -88,22 +92,18 @@ export function ServicePage({ service }: { service: Service }) {
         </Container>
       </Section>
 
-      {/* ---------------- Faixa escura de conversão ---------------- */}
-      <section className="grain relative isolate overflow-hidden bg-premium-black py-20 sm:py-24">
+      {/* ---------------- Faixa de conversão ---------------- */}
+      <section className="relative isolate overflow-hidden bg-brand-green-soft py-20 sm:py-24">
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 -z-10 h-72 opacity-70"
-          style={{
-            background:
-              "radial-gradient(120% 100% at 50% 100%, rgba(10,122,68,0.4) 0%, rgba(1,60,30,0.26) 42%, transparent 72%)",
-          }}
+          className="glow-green-bottom absolute inset-x-0 bottom-0 -z-10 h-72"
         />
 
         <Container className="relative text-center">
-          <h2 className="mx-auto max-w-2xl font-display text-2xl uppercase leading-tight tracking-[0.05em] text-premium-gold-light sm:text-3xl">
-            GOSTARIA DE CONHECER NOSSOS UNIFORMES, TECIDOS E CORES?
+          <h2 className="mx-auto max-w-2xl text-2xl leading-tight tracking-tight sm:text-3xl">
+            Gostaria de conhecer nossos uniformes, tecidos e cores?
           </h2>
-          <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-brand-text sm:text-base">
+          <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-brand-muted sm:text-base">
             Um de nossos representantes se dirige até o condomínio para apresentar nossos uniformes, modelos e cores, solicite já!
           </p>
 
@@ -128,16 +128,16 @@ export function ServicePage({ service }: { service: Service }) {
           </div>
         </Container>
 
-        <MountainScape className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-28 opacity-80 sm:h-36" />
+        <MountainScape className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-28 sm:h-36" />
       </section>
 
       {/* ---------------- Peças e personalização ---------------- */}
       <Section surface="light">
         <Container>
           <SectionHeading
-            eyebrow="O que compõe o kit"
-            title="Peças e personalização"
-            description="A composição do kit é fechada na visita, de acordo com o número de colaboradores e o rodízio de lavagem do condomínio."
+            eyebrow="O que compõe"
+            title="Conheça nossos kits para portaria"
+            description="Nossos kit's vestem um funcionário dos pés á cabeça, conheça as ofertas, kit's básicos e completos."
           />
 
           <div className="mt-14 grid gap-6 md:grid-cols-2">
@@ -146,11 +146,12 @@ export function ServicePage({ service }: { service: Service }) {
                 className={cn(
                   "inline-flex h-12 w-12 items-center justify-center",
                   theme.ui.iconBox,
+                  tones.green.box,
                 )}
               >
                 <Shirt className="h-6 w-6" aria-hidden="true" />
               </span>
-              <h3 className="mt-5 font-display text-lg uppercase tracking-[0.08em]">
+              <h3 className="mt-5 text-lg">
                 Peças da linha
               </h3>
               <ul className="mt-5 space-y-3">
@@ -178,11 +179,12 @@ export function ServicePage({ service }: { service: Service }) {
                 className={cn(
                   "inline-flex h-12 w-12 items-center justify-center",
                   theme.ui.iconBox,
+                  tones.yellow.box,
                 )}
               >
                 <Palette className="h-6 w-6" aria-hidden="true" />
               </span>
-              <h3 className="mt-5 font-display text-lg uppercase tracking-[0.08em]">
+              <h3 className="mt-5 text-lg">
                 Personalização
               </h3>
               <ul className="mt-5 space-y-3">
@@ -211,8 +213,8 @@ export function ServicePage({ service }: { service: Service }) {
         <Container>
           <SectionHeading
             eyebrow="Outras linhas"
-            title="O condomínio inteiro uniformizado"
-            description="A maioria dos clientes fecha as três linhas juntas — o padrão visual fica coerente e o custo por peça cai."
+            title="uniformes para todas funções"
+            description="Conheça outras linhas de uniformes para todas as áreas de seu condomínio."
           />
 
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
@@ -233,12 +235,13 @@ export function ServicePage({ service }: { service: Service }) {
                       className={cn(
                         "inline-flex h-12 w-12 shrink-0 items-center justify-center",
                         theme.ui.iconBox,
+                        toneAt(index + 1),
                       )}
                     >
                       <OtherIcon className="h-6 w-6" aria-hidden="true" />
                     </span>
                     <span>
-                      <span className="flex items-center gap-2 font-display text-lg uppercase tracking-[0.08em] text-brand-heading">
+                      <span className="flex items-center gap-2 font-display text-lg font-bold text-brand-heading">
                         {other.title}
                         <ArrowRight
                           className="h-4 w-4 shrink-0 text-brand-green transition-transform group-hover:translate-x-1"

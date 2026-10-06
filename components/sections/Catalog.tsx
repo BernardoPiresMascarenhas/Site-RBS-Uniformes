@@ -1,12 +1,13 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { UniformMockup } from "@/components/decor/UniformMockup";
 import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { resolveCover, resolveModelPhotos } from "@/lib/photos";
-import { services, servicePath } from "@/lib/services";
+import { modelPath, services, servicePath } from "@/lib/services";
 import { theme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
@@ -16,10 +17,12 @@ export function Catalog() {
       <Container>
         <SectionHeading
           eyebrow="LINHAS DE UNIFORMES"
+          eyebrowClassName="text-brand-red"
+          dividerClassName="bg-rbs-yellow"
           title={
             <>
-              Linhas de UNIFORMES PARA CADA{" "}
-              <span className="text-accent-sheen">Área</span>
+              Linhas de uniformes para cada{" "}
+              <span className="text-brand-accent">área</span>
             </>
           }
           description={
@@ -31,9 +34,8 @@ export function Catalog() {
           }
         />
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => {
-            const Icon = service.icon;
             // a capa do card é a foto declarada em `cover`; sem ela, cai na
             // foto do primeiro modelo da linha e, na falta das duas, no mockup
             // desenhado — a checagem roda aqui porque a seção é server
@@ -55,11 +57,10 @@ export function Catalog() {
               >
                 {/* Vitrine da peça: foto quando existir, mockup enquanto não. */}
                 <div
-                  data-surface="dark"
                   // proporção fixa para os três cards ficarem alinhados, tenha
                   // a linha foto ou desenho
                   className={cn(
-                    "relative flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-brand-border/70 bg-gradient-to-br from-premium-emerald-deep via-premium-black to-premium-black",
+                    "relative flex aspect-[4/3] items-center justify-center overflow-hidden border-b border-brand-border bg-brand-green-soft",
                     // a foto já traz o fundo embutido e ocupa o card inteiro
                     cover ? "p-0" : "px-8 py-8",
                   )}
@@ -77,7 +78,7 @@ export function Catalog() {
                       // acima do padrão (75): o fundo escuro e liso das fotos é
                       // onde a compressão vira faixa e mancha visíveis
                       quality={90}
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                     />
                   ) : (
                     <UniformMockup
@@ -85,22 +86,13 @@ export function Catalog() {
                       body={firstColor.body}
                       accent={firstColor.accent}
                       label={`${firstModel.name} da linha ${service.title} na cor ${firstColor.name.toLowerCase()}`}
-                      className="h-44 w-auto transition-transform duration-500 group-hover:scale-105"
+                      className="h-44 w-auto transition-transform duration-500 group-hover:scale-[1.03]"
                     />
                   )}
-
-                  <span
-                    className={cn(
-                      "absolute left-5 top-5 inline-flex h-11 w-11 items-center justify-center",
-                      theme.ui.iconBox,
-                    )}
-                  >
-                    <Icon className="h-5 w-5" aria-hidden="true" />
-                  </span>
                 </div>
 
                 <div className="flex flex-1 flex-col p-7">
-                  <h3 className="font-display text-xl uppercase leading-tight tracking-[0.08em]">
+                  <h3 className="text-xl leading-tight">
                     {service.title}
                   </h3>
 
@@ -109,12 +101,15 @@ export function Catalog() {
                   </p>
 
                   <ul className="mt-5 flex flex-wrap gap-2">
+                    {/* Cada peça abre a página da linha já nela (quando tem foto). */}
                     {service.models.map((model) => (
-                      <li
-                        key={model.name}
-                        className="rounded-brand border border-brand-border/80 px-3 py-1 text-xs text-brand-muted"
-                      >
-                        {model.name}
+                      <li key={model.name}>
+                        <Link
+                          href={modelPath(service.slug, model.name)}
+                          className="block rounded-full bg-brand-bg px-3 py-1 text-xs font-medium text-brand-muted transition-colors duration-200 hover:bg-brand-green-soft hover:text-brand-green"
+                        >
+                          {model.name}
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -143,7 +138,7 @@ export function Catalog() {
             Gostaria de ver de perto os nossos uniformes? Envie uma mensagem!
           </p>
           <ButtonLink tone="secondary" href="/#contato">
-              FALE CONOSCO
+              Fale conosco
           </ButtonLink>
         </Reveal>
       </Container>

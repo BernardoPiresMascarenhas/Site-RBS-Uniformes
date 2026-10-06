@@ -8,6 +8,7 @@ import {
   Phone,
 } from "lucide-react";
 
+import { BrandStripe } from "@/components/decor/BrandStripe";
 import { Logo } from "@/components/Logo";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container } from "@/components/ui/Section";
@@ -15,7 +16,7 @@ import { navLinks } from "@/lib/content";
 import { services, servicePath } from "@/lib/services";
 import { site } from "@/lib/site";
 
-/** O rodapé fecha em preto — a logo dourada brilha sobre o escuro. */
+/** O rodapé fecha no verde escuro da marca — a logo aparece intacta sobre ele. */
 export function Footer() {
   const year = new Date().getFullYear();
 
@@ -26,11 +27,14 @@ export function Footer() {
   ];
 
   return (
-    <footer className="relative border-t border-premium-gold/25 bg-premium-black">
-      {/* Filete tricolor com as cores da logo */}
-      <span
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 block h-1 w-full bg-gradient-to-r from-premium-emerald via-premium-gold to-premium-red"
+    <footer data-surface="dark" className="relative bg-brand-bg">
+      {/* Filete tricolor no topo */}
+      <BrandStripe
+        className="absolute inset-x-0 top-0 h-1"
+        green={60}
+        yellow={25}
+        red={15}
+        greenClassName="bg-rbs-green-mint"
       />
 
       <Container size="wide" className="py-16">
@@ -40,7 +44,7 @@ export function Footer() {
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-brand-muted">
               {site.footerText}
             </p>
-            <p className="mt-3 max-w-xs text-sm font-medium italic leading-relaxed text-premium-gold">
+            <p className="mt-3 max-w-xs text-sm font-semibold leading-relaxed text-brand-heading">
               {site.footerSlogan}
             </p>
 
@@ -52,7 +56,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="flex h-10 w-10 items-center justify-center rounded-brand border border-premium-gold/35 text-premium-gold transition-colors hover:bg-premium-gold hover:text-black"
+                  className="flex h-10 w-10 items-center justify-center rounded-brand border border-brand-heading/20 text-brand-heading transition-colors duration-200 hover:border-rbs-yellow hover:text-rbs-yellow"
                 >
                   <Icon className="h-4 w-4" aria-hidden="true" />
                 </a>
@@ -131,7 +135,7 @@ export function Footer() {
         </div>
       </Container>
 
-      <div className="border-t border-premium-gold/15">
+      <div className="border-t border-brand-border">
         <Container size="wide" className="py-6 text-center text-xs text-brand-muted">
           <p>
             © {year} {site.legalName}. Todos os direitos reservados.
@@ -153,7 +157,7 @@ function FooterColumn({
 }) {
   return (
     <Reveal delay={delay}>
-      <h3 className="font-display text-sm uppercase tracking-[0.24em] text-premium-gold">
+      <h3 className="text-base font-bold">
         {title}
       </h3>
       <ul className="mt-5 space-y-3 text-sm text-brand-text">{children}</ul>
@@ -169,7 +173,7 @@ function FooterLink({
   children: React.ReactNode;
 }) {
   return (
-    <a href={href} className="transition-colors hover:text-premium-gold">
+    <a href={href} className="transition-colors duration-200 hover:text-rbs-yellow">
       {children}
     </a>
   );

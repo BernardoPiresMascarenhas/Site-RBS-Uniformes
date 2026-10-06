@@ -6,7 +6,7 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { defaultWhatsappMessage, site, whatsappLink } from "@/lib/site";
-import { theme } from "@/lib/theme";
+import { theme, tones, type Tone } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 interface Channel {
@@ -15,6 +15,8 @@ interface Channel {
   value: string;
   href?: string;
   external?: boolean;
+  /** Cor da caixa do ícone — distribuição discreta das cores da logo. */
+  tone: Tone;
 }
 
 export function Contact() {
@@ -24,6 +26,7 @@ export function Contact() {
       label: "Telefone fixo",
       value: number.display,
       href: `tel:+${number.digits}`,
+      tone: "green" as Tone,
     })),
     ...site.whatsappNumbers.map((number) => ({
       icon: MessageCircle,
@@ -31,22 +34,26 @@ export function Contact() {
       value: number.display,
       href: whatsappLink(defaultWhatsappMessage, number.digits),
       external: true,
+      tone: "green" as Tone,
     })),
     {
       icon: Mail,
       label: "E-mail",
       value: site.email,
       href: `mailto:${site.email}`,
+      tone: "green",
     },
     {
       icon: MapPin,
       label: "Endereço",
       value: `${site.address.street} — ${site.address.district}, ${site.address.city}/${site.address.state}`,
+      tone: "green",
     },
     {
       icon: Clock,
       label: "Atendimento",
       value: site.hours,
+      tone: "green",
     },
   ];
 
@@ -62,17 +69,17 @@ export function Contact() {
           eyebrow="SOLICITE UMA COTAÇÃO"
           title={
             <>
-              UNIFORMIZE JÁ OS SEUS {" "}
-              <span className="text-accent-sheen">COLABORADORES</span>
+              Uniformize já os seus{" "}
+              <span className="text-brand-accent">colaboradores</span>
             </>
           }
           description="Preencha o formulário com as informações solicitadas para um atendimento direcionado ou clique no botão do WhatsApp flutuante para um atendimento rápido."
         />
 
-        <div className="mt-14 grid gap-8 lg:grid-cols-[1fr_1.1fr]">
+        <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_1.1fr]">
           <div className="flex min-w-0 flex-col gap-6">
             <Reveal variant="left" className={cn("p-7 sm:p-8", theme.ui.card)}>
-              <h3 className="font-display text-xl uppercase tracking-[0.08em]">
+              <h3 className="text-xl">
                 Canais de atendimento
               </h3>
 
@@ -86,15 +93,16 @@ export function Contact() {
                         className={cn(
                           "flex h-11 w-11 shrink-0 items-center justify-center",
                           theme.ui.iconBox,
+                          tones[channel.tone].box,
                         )}
                       >
                         <Icon className="h-5 w-5" aria-hidden="true" />
                       </span>
                       <span className="min-w-0">
-                        <span className="block text-xs uppercase tracking-[0.16em] text-brand-muted">
+                        <span className={cn("block", theme.ui.caption)}>
                           {channel.label}
                         </span>
-                        <span className="mt-1 block text-sm text-brand-heading">
+                        <span className="mt-0.5 block text-sm font-medium text-brand-heading">
                           {channel.value}
                         </span>
                       </span>
@@ -127,10 +135,17 @@ export function Contact() {
               variant="left"
               delay={120}
               data-surface="dark"
-              // brilho esmeralda no canto superior direito, longe do texto
-              className="relative overflow-hidden rounded-brand border border-premium-emerald/40 bg-gradient-to-tr from-premium-black via-premium-black to-premium-emerald/35 p-7 sm:p-8"
+              className="relative overflow-hidden rounded-brand-lg bg-brand-bg-alt p-7 shadow-brand-lg sm:p-8"
             >
-              <p className="font-display text-lg uppercase leading-snug tracking-[0.06em] text-premium-gold-glow">
+              {/* Barra amarela no topo do card */}
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 top-0 h-[3px] bg-rbs-yellow"
+              />
+              <span className="mb-3 inline-flex rounded-full bg-rbs-yellow px-3 py-1 font-display text-[0.6875rem] font-bold uppercase tracking-[0.04em] text-rbs-green-deep">
+                Atendimento rápido
+              </span>
+              <p className="font-display text-xl font-bold leading-snug tracking-tight text-brand-heading">
                 Prefere resolver agora?
               </p>
               <p className="mt-2 text-sm text-brand-text">

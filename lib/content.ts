@@ -19,9 +19,12 @@ import {
  *  de serviço, que não têm essas seções. */
 export const navLinks = [
   { label: "Início", href: "/#inicio" },
-  { label: "Sobre", href: "/#sobre" },
   { label: "Serviços", href: "/#catalogo" },
+  { label: "Sobre", href: "/#sobre" },
   { label: "Diferenciais", href: "/#diferenciais" },
+  { label: "Clientes", href: "/#clientes" },
+  { label: "Avaliações", href: "/#avaliacoes" },
+  { label: "Dúvidas", href: "/#duvidas" },
   { label: "Visita", href: "/#visita" },
   { label: "Contato", href: "/#contato" },
 ];
@@ -81,28 +84,28 @@ export interface ProcessStep {
 export const processSteps: ProcessStep[] = [
   {
     step: "01",
-    title: "VISITA E COTAÇÃO",
+    title: "Visita e cotação",
     description:
       "Nosso diferencial é analisarmos o que está sendo solicitado, fazemos a visita sem compromisso para conhecimento dos uniformes solicitados ou apenas fazemos o orçamento das peças solicitadas.",
     icon: ClipboardList,
   },
   {
     step: "02",
-    title: "medição dos colaboradores",
+    title: "Medição dos colaboradores",
     description:
       "Efetuamos o processo de medidas dos colaboradores no local do condomínio com uma equipe especializada, sem deslocá-los para a loja, trazendo conforto e praticidade.",
     icon: Scissors,
   },
   {
     step: "03",
-    title: "CONFECÇÃO DOS UNIFORMES",
+    title: "Confecção dos uniformes",
     description:
       "Fabricamos os uniformes de acordo com o conversado e firmado na visita ou via WhatsApp, de forma dinâmica, organizada e mantendo o mais alto padrão de qualidade.",
     icon: ShieldCheck,
   },
   {
     step: "04",
-    title: "ENTREGA E IDENTIFICAÇÃO",
+    title: "Entrega e identificação",
     description:
       "Fazemos a entrega dos uniformes com entrega própria e gratuita, mantendo livre de qualquer tipo de dano. Os uniformes são embalados com o nome de cada colaborador, junto com a quantidade para melhor identificação.",
     icon: Package,
@@ -218,44 +221,77 @@ export const sectors = [
   "HIGIENIZAÇÃO",
 ];
 
+export interface Testimonial {
+  name: string;
+  text: string;
+}
+
+/** Depoimentos de clientes, com o texto exatamente como foi enviado. */
+export const testimonials: Testimonial[] = [
+  {
+    name: "Samuel",
+    text: "Trato com Bruno sobre os uniformes, a empresa está de parabéns, uniformes duráveis, o calçado para os porteiros comprei uma vez há 4 anos e não precisei renovar até hoje. Excelente serviço.",
+  },
+  {
+    name: "Carlos Adriano",
+    text: "Gostei do trabalho de vocês, parabéns! Carlos do Don Rodrigo.",
+  },
+  {
+    name: "Vitor Felipe",
+    text: "Conversei com Leonardo, ótima logística do início ao fim, empresa que conheço há anos e tem melhorado muito, 5 Estrelas",
+  },
+  {
+    name: "Pedro Henrique",
+    text: "Conheci pelo Jornal do Síndico, desde então só compro com eles, agradeço pelo excelente atendimento e uniformes muito bem feitos.",
+  },
+  {
+    name: "Pedro Alves",
+    text: "Facilitou muito a minha vida, entregou no prazo e ainda vieram medir os funcionários, e um excelente atendimento, agradeço RBS.UNIFORMES",
+  },
+];
+
+/** Perfil da RBS no Google, já abrindo o painel de avaliações. */
+export const googleReviewsUrl =
+  "https://www.google.com/search?q=rbs+uniformes#lrd=0xa69b9b6cb076f9:0x204ae0a4cd2b4305,1,,,,";
+
 export const faq = [
   {
-    question: "QUAL O PRAZO DE ENTREGA DOS UNIFORMES?",
+    question: "Qual o prazo de entrega dos uniformes?",
     answer:
       "O prazo é estipulado junto à cotação, tendo em vista a demanda e a quantidade solicitada, não depende de nenhum tipo de terceiros pois a entrega somos nós da RBS que efetuamos.",
   },
   {
-    question: "CONSIGO COMPRAR A MESMA COR NA PRÓXIMA NECESSIDADE?",
+    question: "Consigo comprar a mesma cor na próxima necessidade?",
     answer:
       "Todos os tecidos que utilizamos tem uma garantia de até 5 anos após última compra, resumindo, nossos clientes têm até 5 anos para comprar a mesma cor solicitada anteriormente uma vez.",
   },
   {
-    question: "A VISITA É COBRADA JUNTO DA COTAÇÃO?",
+    question: "A visita é cobrada junto da cotação?",
     answer:
       "De forma alguma! A visita é gratuita e com o intuito de conhecer nossos uniformes. Nossos valores são justificados no serviço prestado e ainda sim oferecemos o melhor do mercado para nossos clientes.",
   },
   {
-    question: "COMO FUNCIONA O PROCEDIMENTO DE MEDIDAS?",
+    question: "Como funciona o procedimento de medidas?",
     answer:
       "Tiramos as medidas de cada funcionário individualmente no local do condomínio, também sem custos, e na troca de plantão de cada funcionário.",
   },
   {
-    question: "VOCÊS ATENDEM QUAIS CIDADES?",
+    question: "Vocês atendem quais cidades?",
     answer:
       "Atendemos a toda Belo Horizonte e região metropolitana.",
   },
   {
-    question: "QUAL O VALOR MÍNIMO PARA O PEDIDO?",
+    question: "Qual o valor mínimo para o pedido?",
     answer:
       "Não trabalhamos com pedido mínimo, é possível pedir em toda e qualquer valor e quantidade.",
   },
   {
-    question: "O BORDADO É INCLUSO NO VALOR?",
+    question: "O bordado é incluso no valor?",
     answer:
       "Sim, os bordados são inclusos no valor de cada item que pode ser bordado.",
   },
   {
-    question: "QUAIS AS CONDIÇÕES DE PAGAMENTO E DESCONTOS?",
+    question: "Quais as condições de pagamento e descontos?",
     answer:
       "Nossas condições de pagamento variam do valor total da cotação e com o desconto é o mesmo, quanto maior o pedido, maior o desconto que pode ser aplicável.",
   },

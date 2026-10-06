@@ -73,7 +73,7 @@ export function Section({
       id={id}
       data-surface={surface}
       className={cn(
-        "relative py-20 sm:py-24 lg:py-28",
+        "relative py-16 sm:py-20 lg:py-24",
         // com `surface` definido a seção pinta o próprio fundo, senão herda
         surface
           ? tone === "alt"
@@ -95,6 +95,8 @@ export function SectionHeading({
   align = "center",
   className,
   titleClassName,
+  eyebrowClassName,
+  dividerClassName,
 }: {
   eyebrow?: string;
   title: ReactNode;
@@ -107,6 +109,10 @@ export function SectionHeading({
    * um `lg:text-4xl` aqui substitui o `lg:text-5xl` do token.
    */
   titleClassName?: string;
+  /** Troca a cor da etiqueta (ex.: `text-brand-red`) — via `cn`. */
+  eyebrowClassName?: string;
+  /** Troca a cor do traço abaixo do título (ex.: `bg-rbs-yellow`). */
+  dividerClassName?: string;
 }) {
   // As partes entram em cascata: etiqueta, título, divisor e texto. Como todo
   // cabeçalho de seção passa por aqui, o site inteiro herda o mesmo ritmo.
@@ -121,7 +127,7 @@ export function SectionHeading({
       )}
     >
       {eyebrow ? (
-        <Reveal as="span" className={theme.ui.eyebrow}>
+        <Reveal as="span" className={cn(theme.ui.eyebrow, eyebrowClassName)}>
           {eyebrow}
         </Reveal>
       ) : null}
@@ -138,7 +144,7 @@ export function SectionHeading({
         as="span"
         variant="scale"
         delay={160}
-        className={cn(theme.ui.divider, "max-w-xs")}
+        className={cn(theme.ui.divider, "max-w-xs", dividerClassName)}
         aria-hidden="true"
       />
 

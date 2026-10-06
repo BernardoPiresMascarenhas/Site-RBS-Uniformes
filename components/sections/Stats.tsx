@@ -2,22 +2,20 @@ import { CountUp } from "@/components/ui/CountUp";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container } from "@/components/ui/Section";
 import { site } from "@/lib/site";
-import { theme } from "@/lib/theme";
+import { theme, tones, type Tone } from "@/lib/theme";
 import { cn } from "@/lib/utils";
+
+/** Indicador acima de cada número. */
+const markers: Tone[] = ["green", "red", "green"];
 
 export function Stats() {
   return (
-    <section className="relative overflow-hidden border-y border-premium-gold/20 bg-gradient-to-r from-premium-emerald-deep/70 via-premium-ink to-premium-emerald-deep/70">
-      {/* Fio esmeralda no topo — leva o verde da montanha para dentro da faixa. */}
-      <span
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 block h-px bg-gradient-to-r from-transparent via-premium-emerald-light/60 to-transparent"
-      />
+    <section className="relative overflow-hidden border-y border-brand-primary/15 bg-brand-green-soft">
       <Container size="wide">
         {/* No mobile os números viram uma lista empilhada com divisórias
             horizontais — em duas colunas sobraria um item órfão e os rótulos
             longos quebrariam em várias linhas. */}
-        <dl className="grid grid-cols-1 divide-y divide-brand-border/60 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+        <dl className="grid grid-cols-1 divide-y divide-brand-primary/15 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
           {site.stats.map((stat, index) => (
             <Reveal
               key={stat.label}
@@ -28,6 +26,13 @@ export function Stats() {
             >
               <dt className="sr-only">{stat.label}</dt>
               <dd>
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "mx-auto mb-4 block h-1 w-8 rounded-full",
+                    tones[markers[index % markers.length]].dot,
+                  )}
+                />
                 <CountUp
                   value={stat.value}
                   className={cn(
@@ -35,7 +40,7 @@ export function Stats() {
                     theme.ui.statValue,
                   )}
                 />
-                <span className="mx-auto mt-2 block max-w-[16rem] text-[0.7rem] uppercase leading-relaxed tracking-[0.16em] text-brand-muted sm:text-xs sm:tracking-[0.12em] lg:text-sm">
+                <span className="mx-auto mt-2 block max-w-[16rem] text-sm leading-relaxed text-brand-muted lg:text-[0.9375rem]">
                   {stat.label}
                 </span>
               </dd>

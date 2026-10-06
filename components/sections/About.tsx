@@ -5,8 +5,10 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { about } from "@/lib/content";
 import { site } from "@/lib/site";
-import { theme } from "@/lib/theme";
+import { theme, tones, type Tone } from "@/lib/theme";
 import { cn } from "@/lib/utils";
+
+const bulletTones: Tone[] = ["green", "yellow", "red"];
 
 export function About() {
   return (
@@ -26,7 +28,7 @@ export function About() {
                 // que cabe em 4:3 — ali o card cresce com o conteúdo. De sm em
                 // diante a proporção fixa volta, para alinhar com o texto ao lado.
                 "min-h-[24rem] sm:aspect-[4/3] sm:min-h-0",
-                "rounded-brand border border-premium-emerald/35 bg-premium-black",
+                "rounded-brand-lg bg-brand-bg shadow-brand-lg",
               )}
             >
               <Image
@@ -39,29 +41,32 @@ export function About() {
                 className="object-cover"
               />
 
-              {/* Escurecimento de baixo para cima — sem ele o texto brigaria
-                  com as áreas claras da máquina. */}
+              {/* Véu verde só na metade de baixo, onde fica o texto — a foto
+                  continua visível em cima. */}
               <div
                 aria-hidden="true"
-                className="absolute inset-0 bg-gradient-to-t from-premium-black via-premium-black/80 to-premium-black/10"
+                className="absolute inset-0 bg-gradient-to-t from-brand-bg via-brand-bg/75 to-transparent"
               />
 
-              <p className="relative font-display text-xl uppercase leading-snug tracking-[0.08em] text-premium-gold-light sm:text-2xl lg:text-3xl">
+              <p className="relative font-display text-xl font-extrabold leading-snug tracking-tight text-brand-heading sm:text-2xl lg:text-3xl">
                 {about.showcase.headline}
               </p>
 
-              {/* Subtítulo: mesmo tipo, um degrau menor e em branco, para não
-                  competir com a chamada dourada acima. */}
-              <p className="relative mt-3 font-display text-base uppercase leading-snug tracking-[0.08em] text-brand-heading sm:text-lg lg:text-xl">
+              {/* Subtítulo: mesmo tipo, um degrau menor e em verde claro, para
+                  não competir com a chamada acima. */}
+              <p className="relative mt-3 font-display text-base font-bold leading-snug text-brand-accent sm:text-lg lg:text-xl">
                 {about.showcase.title}
               </p>
 
               <ul className="relative mt-4 space-y-2 text-sm text-brand-text">
-                {about.showcase.items.map((item) => (
+                {about.showcase.items.map((item, index) => (
                   <li key={item} className="flex items-start gap-2.5">
                     <span
                       aria-hidden="true"
-                      className="mt-[0.45rem] h-1 w-1 shrink-0 rounded-full bg-premium-gold"
+                      className={cn(
+                        "mt-[0.45rem] h-1.5 w-1.5 shrink-0 rounded-full",
+                        tones[bulletTones[index % bulletTones.length]].dot,
+                      )}
                     />
                     {item}
                   </li>
@@ -69,14 +74,12 @@ export function About() {
               </ul>
             </div>
 
-            <div
-              data-surface="dark"
-              className="absolute -bottom-6 right-4 hidden rounded-brand border border-premium-gold/40 bg-premium-black px-6 py-5 shadow-gold sm:block lg:-right-6"
-            >
-              <p className="font-display text-3xl font-bold text-gold-sheen">
+            {/* Selo de experiência no amarelo da logo */}
+            <div className="absolute -bottom-6 right-4 hidden rounded-brand-lg bg-rbs-yellow px-6 py-5 text-rbs-green-deep shadow-brand-lg sm:block lg:-right-6">
+              <p className="font-display text-3xl font-extrabold tracking-tight">
                 {site.stats[0].value}
               </p>
-              <p className="text-xs uppercase tracking-[0.18em] text-brand-muted">
+              <p className="mt-0.5 text-sm font-medium">
                 {site.stats[0].label}
               </p>
             </div>
@@ -106,7 +109,7 @@ export function About() {
             </Reveal>
 
             <span
-              className={cn("mt-10 block", theme.ui.divider)}
+              className={cn("mt-10 block", theme.ui.rule)}
               aria-hidden="true"
             />
           </div>

@@ -14,27 +14,40 @@ import { VisitModal } from "@/components/VisitModal";
 import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container } from "@/components/ui/Section";
+import { testimonials } from "@/lib/content";
 import { defaultWhatsappMessage, whatsappLink } from "@/lib/site";
+import { tones, type Tone } from "@/lib/theme";
+import { cn, initials } from "@/lib/utils";
 
-const highlights = [
+const highlights: {
+  icon: typeof UsersRound;
+  title: string;
+  description: string;
+  /** Cor do ícone — os textos continuam brancos. */
+  tone: Tone;
+}[] = [
   {
     icon: UsersRound,
+    tone: "red",
     title: "Atendimento especializado",
     description: "Contamos com equipes especializadas desde a cotação até a entrega.",
   },
   {
     icon: Ruler,
-    title: "MEDIÇÃO LOCAL",
+    tone: "red",
+    title: "Medição local",
     description: "Deslocamos um profissional da área para tirar as medidas de cada colaborador individualmente e sem custos adicionais.",
   },
   {
     icon: Shirt,
-    title: "VISITA SEM COMPROMISSO",
+    tone: "red",
+    title: "Visita sem compromisso",
     description: "Apresentamos as opções de uniformes de acordo com o que for solicitado mediante interesse e contato.",
   },
   {
     icon: BadgeCheck,
-    title: "ENTREGA GRATUITA",
+    tone: "red",
+    title: "Entrega gratuita",
     description: "Entrega realizada pela RBS com acompanhamento da localização em tempo real.",
   },
 ];
@@ -43,40 +56,19 @@ export function Hero() {
   return (
     <section
       id="inicio"
-      className="relative isolate flex min-h-[100svh] flex-col justify-center overflow-hidden bg-[#050605] pb-8 pt-[calc(var(--header-h)+1rem)] text-white sm:pb-10 lg:pb-12"
+      // superfície escura: todo o conteúdo usa os tokens do verde da marca
+      data-surface="dark"
+      className="relative isolate flex min-h-[100svh] flex-col justify-center overflow-hidden bg-brand-bg pb-8 pt-[calc(var(--header-h)+1rem)] sm:pb-10 lg:pb-12"
     >
-      {/* ======================================================
-          FUNDO ESCURO DO HERO
-
-          Esta camada ocupa inclusive a região atrás do Header.
-          Assim o Navbar continua legível mesmo sendo transparente.
-      ====================================================== */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-40 bg-[#050605]"
-      />
-
       {/* ======================================================
           FOTO DE FUNDO
 
-          IMPORTANTE:
-          Diferente da versão anterior, a foto NÃO usa mais inset-0.
-
-          Ela começa exatamente depois da altura reservada para o
-          Header através de --header-h.
-
-          Desktop:
-          --header-h = 152px
-
-          Tablet:
-          --header-h = 120px
-
-          Mobile:
-          --header-h = 104px
+          Começa logo abaixo do header (--header-h): a faixa acima dela é o
+          próprio fundo verde da seção, onde a navbar transparente se apoia.
       ====================================================== */}
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 top-[var(--header-h)] -z-30 overflow-hidden"
+        className="absolute inset-x-0 bottom-0 top-[var(--header-h)] -z-20 overflow-hidden"
       >
         <Image
           src="/hero/imagemFundoHero4.png"
@@ -85,118 +77,27 @@ export function Hero() {
           priority
           quality={92}
           sizes="100vw"
-          className="
-            object-cover
-            object-[70%_center]
-            lg:object-center
-          "
+          className="object-cover object-[70%_center] lg:object-center"
         />
       </div>
 
-      {/* ======================================================
-          TRANSIÇÃO ENTRE HEADER E FOTO
-
-          Evita uma linha perceptível exatamente no ponto em que
-          a imagem começa.
-      ====================================================== */}
+      {/* Véu verde-escuro: garante leitura do texto à esquerda e deixa a
+          fotografia aparecer à direita (ver `.hero-scrim` em globals.css). */}
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 top-[var(--header-h)] -z-20 h-24"
-        style={{
-          background:
-            "linear-gradient(180deg, #050605 0%, rgba(5,14,9,0.80) 24%, rgba(5,16,10,0.34) 60%, transparent 100%)",
-        }}
-      />
-
-      {/* ======================================================
-          VÉU ESCURO
-
-          Começa junto com a fotografia, em vez de cobrir também
-          todo o Header.
-
-          Opacidade baixa no desktop porque a foto do ateliê já
-          é escura por natureza.
-      ====================================================== */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 top-[var(--header-h)] -z-20 bg-[#04120b]/45 lg:bg-[#04120b]/14"
-      />
-
-      {/* ======================================================
-          GRADIENTE DA ESQUERDA
-
-          A própria fotografia já chega com um fade escuro à
-          esquerda, então aqui o pico de opacidade fica no MEIO
-          (45%), onde o chão do ateliê começa a clarear e o
-          texto ainda passa por cima.
-
-          Nas bordas a opacidade é baixa de propósito: reforçar
-          o canto esquerdo só apagaria o verde da imagem.
-      ====================================================== */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 top-[var(--header-h)] -z-20"
-        style={{
-          background:
-            "linear-gradient(90deg, rgba(4,10,6,0.30) 0%, rgba(4,10,6,0.34) 26%, rgba(5,11,7,0.44) 45%, rgba(5,11,7,0.36) 60%, rgba(5,11,7,0.16) 74%, transparent 88%)",
-        }}
-      />
-
-      {/* ======================================================
-          VINHETA SUPERIOR DA FOTO
-
-          Serve apenas para integrar suavemente a foto ao fundo
-          do Header, sem jogar uma sombra pesada sobre a camisa.
-      ====================================================== */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 top-[var(--header-h)] -z-10"
-        style={{
-          background: `
-            linear-gradient(
-              180deg,
-              rgba(4,11,7,0.42) 0%,
-              rgba(4,11,7,0.13) 10%,
-              transparent 23%
-            ),
-            linear-gradient(
-              0deg,
-              rgba(4,11,7,0.78) 0%,
-              rgba(4,11,7,0.34) 10%,
-              transparent 28%
-            )
-          `,
-        }}
-      />
-
-      {/* ======================================================
-          REALCE DOURADO
-
-          Bem discreto porque a própria fotografia já possui
-          iluminação dourada.
-      ====================================================== */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 top-[var(--header-h)] -z-10 hidden lg:block"
-        style={{
-          background:
-            "radial-gradient(ellipse 30% 50% at 79% 30%, rgba(212,170,72,0.07) 0%, rgba(158,111,31,0.03) 42%, transparent 75%)",
-        }}
+        className="hero-scrim absolute inset-x-0 bottom-0 top-[var(--header-h)] -z-10"
       />
 
       <Container size="wide" className="relative">
-        {/* ======================================================
-            CONTEÚDO PRINCIPAL
-        ====================================================== */}
         <div className="grid items-center gap-8 lg:grid-cols-[1.25fr_0.75fr] lg:gap-10">
           {/* ====================================================
               LADO ESQUERDO
           ==================================================== */}
           <div className="relative z-10 max-w-[680px] xl:max-w-[820px]">
-            {/* Badge */}
-            <Reveal className="mb-4 inline-flex items-center gap-2.5 rounded-full border border-[#c8a64c]/55 bg-black/30 px-4 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-[#e1c573] backdrop-blur-sm sm:px-5 sm:text-[0.78rem] sm:tracking-[0.14em]">
+            {/* Selo — etiqueta comercial no amarelo da logo */}
+            <Reveal className="mb-5 inline-flex items-center gap-2 rounded-full bg-rbs-yellow px-4 py-1.5 font-display text-[0.8125rem] font-bold text-rbs-green-deep sm:text-sm">
               <ShieldCheck
-                className="h-4 w-4 shrink-0 text-[#d5b34e]"
+                className="h-4 w-4 shrink-0"
                 aria-hidden="true"
               />
 
@@ -207,58 +108,60 @@ export function Hero() {
             <Reveal
               as="h1"
               delay={90}
-              className="font-display text-[2.1rem] uppercase leading-[1.05] tracking-[0.015em] text-[#f0e3c2] sm:text-[2.9rem] lg:text-[3.15rem] xl:text-[3.6rem]"
+              // fluido no celular: a fonte acompanha a largura útil (tela menos
+              // os 2×20px de margem). "A praticidade que todo" mede ~10,5× a
+              // fonte, então cabe numa linha a partir de ~340px de tela
+              className="text-[clamp(1.75rem,calc((100vw-2.5rem)/10.7),2.125rem)] font-extrabold leading-[1.08] tracking-tight sm:text-[2.8rem] lg:text-[3.05rem] xl:text-[3.5rem]"
             >
-              A praticidade
-              <br />
-              que todo
-              <br />
-
-              <span className="text-[#d1ad4c]">
-                Síndico procura
-              </span>
+              {/* duas linhas fixas; se a 1ª não couber, `balance` reparte
+                  "A praticidade / que todo" em vez de isolar "todo" */}
+              <span className="block sm:whitespace-nowrap">A praticidade que todo</span>
+              <span className="block">Síndico procura</span>
             </Reveal>
 
-            {/* Linha */}
+            {/* Traço amarelo sob o título */}
             <Reveal
               variant="scale"
               delay={180}
-              className="mt-4 h-[3px] w-16 bg-[#c8a344]"
+              aria-hidden="true"
+              className="mt-5 h-1 w-16 rounded-full bg-rbs-yellow"
             />
 
             {/* Descrição */}
             <Reveal
               as="p"
               delay={240}
-              className="mt-4 max-w-[620px] text-[0.95rem] leading-7 text-white/70 sm:text-[1.08rem] sm:leading-8 xl:max-w-[680px]"
+              className="mt-5 max-w-[620px] text-base leading-7 text-brand-text sm:text-lg sm:leading-8 xl:max-w-[680px]"
             >
               Conheça os diferenciais da RBS Uniformes, uma empresa com foco principal em atendimento à condomínios, simplificando a gestão de uniformes para Síndicos e Administradoras.
             </Reveal>
 
             {/* ==================================================
-                BOTÕES
+                BOTÕES — cores do `Button`; aqui só o layout de duas linhas
             ================================================== */}
             <Reveal
               delay={310}
-              className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
+              className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
             >
               <ButtonLink
                 href="#contato"
+                tone="accent"
                 size="lg"
-                className="min-h-[60px] flex-1 justify-start gap-3 rounded-md border border-[#d4b45c] bg-[#d4b45c] px-5 py-3 text-left text-[#111] shadow-[0_10px_30px_rgba(200,163,68,0.12)] transition hover:bg-[#e2c774] sm:max-w-[17.5rem]"
+                className="min-h-[60px] flex-1 justify-between gap-3 px-5 py-3 text-left sm:max-w-[17.5rem]"
                 icon={
                   <CalendarDays
-                    className="h-5 w-5 shrink-0"
+                    className="h-5 w-5 shrink-0 stroke-[2.25]"
                     aria-hidden="true"
                   />
                 }
               >
                 <span className="flex flex-col items-start">
-                  <strong className="text-[0.8rem] font-bold uppercase tracking-[0.04em] sm:text-[0.88rem]">
+                  <strong className="text-[0.9375rem] font-bold">
                     Agendar visita gratuita
                   </strong>
 
-                  <span className="mt-1 text-[0.62rem] font-normal uppercase tracking-[0.18em] opacity-60 sm:text-[0.66rem]">
+                  {/* verde profundo cheio (sem opacidade): contraste forte no amarelo */}
+                  <span className="mt-0.5 font-sans text-[0.75rem] font-medium">
                     Visita sem compromisso
                   </span>
                 </span>
@@ -269,7 +172,8 @@ export function Hero() {
                 size="lg"
                 href={whatsappLink(defaultWhatsappMessage)}
                 external
-                className="min-h-[60px] flex-1 justify-start gap-3 rounded-md border border-[#b9913b]/80 bg-black/30 px-5 py-3 text-left text-[#d5b65e] backdrop-blur-sm transition hover:border-[#d4b45c] hover:bg-[#d4b45c]/10 sm:max-w-[17.5rem]"
+                // mais discreto que o amarelo: borda branca a meia força
+                className="min-h-[60px] flex-1 justify-between gap-3 border-white/40 px-5 py-3 text-left hover:border-white/70 hover:bg-white/[0.06] sm:max-w-[17.5rem]"
                 icon={
                   <FileText
                     className="h-5 w-5 shrink-0"
@@ -278,11 +182,11 @@ export function Hero() {
                 }
               >
                 <span className="flex flex-col items-start">
-                  <strong className="text-[0.8rem] font-bold uppercase tracking-[0.04em] sm:text-[0.88rem]">
+                  <strong className="text-[0.9375rem] font-bold">
                     Solicitar cotação
                   </strong>
 
-                  <span className="mt-1 text-[0.62rem] font-normal uppercase tracking-[0.18em] text-white/55 sm:text-[0.66rem]">
+                  <span className="mt-0.5 font-sans text-[0.75rem] font-normal opacity-75">
                     Receba sua proposta
                   </span>
                 </span>
@@ -294,76 +198,60 @@ export function Hero() {
             ================================================== */}
             <Reveal
               delay={390}
-              className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-4"
+              className="mt-7 flex flex-wrap items-center gap-x-7 gap-y-4"
             >
               <VisitModal />
 
-              <div className="flex items-center gap-3">
+              <span aria-hidden="true" className="hidden h-8 w-px bg-white/15 sm:block" />
+
+              {/* Resumo da seção de avaliações: mesmos clientes, mesmo avatar
+                  amarelo — e o bloco inteiro leva até lá. */}
+              <a
+                href="#avaliacoes"
+                aria-label="Ver as avaliações dos clientes"
+                className="group flex items-center gap-4 rounded-brand"
+              >
                 {/* Avatares */}
-                <div className="flex -space-x-2">
-                  {["S", "A", "M", "C"].map((letter, index) => (
+                <div className="flex -space-x-2" aria-hidden="true">
+                  {testimonials.map((item) => (
                     <div
-                      key={`${letter}-${index}`}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#080808] bg-[#262626] text-[0.6rem] font-semibold text-white"
+                      key={item.name}
+                      className={cn(
+                        "flex h-8 w-8 items-center justify-center rounded-full border-2 border-brand-bg font-display text-[0.65rem] font-bold",
+                        tones.yellow.box,
+                      )}
                     >
-                      {letter}
+                      {initials(item.name)}
                     </div>
                   ))}
                 </div>
+
+                <span aria-hidden="true" className="h-8 w-px bg-white/15" />
 
                 <div>
                   <div className="flex gap-0.5">
                     {Array.from({ length: 5 }).map((_, index) => (
                       <Star
                         key={index}
-                        className="h-3.5 w-3.5 fill-[#e1b842] text-[#e1b842]"
+                        className="h-3.5 w-3.5 fill-rbs-yellow text-rbs-yellow"
                         aria-hidden="true"
                       />
                     ))}
                   </div>
 
-                  <p className="mt-1 text-[0.74rem] text-white/65 sm:text-[0.82rem]">
+                  <p className="mt-1 flex items-center gap-1.5 text-[0.8125rem] text-brand-muted underline-offset-4 transition-colors duration-200 group-hover:text-brand-heading group-hover:underline">
+                    {/* único toque vermelho do hero */}
+                    <span
+                      aria-hidden="true"
+                      className="h-1.5 w-1.5 shrink-0 rounded-full bg-rbs-red"
+                    />
                     Síndicos e administradoras satisfeitos
                   </p>
                 </div>
-              </div>
+              </a>
             </Reveal>
           </div>
 
-          {/* ====================================================
-              LADO DIREITO
-
-              Desktop:
-              a fotografia do ateliê já preenche esse lado.
-
-              Mobile:
-              exibimos a camisa PNG porque o crop vertical da
-              fotografia mostra só um recorte das mesas.
-          ==================================================== */}
-          <Reveal
-            variant="right"
-            delay={200}
-            className="relative z-10 flex min-h-[250px] items-center justify-center sm:min-h-[295px] lg:hidden"
-          >
-            <div
-              aria-hidden="true"
-              className="absolute left-1/2 top-1/2 h-[62%] w-[58%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[90px]"
-              style={{
-                background: "rgba(190,143,43,0.055)",
-              }}
-            />
-
-            <div className="relative z-10 aspect-[3/4] w-full max-w-[240px] sm:max-w-[280px]">
-              <Image
-                src="/hero/heromobile1.png"
-                alt="Camisa social verde da RBS Uniformes"
-                fill
-                priority
-                sizes="(max-width: 640px) 240px, 280px"
-                className="object-contain object-center drop-shadow-[0_30px_35px_rgba(0,0,0,0.45)]"
-              />
-            </div>
-          </Reveal>
         </div>
 
         {/* ======================================================
@@ -371,20 +259,20 @@ export function Hero() {
         ====================================================== */}
         <Reveal
           delay={470}
-          className="relative z-20 mt-6 overflow-hidden rounded-xl border border-[#a47e2e]/45 bg-[#0b0a07]/92 shadow-[0_18px_55px_rgba(0,0,0,0.45)] backdrop-blur-md lg:mt-7"
+          className="relative z-20 mt-9 overflow-hidden rounded-brand-lg border border-rbs-yellow bg-brand-bg shadow-brand-lg"
         >
           <div className="grid sm:grid-cols-2 lg:grid-cols-4">
             {highlights.map(
-              ({ icon: Icon, title, description }, index) => (
+              ({ icon: Icon, title, description, tone }, index) => (
                 <Reveal
                   key={title}
                   delay={560 + index * 90}
                   className={[
-                    "flex min-h-[72px] items-center gap-3 px-4 py-3 lg:px-5",
-                    "transition-colors duration-300 hover:bg-[#a47e2e]/10",
+                    "flex items-center gap-3 px-4 py-2.5 lg:px-5",
+                    "transition-colors duration-200 hover:bg-brand-heading/[0.04]",
 
                     index !== 0
-                      ? "border-t border-[#a47e2e]/20 sm:border-l sm:border-t-0"
+                      ? "border-t border-rbs-yellow/40 sm:border-l sm:border-t-0"
                       : "",
 
                     index === 2
@@ -393,16 +281,16 @@ export function Hero() {
                   ].join(" ")}
                 >
                   <Icon
-                    className="h-6 w-6 shrink-0 stroke-[1.35] text-[#d3ac4b]"
+                    className={cn("h-5 w-5 shrink-0 stroke-[1.75]", tones[tone].text)}
                     aria-hidden="true"
                   />
 
                   <div>
-                    <h2 className="font-display text-[0.7rem] uppercase leading-[1.4] tracking-[0.08em] text-[#ddbd6c] xl:text-[0.76rem]">
+                    <h2 className="text-[0.8125rem] font-bold leading-tight">
                       {title}
                     </h2>
 
-                    <p className="mt-1 text-[0.66rem] leading-[1.45] text-white/55 xl:text-[0.7rem]">
+                    <p className="mt-0.5 text-xs leading-[1.35] text-brand-muted">
                       {description}
                     </p>
                   </div>

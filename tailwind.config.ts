@@ -1,15 +1,19 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Uma única escala de cores semânticas ("brand") alimentada por CSS custom
- * properties. O valor das variáveis é trocado em `app/globals.css` conforme o
- * atributo `data-surface` ("dark" | "light"), o que permite que os mesmos
- * componentes sirvam às seções escuras e claras sem duplicação.
+ * Cores semânticas ("brand") alimentadas por CSS custom properties. O valor
+ * das variáveis é trocado em `app/globals.css` conforme o atributo
+ * `data-surface` ("light" | "dark"), o que permite que os mesmos componentes
+ * sirvam às seções claras e às verde-escuras sem duplicação.
  *
- * As variáveis guardam canais RGB crus (ex.: `252 182 9`) para que os
+ * "rbs" é a paleta fixa da marca, para os poucos pontos que não devem mudar
+ * com a superfície (barra utilitária, véus do hero, estrelas).
+ *
+ * As variáveis guardam canais RGB crus (ex.: `8 115 63`) para que os
  * modificadores de opacidade do Tailwind (`bg-brand-primary/20`) funcionem.
  */
 const brand = (name: string) => `rgb(var(--c-${name}) / <alpha-value>)`;
+const rbs = (name: string) => `rgb(var(--rbs-${name}) / <alpha-value>)`;
 
 const config: Config = {
   content: [
@@ -33,31 +37,31 @@ const config: Config = {
           "primary-hover": brand("primary-hover"),
           "on-primary": brand("on-primary"),
           accent: brand("accent"),
-          "accent-strong": brand("accent-strong"),
-          sun: brand("sun"),
-          "sun-soft": brand("sun-soft"),
-          red: brand("red"),
           green: brand("green"),
           "green-soft": brand("green-soft"),
-          gray: brand("gray"),
+          yellow: brand("yellow"),
+          "yellow-soft": brand("yellow-soft"),
+          red: brand("red"),
+          "red-soft": brand("red-soft"),
         },
-        /* Paletas literais — úteis para gradientes e artes decorativas. */
-        /* Ouro envelhecido: menos saturado que o da arte da logo, para não
-           dominar o layout em áreas grandes. */
-        premium: {
-          black: "#050505",
-          ink: "#0C0B09",
-          gold: "#C9A227",
-          "gold-light": "#E3CE94",
-          "gold-glow": "#EFE2B6",
-          "gold-deep": "#846A1C",
-          red: "#D62026",
-          "red-deep": "#8E0209",
-          /* Verde da montanha do hero — o acento secundário da marca. */
-          emerald: "#0A7A44",
-          "emerald-light": "#2FA76B",
-          "emerald-glow": "#7FCFA5",
-          "emerald-deep": "#013C1E",
+        rbs: {
+          green: rbs("green"),
+          "green-hover": rbs("green-hover"),
+          "green-dark": rbs("green-dark"),
+          "green-deep": rbs("green-deep"),
+          "green-light": rbs("green-light"),
+          "green-soft": rbs("green-soft"),
+          "green-mint": rbs("green-mint"),
+          cream: rbs("cream"),
+          offwhite: rbs("offwhite"),
+          ink: rbs("ink"),
+          red: rbs("red"),
+          "red-light": rbs("red-light"),
+          "red-soft": rbs("red-soft"),
+          yellow: rbs("yellow"),
+          "yellow-hover": rbs("yellow-hover"),
+          "yellow-ink": rbs("yellow-ink"),
+          "yellow-soft": rbs("yellow-soft"),
         },
       },
       fontFamily: {
@@ -71,25 +75,11 @@ const config: Config = {
       boxShadow: {
         brand: "var(--shadow-brand)",
         "brand-lg": "var(--shadow-brand-lg)",
-        gold: "0 0 0 1px rgba(201,162,39,0.28), 0 16px 36px -20px rgba(201,162,39,0.4)",
-      },
-      backgroundImage: {
-        /* Gradiente do ouro fixo (blocos sempre escuros). Nas seções que
-           alternam claro/escuro use `--sheen`, que acompanha a superfície. */
-        "gold-sheen":
-          "linear-gradient(100deg,#9C7F26 0%,#C9A227 28%,#E7D5A0 50%,#C9A227 72%,#846A1C 100%)",
-        /* Mesmo brilho, na versão esmeralda — botões e selos verdes. */
-        "emerald-sheen":
-          "linear-gradient(100deg,#013C1E 0%,#0A7A44 30%,#2FA76B 52%,#0A7A44 74%,#04502C 100%)",
       },
       keyframes: {
         "fade-up": {
           from: { opacity: "0", transform: "translateY(18px)" },
           to: { opacity: "1", transform: "translateY(0)" },
-        },
-        "slow-spin": {
-          from: { transform: "rotate(0deg)" },
-          to: { transform: "rotate(360deg)" },
         },
         marquee: {
           from: { transform: "translateX(0)" },
@@ -97,8 +87,7 @@ const config: Config = {
         },
       },
       animation: {
-        "fade-up": "fade-up .7s cubic-bezier(.22,1,.36,1) both",
-        "slow-spin": "slow-spin 60s linear infinite",
+        "fade-up": "fade-up 1.1s cubic-bezier(.22,1,.36,1) both",
         marquee: "marquee 32s linear infinite",
       },
     },

@@ -6,6 +6,8 @@ import { createPortal } from "react-dom";
 
 import { ButtonLink } from "@/components/ui/Button";
 import { visit, visitStepsShort } from "@/lib/content";
+import { theme, tones, visitStepTones } from "@/lib/theme";
+import { cn } from "@/lib/utils";
 
 /**
  * Botão do hero + pop-up explicando como funciona a visita técnica.
@@ -57,7 +59,7 @@ export function VisitModal() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="mt-5 inline-flex min-h-[44px] items-center gap-2 rounded-brand border border-premium-gold/30 px-5 py-2.5 font-display text-xs uppercase tracking-[0.16em] text-premium-gold-light transition-colors hover:border-premium-gold/60 hover:bg-premium-gold/10 hover:text-premium-gold sm:border-transparent sm:px-2 sm:text-sm sm:hover:bg-transparent"
+        className="inline-flex min-h-[44px] items-center gap-2 rounded-brand border border-brand-heading/25 px-5 py-2.5 font-display text-sm font-semibold text-brand-heading transition-colors duration-200 hover:border-brand-heading/50 hover:bg-brand-heading/10 sm:border-transparent sm:px-2 sm:hover:bg-transparent sm:hover:text-brand-accent"
       >
         <HelpCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
         Como funciona a visita?
@@ -68,7 +70,8 @@ export function VisitModal() {
             <div
               // Acima da navbar (z-50) e do FAB (z-40) — o portal garante que o
               // z-index seja comparado na raiz, e não dentro do hero.
-              className="fixed inset-0 z-[60] flex items-end justify-center bg-black/80 backdrop-blur-sm sm:items-center sm:p-6"
+              data-surface="light"
+              className="fixed inset-0 z-[60] flex items-end justify-center bg-rbs-green-deep/60 backdrop-blur-sm sm:items-center sm:p-6"
               onClick={() => setOpen(false)}
             >
               <div
@@ -78,24 +81,24 @@ export function VisitModal() {
                 onClick={(event) => event.stopPropagation()}
                 // teto de altura na viewport: em telas baixas o diálogo encolhe
                 // e a lista de etapas rola, em vez de estourar a tela
-                className="flex max-h-[88svh] w-full animate-fade-up flex-col overflow-hidden rounded-t-brand-lg border border-premium-gold/35 bg-premium-black text-left shadow-brand-lg sm:max-h-[calc(100svh-4rem)] sm:max-w-xl sm:rounded-brand"
+                className="flex max-h-[88svh] w-full animate-fade-up flex-col overflow-hidden rounded-t-brand-lg border border-brand-border bg-brand-surface text-left shadow-brand-lg sm:max-h-[calc(100svh-4rem)] sm:max-w-xl sm:rounded-brand-lg"
               >
                 {/* Cabeçalho fixo — o X acompanha a rolagem da lista. */}
-                <div className="shrink-0 border-b border-premium-gold/20 px-5 pb-5 pt-4 sm:px-9 sm:pb-6 sm:pt-7">
+                <div className="shrink-0 border-b border-brand-border px-5 pb-5 pt-4 sm:px-9 sm:pb-6 sm:pt-7">
                   {/* Alça visual do bottom sheet (só no mobile). */}
                   <span
                     aria-hidden="true"
-                    className="mx-auto mb-4 block h-1 w-10 rounded-full bg-premium-gold/35 sm:hidden"
+                    className="mx-auto mb-4 block h-1 w-10 rounded-full bg-brand-border sm:hidden"
                   />
 
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <span className="font-display text-[0.65rem] uppercase tracking-[0.3em] text-premium-gold sm:text-xs sm:tracking-[0.36em]">
+                      <span className={theme.ui.eyebrow}>
                         {visit.eyebrow}
                       </span>
                       <h2
                         id="titulo-visita"
-                        className="mt-2 font-display text-xl uppercase leading-tight tracking-[0.05em] text-premium-gold-light sm:mt-3 sm:text-3xl"
+                        className="mt-2 text-xl font-bold leading-tight tracking-tight sm:mt-3 sm:text-3xl"
                       >
                         {visit.title}
                       </h2>
@@ -106,7 +109,7 @@ export function VisitModal() {
                       type="button"
                       onClick={() => setOpen(false)}
                       aria-label="Fechar"
-                      className="-mr-1 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-brand border border-premium-gold/35 text-premium-gold transition-colors hover:bg-premium-gold/10"
+                      className="-mr-1 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-brand border border-brand-border text-brand-heading transition-colors hover:border-brand-green hover:text-brand-green"
                     >
                       <X className="h-5 w-5" aria-hidden="true" />
                     </button>
@@ -122,19 +125,20 @@ export function VisitModal() {
                   </p>
 
                   <ol className="mt-6 space-y-5">
-                    {visitStepsShort.map((step) => {
+                    {visitStepsShort.map((step, index) => {
                       const Icon = step.icon;
+                      const tone = tones[visitStepTones[index % visitStepTones.length]];
 
                       return (
                         <li key={step.step} className="flex gap-3.5 sm:gap-4">
-                          <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-brand border border-premium-emerald/40 bg-premium-emerald/12 text-premium-emerald-light sm:h-11 sm:w-11">
+                          <span className={cn("inline-flex h-10 w-10 shrink-0 items-center justify-center sm:h-11 sm:w-11", theme.ui.iconBox, tone.box)}>
                             <Icon className="h-5 w-5" aria-hidden="true" />
                           </span>
                           <div>
-                            <span className="block font-display text-[0.65rem] uppercase tracking-[0.22em] text-premium-gold">
+                            <span className={cn("block", theme.ui.caption, tone.text)}>
                               {step.step}
                             </span>
-                            <h3 className="mt-1 font-display text-sm uppercase tracking-[0.1em] text-brand-heading">
+                            <h3 className="mt-0.5 text-base font-bold">
                               {step.title}
                             </h3>
                             <div className="mt-1.5 space-y-2 text-sm leading-relaxed text-brand-muted">
@@ -154,7 +158,7 @@ export function VisitModal() {
                 O padding extra respeita a barra de gestos do iOS. */}
                 <div
                   onClick={() => setOpen(false)}
-                  className="shrink-0 flex flex-col gap-3 border-t border-premium-gold/20 bg-premium-black px-5 pt-4 pb-[calc(1rem+env(safe-area-inset-bottom))] sm:flex-row sm:px-9 sm:py-6"
+                  className="shrink-0 flex flex-col gap-3 border-t border-brand-border bg-brand-bg-alt px-5 pt-4 pb-[calc(1rem+env(safe-area-inset-bottom))] sm:flex-row sm:px-9 sm:py-6"
                 >
                   <ButtonLink
                     href="#contato"

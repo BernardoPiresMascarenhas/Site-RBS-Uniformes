@@ -33,7 +33,7 @@ export function Logo({
         height={theme.logo.height}
         priority
         className={cn(
-          "w-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.04]",
+          "w-auto max-w-full object-contain transition-transform duration-300",
           sizeClassName,
         )}
       />
@@ -41,10 +41,10 @@ export function Logo({
       {/* A arte já traz "RBS UNIFORMES"; o wordmark ao lado é opcional. */}
       {showWordmark ? (
         <span className="hidden flex-col leading-none sm:flex">
-          <span className="font-display text-lg font-bold tracking-[0.22em] text-brand-heading">
+          <span className="font-display text-lg font-extrabold tracking-tight text-brand-heading">
             RBS
           </span>
-          <span className="text-[0.6rem] uppercase tracking-[0.35em] text-brand-muted">
+          <span className="text-xs font-medium text-brand-muted">
             Uniformes
           </span>
         </span>

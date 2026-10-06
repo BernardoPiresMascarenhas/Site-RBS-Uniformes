@@ -1,28 +1,32 @@
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { processSteps } from "@/lib/content";
-import { theme } from "@/lib/theme";
+import { theme, tones, type Tone } from "@/lib/theme";
 import { cn } from "@/lib/utils";
+
+/** Todas as etapas em amarelo — contraste com o fundo verde. */
+const stepTones: Tone[] = ["yellow"];
 
 export function Process() {
   return (
-    <Section tone="alt">
+    <Section surface="dark">
       <Container>
         <SectionHeading
           eyebrow="LOGÍSTICA DA RBS"
-          title="APENAS QUATRO ETAPAS DA COTAÇÃO Á ENTREGA."
-          description="Um processo previsível: você sabe em que fase o pedido está do começo ao fim."
+          title="Apenas quatro etapas da cotação à entrega."
+          description="Dinâmico, descomplicado, cuidado e profissionalismo em todo processo."
         />
 
-        <ol className="relative mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <ol className="relative mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {/* Linha de conexão entre as etapas (apenas em telas grandes) */}
           <span
             aria-hidden="true"
-            className="absolute left-0 right-0 top-12 hidden h-px bg-gradient-to-r from-transparent via-brand-accent/40 to-transparent lg:block"
+            className="absolute left-0 right-0 top-12 hidden h-px bg-brand-accent/35 lg:block"
           />
 
           {processSteps.map((step, index) => {
             const Icon = step.icon;
+            const tone = tones[stepTones[index % stepTones.length]];
 
             return (
               <Reveal
@@ -35,24 +39,30 @@ export function Process() {
                   theme.ui.cardHover,
                 )}
               >
+                {/* Traço curto no topo, na cor da etapa */}
+                <span
+                  aria-hidden="true"
+                  className={cn("absolute left-7 top-0 h-[3px] w-10 rounded-b-full", tone.dot)}
+                />
                 <div className="flex items-center justify-between">
                   <span
                     className={cn(
                       "inline-flex h-12 w-12 items-center justify-center",
                       theme.ui.iconBox,
+                      tone.box,
                     )}
                   >
                     <Icon className="h-6 w-6" aria-hidden="true" />
                   </span>
                   <span
-                    className="font-display text-3xl font-bold text-brand-accent/30"
+                    className={cn("font-display text-3xl font-extrabold opacity-80", tone.text)}
                     aria-hidden="true"
                   >
                     {step.step}
                   </span>
                 </div>
 
-                <h3 className="mt-6 font-display text-lg uppercase tracking-[0.08em]">
+                <h3 className="mt-6 text-lg">
                   {step.title}
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-brand-muted">

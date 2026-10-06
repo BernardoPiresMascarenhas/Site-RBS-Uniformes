@@ -3,13 +3,14 @@
 import { ChevronRight, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section } from "@/components/ui/Section";
-import type { PhotoModel } from "@/lib/services";
+import { modelSlug, type PhotoModel } from "@/lib/services";
 import { site, whatsappLink } from "@/lib/site";
+import { theme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 /**
@@ -69,6 +70,17 @@ export function ServiceShowcase({
     }
   }
 
+  // Chegando por um tópico do catálogo (`?modelo=`), abre já naquele modelo.
+  // Lido no cliente porque a página é estática; modelo sem foto não está em
+  // `models` e cai no padrão.
+  useEffect(() => {
+    const wanted = new URLSearchParams(window.location.search).get("modelo");
+    const match = wanted && models.find((option) => modelSlug(option.name) === wanted);
+    if (match) selectModel(match);
+    // só na montagem
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const message = `Olá! Vim pelo site da ${site.name} e tenho interesse na linha de ${title}. Modelo: ${model.name}.`;
 
   return (
@@ -78,7 +90,7 @@ export function ServiceShowcase({
       <Container>
         <nav
           aria-label="Trilha de navegação"
-          className="flex flex-wrap items-center gap-1.5 text-xs uppercase tracking-[0.18em] text-brand-muted"
+          className="flex flex-wrap items-center gap-1.5 text-sm text-brand-muted"
         >
           <Link href="/" className="transition-colors hover:text-brand-accent">
             Início
@@ -97,14 +109,14 @@ export function ServiceShowcase({
         <div className="mt-7 max-w-3xl">
           <Reveal
             as="span"
-            className="inline-flex items-center rounded-full border border-brand-green/40 bg-brand-green/10 px-4 py-1.5 text-[0.65rem] uppercase tracking-[0.28em] text-brand-green"
+            className="inline-flex items-center rounded-full bg-brand-green-soft px-4 py-1.5 font-display text-[0.8125rem] font-semibold text-brand-green"
           >
             {eyebrow}
           </Reveal>
           <Reveal
             as="h1"
             delay={90}
-            className="mt-5 font-display text-3xl uppercase leading-[1.12] tracking-[0.04em] sm:text-4xl lg:text-5xl"
+            className="mt-5 text-3xl font-extrabold leading-[1.12] tracking-tight sm:text-4xl lg:text-5xl"
           >
             {headline}
           </Reveal>
@@ -114,11 +126,10 @@ export function ServiceShowcase({
           {/* ---------- Coluna visual: peça + seletores ---------- */}
           <Reveal variant="left" className="lg:sticky lg:top-28 lg:self-start">
             <div
-              data-surface="dark"
               // no mobile a peça fica um pouco mais baixa que quadrada, para os
               // seletores caberem na primeira rolada
               className={cn(
-                "relative aspect-[5/4] overflow-hidden rounded-brand border border-premium-emerald/35 bg-gradient-to-br from-premium-emerald-deep via-premium-black to-premium-black sm:aspect-[4/3]",
+                "relative aspect-[5/4] overflow-hidden rounded-brand-lg border border-brand-border bg-brand-green-soft sm:aspect-[4/3]",
               )}
             >
               {photos.map((photo) => {
@@ -156,7 +167,7 @@ export function ServiceShowcase({
 
             {/* Modelos */}
             <fieldset className="mt-6">
-              <legend className="font-display text-[0.65rem] uppercase tracking-[0.24em] text-brand-muted">
+              <legend className={theme.ui.caption}>
                 Modelo
               </legend>
 
@@ -177,10 +188,7 @@ export function ServiceShowcase({
                           : "border-brand-border hover:border-brand-green/60",
                       )}
                     >
-                      <span
-                        data-surface="dark"
-                        className="relative block aspect-[4/3] w-full overflow-hidden rounded-brand bg-premium-black/95"
-                      >
+                      <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-brand bg-brand-green-soft">
                         <Image
                           src={option.photo}
                           alt=""
@@ -194,7 +202,7 @@ export function ServiceShowcase({
                       </span>
                       <span
                         className={cn(
-                          "px-1 pb-1 text-center text-[0.65rem] leading-tight",
+                          "px-1 pb-1 text-center text-xs leading-tight",
                           active ? "text-brand-heading" : "text-brand-muted",
                         )}
                       >
@@ -209,10 +217,10 @@ export function ServiceShowcase({
 
           {/* ---------- Coluna de conteúdo ---------- */}
           <Reveal variant="right" delay={120} className="flex flex-col">
-            <p className="font-display text-[0.65rem] uppercase tracking-[0.24em] text-brand-muted">
+            <p className={theme.ui.caption}>
               Modelo selecionado
             </p>
-            <h2 className="mt-2 font-display text-2xl uppercase leading-tight tracking-[0.06em]">
+            <h2 className="mt-1 text-2xl leading-tight">
               {model.name}
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-brand-muted">
@@ -221,13 +229,13 @@ export function ServiceShowcase({
 
             <span
               aria-hidden="true"
-              className="my-7 block h-px w-full bg-gradient-to-r from-brand-border via-brand-border/40 to-transparent"
+              className={cn("my-7 block", theme.ui.rule)}
             />
 
             <p className="text-base leading-relaxed text-brand-text">{intro}</p>
 
             {introClosing ? (
-              <p className="mt-4 font-display text-base uppercase leading-snug tracking-[0.06em] text-brand-green">
+              <p className="mt-4 font-display text-base font-bold leading-snug text-brand-green">
                 {introClosing}
               </p>
             ) : null}

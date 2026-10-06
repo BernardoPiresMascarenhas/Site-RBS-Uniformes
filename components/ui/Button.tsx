@@ -3,7 +3,7 @@ import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
-type Tone = "primary" | "secondary" | "ghost";
+type Tone = "primary" | "secondary" | "ghost" | "accent";
 type Size = "sm" | "md" | "lg";
 
 const sizes: Record<Size, string> = {
@@ -13,21 +13,25 @@ const sizes: Record<Size, string> = {
 };
 
 /**
- * Botão da marca: cantos retos, superfície dourada com brilho e borda metálica.
- *
- * O primário lê `--btn-primary-bg`/`--btn-primary-fg`, que mudam com a
- * superfície: ouro sobre preto na seção escura, grafite com letra champanhe
- * na seção clara.
+ * Botão da marca. As cores saem dos tokens da superfície: na seção clara o
+ * primário é verde com letra branca; no verde escuro ele inverte para branco
+ * com letra verde — sem precisar de variante própria.
  */
 const tones: Record<Tone, string> = {
   primary:
-    "bg-[image:var(--btn-primary-bg)] text-[rgb(var(--btn-primary-fg))] shadow-brand hover:brightness-110",
+    "border border-transparent bg-brand-primary text-brand-on-primary hover:bg-brand-primary-hover",
   secondary:
-    "border border-brand-accent/60 bg-transparent text-brand-accent hover:border-brand-accent hover:bg-brand-accent/10",
-  ghost: "text-brand-heading hover:text-brand-accent",
+    "border border-brand-primary/80 bg-transparent text-brand-primary hover:border-brand-primary hover:bg-brand-primary/[0.08]",
+  ghost: "text-brand-heading hover:bg-brand-green-soft hover:text-brand-green",
+  /**
+   * Amarelo da logo com letra verde profunda. Uso pontual — o CTA principal
+   * do hero —, nunca como botão padrão.
+   */
+  accent:
+    "border border-transparent bg-rbs-yellow text-rbs-green-deep hover:bg-rbs-yellow-hover",
 };
 
-const shape = "rounded-brand font-display uppercase tracking-[0.18em]";
+const shape = "rounded-brand font-display font-semibold";
 
 interface BaseProps {
   tone?: Tone;
@@ -41,7 +45,7 @@ type StyleProps = Omit<BaseProps, "children" | "icon">;
 
 function classes({ tone = "primary", size = "md", className }: StyleProps) {
   return cn(
-    "inline-flex items-center justify-center gap-2 whitespace-nowrap transition-all duration-300",
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap transition-colors duration-200",
     "disabled:cursor-not-allowed disabled:opacity-60",
     shape,
     sizes[size],

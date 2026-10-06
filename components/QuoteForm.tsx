@@ -88,14 +88,13 @@ export function QuoteForm() {
     setSent(true);
   }
 
-  const labelClass =
-    "mb-2 block font-display text-xs uppercase tracking-[0.2em] text-brand-accent";
+  const labelClass = "mb-2 block font-display text-sm font-semibold text-brand-heading";
 
   const fieldClass = cn("w-full text-sm outline-none transition-colors", theme.ui.field);
 
   return (
     <form onSubmit={handleSubmit} noValidate className={cn("p-7 sm:p-9", theme.ui.card)}>
-      <h3 className="font-display text-2xl uppercase tracking-[0.08em]">
+      <h3 className="text-2xl">
         Solicite sua cotação
       </h3>
       <p className="mt-2 text-sm text-brand-muted">
@@ -221,7 +220,7 @@ export function QuoteForm() {
         role="status"
         aria-live="polite"
         className={cn(
-          "mt-4 text-center text-sm text-brand-green",
+          "mt-4 text-center text-sm font-medium text-brand-green",
           sent ? "block" : "hidden",
         )}
       >

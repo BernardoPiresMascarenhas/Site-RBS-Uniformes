@@ -546,6 +546,25 @@ export function servicePath(slug: string) {
   return `/servicos/${slug}`;
 }
 
+/** Identificador de um modelo na URL: "Calça social masculina" → "calca-social-masculina". */
+export function modelSlug(name: string) {
+  return name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+/**
+ * Página da linha já abrindo num modelo (`?modelo=`). Se o modelo ainda não
+ * tem foto, a página ignora o parâmetro e abre no modelo padrão.
+ */
+export function modelPath(slug: string, modelName: string) {
+  return `${servicePath(slug)}?modelo=${modelSlug(modelName)}`;
+}
+
 /* Ícones auxiliares reexportados para as seções que montam listas próprias. */
 export const serviceListIcons = {
   pieces: Shirt,

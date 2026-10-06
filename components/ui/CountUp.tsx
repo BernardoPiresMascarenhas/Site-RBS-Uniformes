@@ -45,7 +45,7 @@ function easeOutExpo(t: number) {
 export function CountUp({
   value,
   className,
-  duration = 1800,
+  duration = 2800,
 }: {
   value: string;
   className?: string;

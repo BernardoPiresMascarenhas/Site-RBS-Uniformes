@@ -15,6 +15,19 @@ import { cn } from "@/lib/utils";
  */
 
 /* ---------------------------------------------------------------------------
+ * Cores dos acabamentos
+ *
+ * São partes da peça (linha do bordado, metal de zíper e fivela), não do
+ * tema do site — por isso neutras, sem o dourado da identidade antiga. As
+ * cores do tecido vêm sempre de `body`/`accent`.
+ * ------------------------------------------------------------------------- */
+
+/** Linha do bordado do brasão. */
+const BORDADO = "#F4F1EA";
+/** Metal escovado de zíper e fivela. */
+const METAL = "#B9BEBA";
+
+/* ---------------------------------------------------------------------------
  * Caminhos reaproveitados entre as camisas
  * ------------------------------------------------------------------------- */
 
@@ -35,11 +48,11 @@ const MANGA_CURTA_DIR = "M208 42 L266 70 L292 150 L244 170 L228 128 Z";
 function Brasao({ cx, cy, r = 17 }: { cx: number; cy: number; r?: number }) {
   return (
     <g opacity="0.9">
-      <circle cx={cx} cy={cy} r={r} fill="#C9A227" opacity="0.28" />
-      <circle cx={cx} cy={cy} r={r} fill="none" stroke="#C9A227" strokeWidth="2" />
+      <circle cx={cx} cy={cy} r={r} fill={BORDADO} opacity="0.28" />
+      <circle cx={cx} cy={cy} r={r} fill="none" stroke={BORDADO} strokeWidth="2" />
       <path
         d={`M${cx - 10} ${cy + 6} L${cx} ${cy - 8} L${cx + 10} ${cy + 6} Z`}
-        fill="#C9A227"
+        fill={BORDADO}
         opacity="0.9"
       />
     </g>
@@ -333,7 +346,7 @@ function Jaqueta({ body, accent, sombra }: Desenho) {
       {/* Zíper central */}
       <rect x="155" y="46" width="10" height="262" fill={accent} />
       <rect x="157" y="46" width="6" height="262" fill="#000000" opacity="0.25" />
-      <circle cx="160" cy="300" r="6" fill="#C9A227" opacity="0.85" />
+      <circle cx="160" cy="300" r="6" fill={METAL} opacity="0.9" />
 
       {/* Bolsos embutidos na altura da cintura */}
       <path
@@ -676,10 +689,10 @@ function Cinto({ body, accent, sombra }: Desenho) {
         height="60"
         rx="10"
         fill="none"
-        stroke="#C9A227"
+        stroke={METAL}
         strokeWidth="10"
       />
-      <rect x="58" y="150" width="52" height="9" rx="4" fill="#C9A227" />
+      <rect x="58" y="150" width="52" height="9" rx="4" fill={METAL} />
     </g>
   );
 }
