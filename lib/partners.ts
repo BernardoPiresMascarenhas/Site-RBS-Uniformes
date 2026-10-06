@@ -4,11 +4,11 @@ import path from "node:path";
 import sharp from "sharp";
 
 /**
- * Clientes e fornecedores lidos direto das pastas em `public/`.
+ * Clientes, bordados e fornecedores lidos direto das pastas em `public/`.
  *
  * Para incluir uma foto ou um logo, basta soltar o arquivo em
- * `public/clientes/` ou `public/fornecedores/` e refazer o build — nenhuma
- * linha de código muda. A ordem segue o nome do arquivo.
+ * `public/clientes/`, `public/bordados/` ou `public/fornecedores/` e refazer
+ * o build — nenhuma linha de código muda. A ordem segue o nome do arquivo.
  *
  * ⚠️ Usa `node:fs` e `sharp` — só pode ser chamado de Server Component.
  */
@@ -75,6 +75,11 @@ async function lerPasta(
 /** Fotos dos condomínios atendidos (`public/clientes/`). */
 export function getClientPhotos() {
   return lerPasta("clientes", (_file, index) => `Condomínio atendido pela RBS Uniformes — foto ${index + 1}`);
+}
+
+/** Matrizes de bordado já produzidas (`public/bordados/`). */
+export function getEmbroideryPhotos() {
+  return lerPasta("bordados", (_file, index) => `Matriz de bordado computadorizado — exemplo ${index + 1}`);
 }
 
 /** Logos dos fornecedores (`public/fornecedores/`). */

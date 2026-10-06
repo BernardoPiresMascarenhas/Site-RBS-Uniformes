@@ -5,9 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { PhotoMarquee } from "@/components/PhotoMarquee";
 import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section } from "@/components/ui/Section";
+import { embroidery as embroideryText } from "@/lib/content";
+import type { PartnerImage } from "@/lib/partners";
 import { modelSlug, type PhotoModel } from "@/lib/services";
 import { site, whatsappLink } from "@/lib/site";
 import { theme } from "@/lib/theme";
@@ -33,6 +36,7 @@ export function ServiceShowcase({
   introClosing,
   quickFacts,
   models,
+  embroidery = [],
 }: {
   title: string;
   eyebrow: string;
@@ -41,6 +45,8 @@ export function ServiceShowcase({
   introClosing?: string;
   quickFacts: string[];
   models: PhotoModel[];
+  /** Fotos das matrizes de bordado (lidas no servidor, ver `lib/partners.ts`). */
+  embroidery?: PartnerImage[];
 }) {
   const [model, setModel] = useState(models[0]);
 
@@ -216,7 +222,7 @@ export function ServiceShowcase({
           </Reveal>
 
           {/* ---------- Coluna de conteúdo ---------- */}
-          <Reveal variant="right" delay={120} className="flex flex-col">
+          <Reveal variant="right" delay={120} className="flex min-w-0 flex-col">
             <p className={theme.ui.caption}>
               Modelo selecionado
             </p>
@@ -280,6 +286,28 @@ export function ServiceShowcase({
               confirmar a cor, agende uma visita ou nos envie uma mensagem que
               enviamos um vídeo da peça escolhida.
             </p>
+
+            {/* ---------- Bordados ---------- */}
+            {embroidery.length > 0 ? (
+              <div className="mt-10 border-t border-brand-border pt-8">
+                <span className={cn(theme.ui.eyebrow, "text-brand-red")}>Personalização</span>
+                <h3 className="mt-2 text-xl leading-tight tracking-tight sm:text-2xl">
+                  {embroideryText.title}
+                </h3>
+                <div className="mt-3 space-y-3 text-sm leading-relaxed text-brand-muted">
+                  {embroideryText.paragraphs.map((paragraph) => (
+                    <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+                  ))}
+                </div>
+                <div className="mt-6">
+                  <PhotoMarquee
+                    photos={embroidery}
+                    label="Matrizes de bordado computadorizado"
+                    size="sm"
+                  />
+                </div>
+              </div>
+            ) : null}
           </Reveal>
         </div>
       </Container>

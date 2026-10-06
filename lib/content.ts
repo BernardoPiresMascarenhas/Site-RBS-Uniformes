@@ -221,6 +221,15 @@ export const sectors = [
   "HIGIENIZAÇÃO",
 ];
 
+/** Bloco de bordados das páginas de serviço (as fotos vêm de `public/bordados/`). */
+export const embroidery = {
+  title: "Bordados computadorizados",
+  paragraphs: [
+    "Utilizamos bordados computadorizados para aplicar seus desenhos em tecidos. Para que seja possível, possuímos uma equipe voltada para a produção do bordado digital também conhecido como bordado em matriz.",
+    "Um trabalho profissional precisa de matrizes de bordados bem feitas, sem erros, para que sua marca seja perfeitamente reproduzida na hora de realizar o bordado em máquina.",
+  ],
+};
+
 export interface Testimonial {
   name: string;
   text: string;

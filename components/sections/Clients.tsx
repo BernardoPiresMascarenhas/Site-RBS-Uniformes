@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { ClientsGallery } from "@/components/ClientsGallery";
+import { PhotoMarquee } from "@/components/PhotoMarquee";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { getClientPhotos, getSuppliers } from "@/lib/partners";
@@ -37,7 +37,7 @@ export async function Clients() {
       {/* As faixas ocupam a largura toda da tela, fora do Container. */}
       {photos.length > 0 ? (
         <Reveal className="mt-12">
-          <ClientsGallery photos={photos} />
+          <PhotoMarquee photos={photos} label="Fotos dos condomínios atendidos" />
         </Reveal>
       ) : null}
 

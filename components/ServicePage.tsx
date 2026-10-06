@@ -10,6 +10,7 @@ import { SiteShell } from "@/components/SiteShell";
 import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
+import { getEmbroideryPhotos } from "@/lib/partners";
 import { resolvePhotoModels } from "@/lib/photos";
 import { services, servicePath, type Service } from "@/lib/services";
 import { site, whatsappLink } from "@/lib/site";
@@ -23,7 +24,8 @@ import { cn } from "@/lib/utils";
 const cycle: Tone[] = ["green", "yellow", "red"];
 const toneAt = (index: number) => tones[cycle[index % cycle.length]].box;
 
-export function ServicePage({ service }: { service: Service }) {
+export async function ServicePage({ service }: { service: Service }) {
+  const embroidery = await getEmbroideryPhotos();
   const message = `Olá! Vim pelo site da ${site.name} e gostaria de um orçamento da linha de ${service.title}.`;
   const others = services.filter((item) => item.slug !== service.slug);
 
@@ -39,6 +41,7 @@ export function ServicePage({ service }: { service: Service }) {
         // a checagem dos arquivos acontece aqui, no servidor, porque
         // ServiceShowcase é um componente client; modelos sem foto ficam de fora
         models={resolvePhotoModels(service.models)}
+        embroidery={embroidery}
       />
 
       {/* ---------------- Benefícios ---------------- */}
@@ -72,7 +75,7 @@ export function ServicePage({ service }: { service: Service }) {
                     className={cn(
                       "inline-flex h-12 w-12 shrink-0 items-center justify-center",
                       theme.ui.iconBox,
-                      toneAt(index),
+                      tones.red.box,
                     )}
                   >
                     <HighlightIcon className="h-6 w-6" aria-hidden="true" />

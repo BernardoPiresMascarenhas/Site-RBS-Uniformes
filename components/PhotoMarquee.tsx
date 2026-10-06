@@ -8,8 +8,17 @@ import { createPortal } from "react-dom";
 import type { PartnerImage } from "@/lib/partners";
 import { cn } from "@/lib/utils";
 
-/** Altura do card no desktop (lg:h-60) — base para estimar a largura das faixas. */
-const CARD_HEIGHT = 240;
+/**
+ * Tamanhos do card. `height` é a altura no desktop, usada para estimar a
+ * largura das faixas (e com ela quantas cópias o loop precisa).
+ */
+const SIZES = {
+  /** Faixas largas, na largura da tela (Clientes). */
+  lg: { height: 240, className: "h-40 sm:h-52 lg:h-60", sizes: "(min-width: 1024px) 420px, (min-width: 640px) 320px, 240px" },
+  /** Faixas dentro de uma coluna de texto (Bordados). */
+  sm: { height: 128, className: "h-24 sm:h-28 lg:h-32", sizes: "(min-width: 1024px) 240px, 200px" },
+} as const;
+
 const GAP = 16;
 /** Metade da faixa precisa cobrir telas muito largas, senão sobra vão no loop. */
 const MIN_HALF_WIDTH = 2600;
@@ -19,22 +28,32 @@ const SPEED = 32;
 type Indexed = PartnerImage & { index: number };
 
 /**
- * Fotos dos condomínios em duas faixas que deslizam em sentidos opostos.
+ * Fotos em faixas que deslizam em sentidos opostos (Clientes, Bordados).
  * Passar o mouse (ou focar com o teclado) pausa a faixa; clicar abre a foto
  * ampliada, com navegação por setas.
  *
  * Com `prefers-reduced-motion` a animação para (regra global em
  * globals.css) e a faixa vira rolagem horizontal comum.
  */
-export function ClientsGallery({ photos }: { photos: PartnerImage[] }) {
+export function PhotoMarquee({
+  photos,
+  label,
+  size = "lg",
+  rows: rowCount = 2,
+}: {
+  photos: PartnerImage[];
+  /** Nome do conjunto, para o visualizador (leitores de tela). */
+  label: string;
+  size?: keyof typeof SIZES;
+  rows?: 1 | 2;
+}) {
   const [active, setActive] = useState<number | null>(null);
 
   const indexed: Indexed[] = photos.map((photo, index) => ({ ...photo, index }));
   // fotos alternadas entre as faixas: misturam retrato e paisagem nas duas
-  const rows = [
-    indexed.filter((_, i) => i % 2 === 0),
-    indexed.filter((_, i) => i % 2 === 1),
-  ].filter((row) => row.length > 0);
+  const rows = Array.from({ length: rowCount }, (_, r) =>
+    indexed.filter((_, i) => i % rowCount === r),
+  ).filter((row) => row.length > 0);
 
   return (
     <>
@@ -43,6 +62,7 @@ export function ClientsGallery({ photos }: { photos: PartnerImage[] }) {
           <MarqueeRow
             key={i}
             items={row}
+            size={SIZES[size]}
             reverse={i % 2 === 1}
             paused={active !== null}
             onOpen={setActive}
@@ -51,7 +71,7 @@ export function ClientsGallery({ photos }: { photos: PartnerImage[] }) {
       </div>
 
       {active !== null ? (
-        <Lightbox photos={photos} index={active} onChange={setActive} onClose={() => setActive(null)} />
+        <Lightbox label={label} photos={photos} index={active} onChange={setActive} onClose={() => setActive(null)} />
       ) : null}
     </>
   );
@@ -59,17 +79,19 @@ export function ClientsGallery({ photos }: { photos: PartnerImage[] }) {
 
 function MarqueeRow({
   items,
+  size,
   reverse,
   paused,
   onOpen,
 }: {
   items: Indexed[];
+  size: (typeof SIZES)[keyof typeof SIZES];
   reverse: boolean;
   paused: boolean;
   onOpen: (index: number) => void;
 }) {
   const copyWidth = items.reduce(
-    (sum, photo) => sum + (CARD_HEIGHT * photo.width) / photo.height + GAP,
+    (sum, photo) => sum + (size.height * photo.width) / photo.height + GAP,
     0,
   );
   // quantas cópias da linha formam cada metade da faixa (o loop anda -50%)
@@ -100,14 +122,14 @@ function MarqueeRow({
               aria-hidden={clone || undefined}
               tabIndex={clone ? -1 : undefined}
               aria-label={clone ? undefined : `Ampliar: ${photo.alt}`}
-              className="group relative h-40 shrink-0 overflow-hidden rounded-brand-lg border border-brand-border bg-brand-surface shadow-brand sm:h-52 lg:h-60"
+              className={cn("group relative shrink-0 overflow-hidden rounded-brand-lg border border-brand-border bg-brand-surface shadow-brand", size.className)}
               style={{ aspectRatio: `${photo.width} / ${photo.height}` }}
             >
               <Image
                 src={photo.src}
                 alt={clone ? "" : photo.alt}
                 fill
-                sizes="(min-width: 1024px) 420px, (min-width: 640px) 320px, 240px"
+                sizes={size.sizes}
                 className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
               />
               {/* Véu + ícone de ampliar no hover */}
@@ -128,11 +150,13 @@ function MarqueeRow({
 }
 
 function Lightbox({
+  label,
   photos,
   index,
   onChange,
   onClose,
 }: {
+  label: string;
   photos: PartnerImage[];
   index: number;
   onChange: (index: number) => void;
@@ -172,7 +196,7 @@ function Lightbox({
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Fotos dos condomínios atendidos"
+      aria-label={label}
       data-surface="dark"
       onClick={onClose}
       className="fixed inset-0 z-[60] flex flex-col items-center justify-center gap-4 bg-rbs-green-deep/90 p-4 backdrop-blur-sm sm:p-8"
