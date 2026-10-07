@@ -4,10 +4,12 @@ import path from "node:path";
 import sharp from "sharp";
 
 /**
- * Clientes, bordados e fornecedores lidos direto das pastas em `public/`.
+ * Clientes, administradoras, bordados e fornecedores lidos direto das pastas
+ * em `public/`.
  *
  * Para incluir uma foto ou um logo, basta soltar o arquivo em
- * `public/clientes/`, `public/bordados/` ou `public/fornecedores/` e refazer
+ * `public/clientes/`, `public/administradoras/`, `public/bordados/` ou
+ * `public/fornecedores/` e refazer
  * o build — nenhuma linha de código muda. A ordem segue o nome do arquivo.
  *
  * ⚠️ Usa `node:fs` e `sharp` — só pode ser chamado de Server Component.
@@ -34,6 +36,17 @@ const NOMES_FORNECEDORES: Record<string, string> = {
   "mariano.png": "Mariano Calçados de Segurança",
   "valença.png": "Valença",
   "wedgesoftworks-1448932011.png": "Soft Works",
+};
+
+/** Mesmo papel de `NOMES_FORNECEDORES`, para as administradoras parceiras. */
+const NOMES_ADMINISTRADORAS: Record<string, string> = {
+  "casa2-2.png": "Casa+ Administradora de Condomínios",
+  "gente-5-600x600.png": "Gente Administração de Condomínios",
+  "gw-4.png": "GW Administração de Condomínios",
+  "logo-opala2-3.png": "Opala Administradora de Condomínios",
+  "ouro-velho-5.png": "Ouro Velho Administradora",
+  "pacto.png": "Pacto Administradora",
+  "prosind2-2.png": "Prosind Condomínios",
 };
 
 function nomeDoArquivo(file: string) {
@@ -75,6 +88,14 @@ async function lerPasta(
 /** Fotos dos condomínios atendidos (`public/clientes/`). */
 export function getClientPhotos() {
   return lerPasta("clientes", (_file, index) => `Condomínio atendido pela RBS Uniformes — foto ${index + 1}`);
+}
+
+/** Logos das administradoras parceiras (`public/administradoras/`). */
+export function getAdministrators() {
+  return lerPasta(
+    "administradoras",
+    (file) => `Logo ${NOMES_ADMINISTRADORAS[file] ?? nomeDoArquivo(file)}`,
+  );
 }
 
 /** Matrizes de bordado já produzidas (`public/bordados/`). */

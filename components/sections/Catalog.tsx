@@ -4,9 +4,10 @@ import Link from "next/link";
 
 import { UniformMockup } from "@/components/decor/UniformMockup";
 import { ButtonLink } from "@/components/ui/Button";
+import { CardCarousel, type CarouselSlide } from "@/components/ui/CardCarousel";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
-import { resolveCover, resolveModelPhotos } from "@/lib/photos";
+import { resolveCover, resolveModelPhotos, resolvePhotoModels } from "@/lib/photos";
 import { modelPath, services, servicePath } from "@/lib/services";
 import { theme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
@@ -44,6 +45,17 @@ export function Catalog() {
             const coverPhoto = resolveCover(service.cover);
             const cover = coverPhoto ?? firstModel.photo;
 
+            // carrossel com as peças que já têm foto; cada slide abre a peça
+            // na página da linha
+            const slides: CarouselSlide[] = resolvePhotoModels(service.models).map(
+              (model) => ({
+                src: model.photo,
+                alt: `${model.name} da linha ${service.title}`,
+                href: modelPath(service.slug, model.name),
+                caption: model.name,
+              }),
+            );
+
             return (
               <Reveal
                 as="article"
@@ -55,7 +67,14 @@ export function Catalog() {
                   theme.ui.cardHover,
                 )}
               >
-                {/* Vitrine da peça: foto quando existir, mockup enquanto não. */}
+                {/* Vitrine: carrossel das peças com foto; sem nenhuma foto, cai na
+                    capa ou no mockup desenhado. */}
+                {slides.length > 0 ? (
+                  <CardCarousel
+                    slides={slides}
+                    className="aspect-[4/3] border-b border-brand-border bg-brand-green-soft"
+                  />
+                ) : (
                 <div
                   // proporção fixa para os três cards ficarem alinhados, tenha
                   // a linha foto ou desenho
@@ -90,6 +109,7 @@ export function Catalog() {
                     />
                   )}
                 </div>
+                )}
 
                 <div className="flex flex-1 flex-col p-7">
                   <h3 className="text-xl leading-tight">
@@ -100,13 +120,15 @@ export function Catalog() {
                     {service.shortDescription}
                   </p>
 
+                  {/* Cada peça abre a página da linha já nela (quando tem foto).
+                      `flex-auto` estica as etiquetas para cada linha fechar
+                      rente às bordas, sem sobra à direita. */}
                   <ul className="mt-5 flex flex-wrap gap-2">
-                    {/* Cada peça abre a página da linha já nela (quando tem foto). */}
                     {service.models.map((model) => (
-                      <li key={model.name}>
+                      <li key={model.name} className="flex-auto">
                         <Link
                           href={modelPath(service.slug, model.name)}
-                          className="block rounded-full bg-brand-bg px-3 py-1 text-xs font-medium text-brand-muted transition-colors duration-200 hover:bg-brand-green-soft hover:text-brand-green"
+                          className="block rounded-full bg-brand-bg px-3 py-1.5 text-center text-xs font-medium text-brand-muted transition-colors duration-200 hover:bg-brand-green-soft hover:text-brand-green"
                         >
                           {model.name}
                         </Link>
@@ -124,7 +146,7 @@ export function Catalog() {
                         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                       }
                     >
-                      Saiba mais
+                      Ver mais
                     </ButtonLink>
                   </div>
                 </div>

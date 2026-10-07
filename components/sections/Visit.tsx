@@ -34,7 +34,7 @@ export function Visit() {
   return (
     <section
       id="visita"
-      className="relative isolate scroll-mt-24 overflow-hidden bg-brand-bg-alt pb-32 pt-16 sm:pb-24 sm:pt-20 lg:pb-28 lg:pt-24"
+      className="relative isolate overflow-hidden bg-brand-bg-alt pb-32 pt-16 sm:pb-24 sm:pt-20 lg:pb-28 lg:pt-24"
     >
       <Container className="relative">
         <SectionHeading

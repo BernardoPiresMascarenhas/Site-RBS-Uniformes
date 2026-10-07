@@ -9,7 +9,7 @@ const stepTones: Tone[] = ["yellow"];
 
 export function Process() {
   return (
-    <Section surface="dark">
+    <Section surface="dark" className="fundo-tecido">
       <Container>
         <SectionHeading
           eyebrow="LOGÍSTICA DA RBS"

@@ -17,7 +17,7 @@ const avatarTones: Tone[] = ["yellow"];
  */
 export function Testimonials() {
   return (
-    <Section id="avaliacoes" surface="dark">
+    <Section id="avaliacoes" surface="dark" className="fundo-tecido fundo-avaliacao">
       <Container>
         <SectionHeading
           eyebrow="Avaliações"

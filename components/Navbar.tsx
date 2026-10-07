@@ -12,14 +12,21 @@ import { navLinks } from "@/lib/content";
 import { defaultWhatsappMessage, site, whatsappLink } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
+/**
+ * `true`: o header já abre claro sobre o hero. `false`: volta ao header
+ * transparente sobre o hero, que só fica claro ao rolar a página.
+ */
+const HEADER_CLARO_NO_HERO = false;
+
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   // Só a home abre sobre o hero verde-escuro; as demais páginas começam claras.
   const overHero = usePathname() === "/";
   // Barra sólida (clara, texto escuro) ao rolar, com o menu aberto ou fora
-  // da home. Sobre o hero ela fica transparente e usa os tokens escuros.
-  const solid = scrolled || open || !overHero;
+  // da home. Sobre o hero ela fica transparente e usa os tokens escuros —
+  // a menos que `HEADER_CLARO_NO_HERO` esteja ligado.
+  const solid = HEADER_CLARO_NO_HERO || scrolled || open || !overHero;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -42,7 +49,12 @@ export function Navbar() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-colors duration-200",
         solid
-          ? "border-b border-brand-border bg-brand-bg-alt/90 shadow-brand backdrop-blur-md"
+          ? cn(
+              "border-b border-brand-border shadow-brand backdrop-blur-md",
+              // no topo do hero o fundo é verde-escuro: a barra translúcida
+              // ficaria acinzentada, então ali ela é opaca
+              overHero && !scrolled ? "bg-brand-bg-alt" : "bg-brand-bg-alt/90",
+            )
           : "border-b border-transparent bg-transparent",
       )}
     >
@@ -148,7 +160,9 @@ export function Navbar() {
           // aberto: até a base da tela, com rolagem se os 9 itens não couberem
           open
             ? "max-h-[calc(100svh-var(--header-h-compact))] overflow-y-auto opacity-100"
-            : "max-h-0 border-transparent opacity-0",
+            // fechado: sem borda, senão o filete de 1px soma à altura do header
+            // e desalinha a rolagem das âncoras
+            : "max-h-0 border-t-0 opacity-0",
         )}
       >
         <Container size="wide" className="flex flex-col gap-1 py-4">

@@ -33,7 +33,7 @@ export const site = {
   /** Todos os WhatsApp divulgados. O primeiro é o número padrão acima. */
   whatsappNumbers: [
     { display: "(31) 99991-3191", digits: "5531999913191" },
-    { display: "(31) 9 9249-6669", digits: "5531992496669" },
+    { display: "(31) 99249-6669", digits: "5531992496669" },
   ],
   email: "rbs.uniformes@gmail.com",
   address: {

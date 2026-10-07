@@ -145,8 +145,9 @@
 
   html {
     scroll-behavior: smooth;
-    /* compensa o header fixo ao navegar por âncoras */
-    scroll-padding-top: calc(var(--header-h-compact) + 1.5rem);
+    /* compensa o header fixo ao navegar por âncoras: a seção começa
+       exatamente na base dele (barra + 1px da borda inferior) */
+    scroll-padding-top: calc(var(--header-h-compact) + 1px);
   }
 
   body {
@@ -190,6 +191,47 @@
         linear-gradient(180deg, rgb(var(--rbs-green-deep) / 0.34) 0%, transparent 12%),
         linear-gradient(0deg, rgb(var(--rbs-green-deep) / 0.6) 0%, transparent 24%),
         linear-gradient(90deg, rgb(var(--rbs-green-deep) / 0.94) 0%, rgb(var(--rbs-green-deep) / 0.78) 38%, rgb(var(--rbs-green-deep) / 0.17) 64%, rgb(var(--rbs-green-deep) / 0) 86%);
+    }
+  }
+
+  /* ---------- Fundo de tecido (Logística e Avaliações) ----------
+   * Duas artes: no celular/tablet a seção fica alta demais e o `cover`
+   * mostraria só o miolo liso, então entra a arte quadrada presa no topo, na
+   * largura da tela (100vw de altura = proporção 1:1), com os detalhes só em
+   * cima; a metade de baixo já é lisa e se dissolve no verde da seção. No
+   * desktop, a arte horizontal cobre a seção inteira.                     */
+  .fundo-tecido {
+    background-image:
+      linear-gradient(180deg, transparent 60%, rgb(var(--c-bg)) 100%),
+      url("/fundo-celular.webp");
+    background-size: 100% 100vw;
+    background-position: top center;
+    background-repeat: no-repeat;
+  }
+
+  @media (min-width: 1024px) {
+    .fundo-tecido {
+      background-image: url("/fundo-computador.webp");
+      background-size: cover;
+      background-position: center;
+    }
+  }
+
+  /* Telas largas: as seções ficam bem mais largas que altas (~2,2–2,6:1) e a
+   * arte 3:2 perderia os cantos no corte de cima e de baixo. A arte larga
+   * (2,67:1) só entra aqui — em notebooks ela cortaria o tecido das laterais. */
+  @media (min-width: 1700px) {
+    .fundo-tecido {
+      background-image: url("/fundo-computador-largo.webp");
+    }
+  }
+
+  /* Avaliações tem arte própria nas telas largas (~2,2:1, a proporção da
+   * seção em 1920px). Abaixo disso a seção fica quase quadrada e o corte
+   * lateral comeria o tecido, então vale a arte 3:2 comum.               */
+  @media (min-width: 1700px) {
+    .fundo-tecido.fundo-avaliacao {
+      background-image: url("/fundo-avaliacao.webp");
     }
   }
 
