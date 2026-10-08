@@ -119,21 +119,10 @@
  * A navbar é `fixed`, então o conteúdo abaixo dela precisa reservar esse
  * espaço. Os valores acompanham o que o Navbar realmente mede:
  *   barra principal = logo (h-[4.5rem] / sm:h-20) + py-2 → 88px / 96px
- *   barra utilitária (só em lg, some ao rolar)      → +32px
- *
- * `--header-h-compact` é a altura com a barra utilitária recolhida — é ela
- * que vale para as âncoras, porque ao navegar a página já está rolada.
  * ------------------------------------------------------------------ */
 @media (min-width: 640px) {
   :root {
     --header-h: 96px;
-    --header-h-compact: 96px;
-  }
-}
-
-@media (min-width: 1024px) {
-  :root {
-    --header-h: 128px;
     --header-h-compact: 96px;
   }
 }

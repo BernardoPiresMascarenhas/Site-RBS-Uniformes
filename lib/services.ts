@@ -90,6 +90,12 @@ export interface ServiceHighlight {
   icon: LucideIcon;
 }
 
+export interface ChartImage {
+  src: string;
+  width: number;
+  height: number;
+}
+
 export interface Service {
   slug: string;
   /** Nome curto, usado em cards, menus e no seletor do formulário. */
@@ -103,6 +109,14 @@ export interface Service {
    * o mockup desenhado. Veja `resolveCover`.
    */
   cover?: string;
+  /**
+   * Cartela de cores da linha, em `public/cor/`: a arte horizontal vale do
+   * tablet para cima e a vertical, no celular.
+   */
+  colorChart?: {
+    desktop: ChartImage;
+    mobile: ChartImage;
+  };
 
   /** ---- Página de venda ---- */
   eyebrow: string;
@@ -141,6 +155,10 @@ const branco = { name: "Branco", body: "#F1F0EC", accent: "#C9C6BC" };
 export const services: Service[] = [
   {
     slug: "portaria",
+    colorChart: {
+      desktop: { src: "/cor/corPortaria1.png", width: 1448, height: 662 },
+      mobile: { src: "/cor/corPortariaMobile.png", width: 941, height: 1672 },
+    },
     title: "Portaria",
     shortDescription:
       "A uniformização da portaria é essencial para agregar mais valor á imagem do seu condomínio, e um uniforme alinhado e resistente faz toda a diferença para passar uma boa impressão na hora.",
@@ -274,6 +292,10 @@ export const services: Service[] = [
   },
   {
     slug: "zeladoria",
+    colorChart: {
+      desktop: { src: "/cor/corZeladoria.png", width: 1448, height: 1086 },
+      mobile: { src: "/cor/corZeladoriaMobile.png", width: 941, height: 1672 },
+    },
     title: "Zeladoria",
     shortDescription:
       "Uniformes de alta resistência e confortável é mais que o essencial para alguém que zela pelo condomínio, pensado em quem e nas condições que vai ser utilizado. Um uniforme coringa para quem atua em várias áreas do prédio.",
@@ -405,6 +427,10 @@ export const services: Service[] = [
   },
   {
     slug: "asg",
+    colorChart: {
+      desktop: { src: "/cor/corAsg.png", width: 1448, height: 1086 },
+      mobile: { src: "/cor/corAsgMobile.png", width: 941, height: 1672 },
+    },
     title: "Auxiliar de Serviços Gerais (ASG)",
     shortDescription:
       "Pensado para quem trabalha com produtos de limpeza, água e mais. Trabalhamos com tecidos leves e próprios para prevenir manchas, secagem rápida e conforto. Tudo em um só uniforme.",

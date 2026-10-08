@@ -1,10 +1,9 @@
 "use client";
 
-import { Mail, Menu, MessageCircle, Phone, X } from "lucide-react";
+import { Menu, MessageCircle, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { BrandStripe } from "@/components/decor/BrandStripe";
 import { Logo } from "@/components/Logo";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Section";
@@ -16,7 +15,7 @@ import { cn } from "@/lib/utils";
  * `true`: o header já abre claro sobre o hero. `false`: volta ao header
  * transparente sobre o hero, que só fica claro ao rolar a página.
  */
-const HEADER_CLARO_NO_HERO = false;
+const HEADER_CLARO_NO_HERO = true;
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
@@ -50,62 +49,11 @@ export function Navbar() {
         "fixed inset-x-0 top-0 z-50 transition-colors duration-200",
         solid
           ? cn(
-              "border-b border-brand-border shadow-brand backdrop-blur-md",
-              // no topo do hero o fundo é verde-escuro: a barra translúcida
-              // ficaria acinzentada, então ali ela é opaca
-              overHero && !scrolled ? "bg-brand-bg-alt" : "bg-brand-bg-alt/90",
+              "border-b border-brand-border bg-white shadow-brand",
             )
           : "border-b border-transparent bg-transparent",
       )}
     >
-      {/* Barra utilitária — some no mobile e ao rolar */}
-      <div
-        className={cn(
-          "relative hidden bg-rbs-green-dark text-rbs-offwhite transition-all duration-300 lg:block",
-          scrolled ? "max-h-0 overflow-hidden opacity-0" : "max-h-12 opacity-100",
-        )}
-      >
-        {/* Filete tricolor sobreposto à base — não altera a altura do header */}
-        <BrandStripe className="absolute inset-x-0 bottom-0 h-[3px]" />
-
-        <Container size="wide" className="flex items-center justify-between py-2 text-xs">
-          <a
-            href={`mailto:${site.email}`}
-            className="flex items-center gap-2 tracking-wide hover:underline"
-          >
-            <Mail className="h-3.5 w-3.5" aria-hidden="true" />
-            {site.email}
-          </a>
-
-          <div className="flex items-center gap-5">
-            <a
-              href={`tel:+${site.phoneDigits}`}
-              className="flex items-center gap-2 hover:underline"
-            >
-              <Phone className="h-3.5 w-3.5" aria-hidden="true" />
-              {site.phoneDisplay}
-            </a>
-
-            {/* Um ícone do WhatsApp para os dois números */}
-            <span className="flex items-center gap-3">
-              <MessageCircle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-              {site.whatsappNumbers.map((number) => (
-                <a
-                  key={number.digits}
-                  href={whatsappLink(defaultWhatsappMessage, number.digits)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`WhatsApp ${number.display}`}
-                  className="hover:underline"
-                >
-                  {number.display}
-                </a>
-              ))}
-            </span>
-          </div>
-        </Container>
-      </div>
-
       <Container size="wide" className="flex items-center justify-between gap-4 py-2">
         <Logo sizeClassName="h-[4.5rem] sm:h-20" />
 

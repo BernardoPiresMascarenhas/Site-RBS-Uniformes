@@ -1,4 +1,5 @@
 import { ArrowRight, MessageCircle, Palette, Shirt } from "lucide-react";
+import { getImageProps } from "next/image";
 import Link from "next/link";
 
 import { MountainScape } from "@/components/decor/Scenery";
@@ -24,6 +25,39 @@ import { cn } from "@/lib/utils";
 const cycle: Tone[] = ["green", "yellow", "red"];
 const toneAt = (index: number) => tones[cycle[index % cycle.length]].box;
 
+/**
+ * Cartela em `<picture>`: o navegador baixa só a arte do seu tamanho de tela
+ * (vertical abaixo de 768px, horizontal a partir dali).
+ */
+function ColorChart({
+  chart,
+  alt,
+}: {
+  chart: NonNullable<Service["colorChart"]>;
+  alt: string;
+}) {
+  const common = { alt, sizes: "(min-width: 1280px) 1200px, 100vw" };
+  const {
+    props: { srcSet: desktopSrcSet },
+  } = getImageProps({ ...common, ...chart.desktop });
+  const { props: mobile } = getImageProps({ ...common, ...chart.mobile });
+
+  return (
+    <picture>
+      {/* largura e altura na <source> reservam o espaço certo antes da
+          imagem carregar, já que as duas artes têm proporções diferentes */}
+      <source
+        media="(min-width: 768px)"
+        srcSet={desktopSrcSet}
+        sizes={common.sizes}
+        width={chart.desktop.width}
+        height={chart.desktop.height}
+      />
+      <img {...mobile} className="h-auto w-full" />
+    </picture>
+  );
+}
+
 export async function ServicePage({ service }: { service: Service }) {
   const embroidery = await getEmbroideryPhotos();
   const message = `Olá! Vim pelo site da ${site.name} e gostaria de um orçamento da linha de ${service.title}.`;
@@ -43,6 +77,30 @@ export async function ServicePage({ service }: { service: Service }) {
         models={resolvePhotoModels(service.models)}
         embroidery={embroidery}
       />
+
+      {/* ---------------- Cartela de cores ---------------- */}
+      {service.colorChart && (
+        <Section surface="light">
+          <Container>
+            <SectionHeading
+              eyebrow="Cartela de cores"
+              title={
+                <>
+                  Escolha as cores da sua equipe de{" "}
+                  <span className="text-brand-accent">{service.title}</span>
+                </>
+              }
+            />
+
+            <Reveal className={cn("mt-14 overflow-hidden", theme.ui.card)}>
+              <ColorChart
+                chart={service.colorChart}
+                alt={`Cartela de cores disponíveis para a linha de ${service.title}`}
+              />
+            </Reveal>
+          </Container>
+        </Section>
+      )}
 
       {/* ---------------- Benefícios ---------------- */}
       <Section surface="light" tone="alt">
