@@ -18,14 +18,11 @@ import {
 /** Âncoras da home. O "/" na frente mantém os links funcionando nas páginas
  *  de serviço, que não têm essas seções. */
 export const navLinks = [
-  { label: "Início", href: "/#inicio" },
   { label: "Serviços", href: "/#catalogo" },
   { label: "Sobre", href: "/#sobre" },
   { label: "Diferenciais", href: "/#diferenciais" },
   { label: "Clientes", href: "/#clientes" },
-  { label: "Avaliações", href: "/#avaliacoes" },
   { label: "Dúvidas", href: "/#duvidas" },
-  { label: "Visita", href: "/#visita" },
   { label: "Contato", href: "/#contato" },
 ];
 

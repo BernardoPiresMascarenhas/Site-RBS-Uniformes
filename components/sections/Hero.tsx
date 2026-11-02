@@ -71,7 +71,7 @@ export function Hero() {
         className="absolute inset-x-0 bottom-0 top-[var(--header-h)] -z-20 overflow-hidden"
       >
         <Image
-          src="/hero/imagemFundoHero4.png"
+          src="/hero/hero5.png"
           alt=""
           fill
           priority
