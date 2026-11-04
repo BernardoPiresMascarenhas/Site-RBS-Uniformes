@@ -1,17 +1,18 @@
 "use client";
 
-import { ChevronRight, MessageCircle } from "lucide-react";
+import { ChevronRight, MessageCircle, ZoomIn } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type CSSProperties } from "react";
 
 import { PhotoMarquee } from "@/components/PhotoMarquee";
+import { PhotoZoom } from "@/components/PhotoZoom";
 import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section } from "@/components/ui/Section";
 import { embroidery as embroideryText } from "@/lib/content";
 import type { PartnerImage } from "@/lib/partners";
-import { modelSlug, type PhotoModel } from "@/lib/services";
+import { modelLabel, modelSlug, modelTitle, type PhotoModel } from "@/lib/services";
 import { site, whatsappLink } from "@/lib/site";
 import { theme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
@@ -28,6 +29,30 @@ import { cn } from "@/lib/utils";
  * Recebe só dados serializáveis (nada de ícones do lucide, que são componentes)
  * — é a fronteira entre a página server e este componente client.
  */
+type GenderFilter = "todos" | "masculino" | "feminino";
+
+const genderOptions: { value: GenderFilter; label: string }[] = [
+  { value: "todos", label: "Todos" },
+  { value: "masculino", label: "Masculino" },
+  { value: "feminino", label: "Feminino" },
+];
+
+/**
+ * Fundo da bolinha de cor. Gradiente (peça bicolor) usa `border-box` sem
+ * repetição — senão ele se repete sob a borda e aparece um pedaço da outra cor
+ * na beirada do círculo.
+ */
+function swatchStyle(swatch = "#ccc"): CSSProperties {
+  return swatch.includes("gradient")
+    ? { backgroundImage: swatch, backgroundOrigin: "border-box", backgroundRepeat: "no-repeat" }
+    : { backgroundColor: swatch };
+}
+
+/** Família da peça: variações de cor com o mesmo `group` contam como uma. */
+function familyOf(option: PhotoModel) {
+  return modelTitle(option);
+}
+
 export function ServiceShowcase({
   title,
   eyebrow,
@@ -60,6 +85,9 @@ export function ServiceShowcase({
 
   const visiblePhoto = loaded.has(model.photo) ? model.photo : shown;
 
+  const [zoomOpen, setZoomOpen] = useState(false);
+  const closeZoom = useCallback(() => setZoomOpen(false), []);
+
   function handlePhotoLoad(src: string) {
     setLoaded((current) => new Set(current).add(src));
 
@@ -87,7 +115,43 @@ export function ServiceShowcase({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const message = `Olá! Vim pelo site da ${site.name} e tenho interesse na linha de ${title}. Modelo: ${model.name}.`;
+  // ---- Filtro por público e famílias de peça ----
+  // Só aparece quando a linha tem peças masculinas E femininas; peças sem
+  // `gender` (unissex) entram nos dois filtros.
+  const hasGenderSplit =
+    models.some((option) => option.gender === "feminino") &&
+    models.some((option) => option.gender === "masculino");
+  const [gender, setGender] = useState<GenderFilter>("todos");
+
+  const filteredModels =
+    gender === "todos"
+      ? models
+      : models.filter((option) => !option.gender || option.gender === gender);
+
+  // Variações de cor da mesma peça (`group`) viram um card só.
+  const families: { key: string; variants: PhotoModel[] }[] = [];
+  for (const option of filteredModels) {
+    const key = familyOf(option);
+    const family = families.find((item) => item.key === key);
+    if (family) family.variants.push(option);
+    else families.push({ key, variants: [option] });
+  }
+
+  const colorVariants = filteredModels.filter(
+    (option) => familyOf(option) === familyOf(model),
+  );
+
+  function changeGender(next: GenderFilter) {
+    setGender(next);
+    const stillVisible =
+      next === "todos" || !model.gender || model.gender === next;
+    if (!stillVisible) {
+      const first = models.find((option) => !option.gender || option.gender === next);
+      if (first) selectModel(first);
+    }
+  }
+
+  const message = `Olá! Vim pelo site da ${site.name} e tenho interesse na linha de ${title}. Modelo: ${modelLabel(model)}.`;
 
   return (
     // padding-top maior que o normal: a navbar é fixa e mais alta no desktop,
@@ -145,7 +209,7 @@ export function ServiceShowcase({
                   <Image
                     key={photo}
                     src={photo}
-                    alt={visible ? `${model.name} da linha ${title}` : ""}
+                    alt={visible ? `${modelLabel(model)} da linha ${title}` : ""}
                     aria-hidden={visible ? undefined : true}
                     fill
                     // Largura REAL da coluna esquerda — subestimar aqui faz o
@@ -169,23 +233,115 @@ export function ServiceShowcase({
                   />
                 );
               })}
+
+              {/* Zoom: clicar na foto ou no botão abre o visualizador */}
+              <button
+                type="button"
+                onClick={() => setZoomOpen(true)}
+                aria-label={`Ampliar foto: ${modelLabel(model)}`}
+                className="absolute inset-0 z-10 cursor-zoom-in"
+              />
+              <button
+                type="button"
+                onClick={() => setZoomOpen(true)}
+                tabIndex={-1}
+                className="absolute bottom-3 right-3 z-20 inline-flex items-center gap-1.5 rounded-full border border-brand-border bg-white/95 px-3.5 py-2 font-display text-xs font-semibold text-brand-heading shadow-brand backdrop-blur transition-colors duration-200 hover:border-brand-green hover:text-brand-green"
+              >
+                <ZoomIn className="h-4 w-4" aria-hidden="true" />
+                Ampliar
+              </button>
             </div>
+
+            <PhotoZoom
+              src={visiblePhoto}
+              alt={modelLabel(model)}
+              open={zoomOpen}
+              onClose={closeZoom}
+            />
+
+            {/* Cores da peça selecionada */}
+            {model.colorName ? (
+              <fieldset className="mt-5">
+                <legend className={theme.ui.caption}>
+                  Cor:{" "}
+                  <span className="font-normal text-brand-heading">{model.colorName}</span>
+                </legend>
+                <div className="mt-2.5 flex flex-wrap gap-2.5">
+                  {colorVariants.map((option) => {
+                    const active = option.name === model.name;
+                    return (
+                      <button
+                        key={option.name}
+                        type="button"
+                        onClick={() => selectModel(option)}
+                        aria-pressed={active}
+                        aria-label={option.colorName ?? option.name}
+                        title={option.colorName ?? option.name}
+                        className={cn(
+                          "h-9 w-9 rounded-full border border-black/10 ring-offset-2 ring-offset-brand-bg transition-shadow duration-200",
+                          active
+                            ? "ring-2 ring-brand-green"
+                            : "hover:ring-2 hover:ring-brand-border",
+                        )}
+                        style={swatchStyle(option.swatch)}
+                      />
+                    );
+                  })}
+                </div>
+              </fieldset>
+            ) : null}
 
             {/* Modelos */}
             <fieldset className="mt-6">
-              <legend className={theme.ui.caption}>
-                Modelo
-              </legend>
+              <legend className="sr-only">Modelo</legend>
+              {/* rótulo visível + filtro na mesma linha */}
+              <div className="flex min-h-[2.25rem] items-center justify-between gap-3">
+                <span aria-hidden="true" className={theme.ui.caption}>
+                  Modelo
+                </span>
+
+                {hasGenderSplit ? (
+                  <div
+                    role="group"
+                    aria-label="Filtrar por público"
+                    className="inline-flex rounded-full border border-brand-border bg-brand-surface p-1"
+                  >
+                    {genderOptions.map((option) => {
+                      const active = gender === option.value;
+                      return (
+                        <button
+                          key={option.value}
+                          type="button"
+                          onClick={() => changeGender(option.value)}
+                          aria-pressed={active}
+                          className={cn(
+                            "rounded-full px-3.5 py-1.5 font-display text-xs font-semibold transition-colors duration-200",
+                            active
+                              ? "bg-brand-green text-white"
+                              : "text-brand-muted hover:text-brand-heading",
+                          )}
+                        >
+                          {option.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : null}
+              </div>
 
               <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {models.map((option) => {
-                  const active = option.name === model.name;
+                {families.map(({ key, variants }) => {
+                  const active = key === familyOf(model);
+                  // card da família ativa mostra a cor escolhida
+                  const shown = active ? model : variants[0];
 
                   return (
                     <button
-                      key={option.name}
+                      key={key}
                       type="button"
-                      onClick={() => selectModel(option)}
+                      onClick={() => {
+                        if (!active) selectModel(variants[0]);
+                      }}
                       aria-pressed={active}
                       className={cn(
                         "group flex flex-col items-center gap-2 rounded-brand border p-2 transition-all",
@@ -196,7 +352,7 @@ export function ServiceShowcase({
                     >
                       <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-brand bg-brand-green-soft">
                         <Image
-                          src={option.photo}
+                          src={shown.photo}
                           alt=""
                           fill
                           // 3 colunas dentro da coluna de ~709px, menos o
@@ -208,12 +364,26 @@ export function ServiceShowcase({
                       </span>
                       <span
                         className={cn(
-                          "px-1 pb-1 text-center text-xs leading-tight",
+                          "px-1 text-center text-xs leading-tight",
                           active ? "text-brand-heading" : "text-brand-muted",
                         )}
                       >
-                        {option.name}
+                        {key}
                       </span>
+                      {variants.length > 1 ? (
+                        <span className="flex items-center gap-1 pb-1" aria-label={`${variants.length} cores`}>
+                          {variants.map((variant) => (
+                            <span
+                              key={variant.name}
+                              aria-hidden="true"
+                              className="h-2.5 w-2.5 rounded-full border border-black/10"
+                              style={swatchStyle(variant.swatch)}
+                            />
+                          ))}
+                        </span>
+                      ) : (
+                        <span className="pb-1" />
+                      )}
                     </button>
                   );
                 })}
@@ -227,8 +397,13 @@ export function ServiceShowcase({
               Modelo selecionado
             </p>
             <h2 className="mt-1 text-2xl leading-tight">
-              {model.name}
+              {modelTitle(model)}
             </h2>
+            {model.colorName ? (
+              <p className="mt-1 text-sm text-brand-muted">
+                Cor: <span className="text-brand-heading">{model.colorName}</span>
+              </p>
+            ) : null}
             <p className="mt-3 text-sm leading-relaxed text-brand-muted">
               {model.description}
             </p>

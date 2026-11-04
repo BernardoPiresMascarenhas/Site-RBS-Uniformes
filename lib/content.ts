@@ -7,7 +7,6 @@ import {
   Handshake,
   Layers,
   Package,
-  Palette,
   Ruler,
   Scissors,
   ShieldCheck,
@@ -34,10 +33,16 @@ export interface Differential {
 
 export const differentials: Differential[] = [
   {
-    title: "Tecidos profissionais selecionados",
+    title: "Visita sem compromisso",
     description:
-      "Tecidos de alta durabilidade e qualidade, conforto e que preservam a cor original por mais tempo.",
-    icon: Layers,
+      "Efetuamos uma visita sem ônus/custo para o condomínio, a fim do Síndico conhecer nossos uniformes presencialmente no local, sabendo o que pode ser oferecido ao condomínio e seus colaboradores.",
+    icon: CalendarCheck,
+  },
+  {
+    title: "Medidas no Local",
+    description:
+      "Enviamos um profissional para tirar as medidas de cada funcionário no local do condomínio sem gerar ônus/custos para o condomínio com condução e nem desgaste dos colaboradores, levando camisas, calças e etc para serem experimentados.",
+    icon: Ruler,
   },
   {
     title: "Pontualidade e rapidez na entrega",
@@ -52,16 +57,10 @@ export const differentials: Differential[] = [
     icon: Scissors,
   },
   {
-    title: "Modelagem e tamanho",
+    title: "Tecidos profissionais selecionados",
     description:
-      "Veste bem e comporta da forma ideal no corpo, por isso o procedimento de tirar medidas no local. Garantindo mais conforto e praticidade nos movimentos do dia a dia.",
-    icon: Ruler,
-  },
-  {
-    title: "Bordados e identidade",
-    description:
-      "Utilizamos das máquinas de mais alta qualidade e tecnologia para os bordados de nossos clientes. Garantindo e preservando da melhor forma a imagem do condomínio e facilitando a identificação dos colaboradores.",
-    icon: Palette,
+      "Tecidos de alta durabilidade e qualidade, conforto e que preservam a cor original por mais tempo.",
+    icon: Layers,
   },
   {
     title: "Equipes de colaboradores da RBS",
@@ -90,7 +89,7 @@ export const processSteps: ProcessStep[] = [
     step: "02",
     title: "Medição dos colaboradores",
     description:
-      "Efetuamos o processo de medidas dos colaboradores no local do condomínio com uma equipe especializada, sem deslocá-los para a loja, trazendo conforto e praticidade.",
+      "Efetuamos o processo de medidas dos colaboradores no local do condomínio com uma equipe especializada, sem deslocá-los para a loja, trazendo conforto e praticidade. Gerando livre ônus ao condomínio, removendo possíveis despesas e desgaste ao deslocar o colaborador.",
     icon: Scissors,
   },
   {
@@ -299,7 +298,12 @@ export const faq = [
   {
     question: "Quais as condições de pagamento e descontos?",
     answer:
-      "Nossas condições de pagamento variam do valor total da cotação e com o desconto é o mesmo, quanto maior o pedido, maior o desconto que pode ser aplicável.",
+      "As condições de pagamento são: á vista abaixo de R$1.000,00 e acima disso, funcionamos com sinal de 50% no ato do pedido e 50% com 30 dias, com opções de desconto à vista aplicáveis ao valor total, demais condições de pagamento podem ser negociadas com nossos vendedores.",
+  },
+  {
+    question: "O bordado é incluso no valor?",
+    answer:
+      "Sim, o bordado é incluso em todos os uniformes que podem ser bordados, (tais como: Camisas, Jalecos, Jaquetas e Bonés).",
   },
 ];
 

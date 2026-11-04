@@ -11,6 +11,7 @@ import {
   PackageCheck,
   Palette,
   Ruler,
+  Scissors,
   Shirt,
   Sparkles,
   SprayCan,
@@ -67,6 +68,17 @@ export interface UniformModel {
    * de volta no mockup desenhado (`UniformMockup`) — veja `resolveModelPhotos`.
    */
   photo: string;
+  /** Público da peça. Sem valor, é unissex e aparece nos dois filtros. */
+  gender?: "masculino" | "feminino";
+  /**
+   * Família da peça. Modelos com o mesmo `group` viram um card só no seletor,
+   * e cada um vira uma opção de cor dentro dele (ver `colorName`/`swatch`).
+   */
+  group?: string;
+  /** Nome da cor desta variação, exibido no seletor de cores. */
+  colorName?: string;
+  /** Cor da bolinha no seletor de cores (hex, ou um gradiente CSS para peça bicolor). */
+  swatch?: string;
   /**
    * Cartela própria da peça, quando ela não sai em todas as cores da linha —
    * calçado e cinto, por exemplo, só existem em preto e marrom. Sem isso, vale
@@ -161,14 +173,13 @@ export const services: Service[] = [
     },
     title: "Portaria",
     shortDescription:
-      "A uniformização da portaria é essencial para agregar mais valor á imagem do seu condomínio, e um uniforme alinhado e resistente faz toda a diferença para passar uma boa impressão na hora.",
+      "Os uniformes da portaria são primordiais para identificação dos funcionários e também para agregar valor ao condomínio, mantendo conforto, padrão e durabilidade no mesmo uniforme.",
     icon: DoorOpen,
-    cover: "/produtos/portaria-camisa-social-masculina.png",
 
     eyebrow: "Linha Portaria",
     headline: "O porteiro é o cartão de visita do condomínio",
     intro:
-      "Os uniformes da portaria são os que devem permanecer bem apresentáveis e ser de grande duração. Temos tecidos variados para camisaria, calçados em couro legítimo, calças sociais e jeans, jaquetas, cintos, gravatas e meias.",
+      "Os uniformes da portaria são primordiais para identificação dos funcionários e também para agregar valor ao condomínio, mantendo conforto, padrão e durabilidade no mesmo uniforme.",
     introClosing: "Vista seus porteiros dos pés à cabeça.",
     quickFacts: [
       "Modelos masculinos, femininos, tamanhos plus size e sob medida.",
@@ -212,73 +223,308 @@ export const services: Service[] = [
     ],
     models: [
       {
-        name: "Camisa social masculina manga curta",
+        name: "Camisa Social Masculina Manga Curta Azul",
+        group: "Camisa Social Masculina Manga Curta",
+        colorName: "Azul",
+        gender: "masculino",
+        swatch: "#6F9BD1",
         description:
           "A camisa mais usada para portaria, bordado do condomínio, com 1 bolso, nesse modelo manga curta. Consulte os tipos de tecidos e composição.",
         style: "social",
-        photo: "/produtos/portaria-camisa-social-masculina.webp",
+        photo: "/produtos/portaria-camisa-social-masculina-manga-curta-azul.webp",
       },
       {
-        name: "Camisa social feminina manga curta",
+        name: "Camisa Social Masculina Manga Curta Azul Prisma",
+        group: "Camisa Social Masculina Manga Curta",
+        colorName: "Azul prisma",
+        gender: "masculino",
+        swatch: "#A3C7EA",
         description:
-          "Segue a mesma proposta da masculina: pinças para ajustar ao corpo e modelagem própria.",
-        style: "social-feminina",
-        photo: "/produtos/camisa-social-feminina-branca-vivo.png",
+          "A camisa mais usada para portaria, bordado do condomínio, com 1 bolso, nesse modelo manga curta. Consulte os tipos de tecidos e composição.",
+        style: "social",
+        photo: "/produtos/portaria-camisa-social-masculina-manga-curta-azul-prisma.webp",
       },
       {
-        name: "Calça social masculina",
+        name: "Camisa Social Masculina Manga Curta Azul Turquesa",
+        group: "Camisa Social Masculina Manga Curta",
+        colorName: "Azul turquesa",
+        gender: "masculino",
+        swatch: "#7FD3F0",
+        description:
+          "A camisa mais usada para portaria, bordado do condomínio, com 1 bolso, nesse modelo manga curta. Consulte os tipos de tecidos e composição.",
+        style: "social",
+        photo: "/produtos/portaria-camisa-social-masculina-manga-curta-cor-azul-prisma.webp",
+      },
+      {
+        name: "Camisa Social Masculina Manga Curta Azul Motorista",
+        group: "Camisa Social Masculina Manga Curta",
+        colorName: "Azul motorista",
+        gender: "masculino",
+        swatch: "#8AA6CF",
+        description:
+          "A camisa mais usada para portaria, bordado do condomínio, com 1 bolso, nesse modelo manga curta. Consulte os tipos de tecidos e composição.",
+        style: "social",
+        photo: "/produtos/portaria-camisa-social-masculina-manga-curta-azul-motorista.webp",
+      },
+      {
+        name: "Camisa Social Masculina Manga Curta Icelandic",
+        group: "Camisa Social Masculina Manga Curta",
+        colorName: "Icelandic",
+        gender: "masculino",
+        swatch: "#ACBAD1",
+        description:
+          "A camisa mais usada para portaria, bordado do condomínio, com 1 bolso, nesse modelo manga curta. Consulte os tipos de tecidos e composição.",
+        style: "social",
+        photo: "/produtos/portaria-camisa-social-masculina-manga-curta-icelandic-c.webp",
+      },
+      {
+        name: "Camisa Social Masculina Manga Curta Cinza",
+        group: "Camisa Social Masculina Manga Curta",
+        colorName: "Cinza",
+        gender: "masculino",
+        swatch: "#9AAAA0",
+        description:
+          "A camisa mais usada para portaria, bordado do condomínio, com 1 bolso, nesse modelo manga curta. Consulte os tipos de tecidos e composição.",
+        style: "social",
+        photo: "/produtos/portaria-camisa-social-masculina-manga-curta-cor-cinza.webp",
+      },
+      {
+        name: "Camisa Social Masculina Manga Curta com Detalhe Amarela com Vivo Azul Marinho",
+        group: "Camisa Social Masculina Manga Curta com Detalhe",
+        colorName: "Amarela com vivo azul marinho",
+        gender: "masculino",
+        swatch: "linear-gradient(135deg, #F1E3A4 50%, #1B2A45 50%)",
+        description:
+          "Camisa social com vivo contrastante no abotoamento e nas mangas, bordado do condomínio e 1 bolso. Consulte os tipos de tecidos e composição.",
+        style: "social",
+        photo: "/produtos/portaria-camisa-social-masculina-com-detalhes-em-vivo-no-abotoamento-e-mangas.webp",
+      },
+      {
+        name: "Camisa Social Masculina Manga Curta com Detalhe Azul com Vivo Preto",
+        group: "Camisa Social Masculina Manga Curta com Detalhe",
+        colorName: "Azul com vivo preto",
+        gender: "masculino",
+        swatch: "linear-gradient(135deg, #6F9BD1 50%, #171717 50%)",
+        description:
+          "Camisa social com vivo preto no abotoamento e nas mangas, bordado do condomínio e 1 bolso. Consulte os tipos de tecidos e composição.",
+        style: "social",
+        photo: "/produtos/portaria-camisa-social-masculina-com-detalhes-no-abotoamento-em-vivo-preto-e-mangas.webp",
+      },
+      {
+        name: "Camisa Social Masculina Manga Longa Azul Claro",
+        group: "Camisa Social Masculina Manga Longa",
+        colorName: "Azul claro",
+        swatch: "#B9D0EA",
+        gender: "masculino",
+        description:
+          "Camisa social com bordado do condomínio e bolso, no modelo manga longa. Consulte os tipos de tecidos e composição.",
+        style: "social",
+        photo: "/produtos/portaria-camisa-social-manga-longa-azul-claro.webp",
+      },
+      {
+        name: "Camisa Social Masculina Manga Longa Azul Motorista",
+        group: "Camisa Social Masculina Manga Longa",
+        colorName: "Azul motorista",
+        gender: "masculino",
+        swatch: "#8EA5CE",
+        description:
+          "Camisa social com bordado do condomínio e bolso, no modelo manga longa. Consulte os tipos de tecidos e composição.",
+        style: "social",
+        photo: "/produtos/portaria-camisa-social-manga-longa-azul-motorista.webp",
+      },
+      {
+        name: "Camisa Social Masculina Manga Longa Ice",
+        group: "Camisa Social Masculina Manga Longa",
+        colorName: "Ice",
+        gender: "masculino",
+        swatch: "#ADB8CF",
+        description:
+          "Camisa social com bordado do condomínio e bolso, no modelo manga longa. Consulte os tipos de tecidos e composição.",
+        style: "social",
+        photo: "/produtos/portaria-camisa-social-manga-longa-ice.webp",
+      },
+      {
+        name: "Camisa Social Masculina Manga Longa Cinza Claro",
+        group: "Camisa Social Masculina Manga Longa",
+        colorName: "Cinza claro",
+        gender: "masculino",
+        swatch: "#C4C4C6",
+        description:
+          "Camisa social com bordado do condomínio e bolso, no modelo manga longa. Consulte os tipos de tecidos e composição.",
+        style: "social",
+        photo: "/produtos/portaria-camisa-social-manga-longa-cinza-claro.webp",
+      },
+      {
+        name: "Camisa Social Masculina Manga Longa Verde Claro",
+        group: "Camisa Social Masculina Manga Longa",
+        colorName: "Verde claro",
+        gender: "masculino",
+        swatch: "#99CBC1",
+        description:
+          "Camisa social com bordado do condomínio e bolso, no modelo manga longa. Consulte os tipos de tecidos e composição.",
+        style: "social",
+        photo: "/produtos/portaria-camisa-social-manga-longa-verde-claro.webp",
+      },
+      {
+        name: "Camisa Social Masculina Manga Longa Preta",
+        group: "Camisa Social Masculina Manga Longa",
+        colorName: "Preta",
+        gender: "masculino",
+        swatch: "#3A3A3D",
+        description:
+          "Camisa social com bordado do condomínio e bolso, no modelo manga longa. Consulte os tipos de tecidos e composição.",
+        style: "social",
+        photo: "/produtos/portaria-camisa-social-manga-longa-preto.webp",
+      },
+      {
+        name: "Camisa Social Masculina Manga Longa com Detalhe Amarela",
+        group: "Camisa Social Masculina Manga Longa com Detalhe",
+        colorName: "Amarela com vivo azul marinho",
+        gender: "masculino",
+        swatch: "linear-gradient(135deg, #F1E3A4 50%, #1B2A45 50%)",
+        description:
+          "Camisa social manga longa com vivo contrastante no abotoamento e nos punhos, bordado do condomínio e 1 bolso. Consulte os tipos de tecidos e composição.",
+        style: "social",
+        photo: "/produtos/portaria-manga-longa-com-detalhe-amarela.webp",
+      },
+      {
+        name: "Camisa Social Masculina Manga Longa com Detalhe Azul Claro",
+        group: "Camisa Social Masculina Manga Longa com Detalhe",
+        colorName: "Azul claro",
+        gender: "masculino",
+        swatch: "#A9C6E6",
+        description:
+          "Camisa social manga longa com 2 bolsos com lapela e bordado do condomínio. Consulte os tipos de tecidos e composição.",
+        style: "social",
+        photo: "/produtos/portaria-manga-longa-com-detalhe.webp",
+      },
+      {
+        name: "Blusete Feminina Manga Curta Rosa",
+        group: "Blusete Feminina Manga Curta",
+        colorName: "Rosa",
+        gender: "feminino",
+        swatch: "#C9757A",
+        description:
+          "Segue a mesma proposta da camisa masculina: pinças para ajustar ao corpo e modelagem própria.",
+        style: "social-feminina",
+        photo: "/produtos/portaria-blusete-feminina-cor-rosa.webp",
+      },
+      {
+        name: "Blusete Feminina Manga Curta Verde Água",
+        group: "Blusete Feminina Manga Curta",
+        colorName: "Verde água",
+        gender: "feminino",
+        swatch: "#D5E8DF",
+        description:
+          "Segue a mesma proposta da camisa masculina: pinças para ajustar ao corpo e modelagem própria.",
+        style: "social-feminina",
+        photo: "/produtos/portaria-blusete-feminina-verde-agua2.webp",
+      },
+      {
+        name: "Camisa Social Feminina Manga Curta com Detalhe Amarela com Vivo Azul Marinho",
+        group: "Camisa Social Feminina Manga Curta com Detalhe",
+        colorName: "Amarela com vivo azul marinho",
+        gender: "feminino",
+        swatch: "linear-gradient(135deg, #F1E3A4 50%, #1B2A45 50%)",
+        description:
+          "Mesma proposta da masculina, com vivo contrastante no abotoamento e nas mangas: pinças para ajustar ao corpo e modelagem própria.",
+        style: "social-feminina",
+        photo: "/produtos/portaria-camisa-social-feminina-com-detalhes-em-vivo-no-abotoamento-e-mangas.webp",
+      },
+      {
+        name: "Camisa Social Feminina Manga Curta com Detalhe Azul com Vivo Preto",
+        group: "Camisa Social Feminina Manga Curta com Detalhe",
+        colorName: "Azul com vivo preto",
+        gender: "feminino",
+        swatch: "linear-gradient(135deg, #6F9BD1 50%, #171717 50%)",
+        description:
+          "Mesma proposta da masculina, com vivo preto no abotoamento e nas mangas: pinças para ajustar ao corpo e modelagem própria.",
+        style: "social-feminina",
+        photo: "/produtos/portaria-camisa-social-feminina-com-detalhes-no-abotoamento-em-vivo-preto-e-mangas.webp",
+      },
+      {
+        name: "Calça Social em Oxford",
+        colorName: "Preta",
+        swatch: "#171717",
         description:
           "Em oxford, com 2 bolsos no modelo faca e 2 bolsos embutidos com botão, passantes, fecho com gancho e botão.",
         style: "calca",
-        photo: "/produtos/portaria-calca-social-masculina.webp",
-        colors: [marinho, preto, grafite],
+        photo: "/produtos/portaria-calca-social-preta-em-oxford.webp",
       },
       {
-        name: "Calça social feminina",
+        name: "Blazer Masculino em Oxford",
+        colorName: "Preto",
+        swatch: "#171717",
+        gender: "masculino",
         description:
-          "Cós mais alto para maior conforto, 2 botões e bolsos traseiros, modelo slim.",
-        style: "calca-feminina",
-        photo: "/produtos/portaria-calca-social-feminina.webp",
-        colors: [marinho, preto, grafite],
+          "Blazer masculino em oxford preto, para uma apresentação mais formal na portaria.",
+        style: "jaqueta",
+        photo: "/produtos/portaria-blazer-masculino-em-oxford-pret.webp",
       },
       {
-        name: "Jaqueta",
+        name: "Jaqueta Forrada",
+        colorName: "Preta",
+        swatch: "#171717",
         description:
           "Para dias frios ou com muita ventania: jaqueta forrada com tecido 100% algodão, elástico na barra e punhos, com zíper e 2 bolsos laterais.",
         style: "jaqueta",
-        photo: "/produtos/jaqueta-preta.png",
-        colors: [marinho, preto, grafite, bordo],
+        photo: "/produtos/jaqueta-preta-forrada-100-algodao-2-bolsos.webp",
       },
       {
-        name: "Calçado social",
+        name: "Jaleco Masculino em Brim",
+        colorName: "Azul marinho com detalhes em vermelho",
+        swatch: "linear-gradient(135deg, #1E2A44 50%, #D62B30 50%)",
+        gender: "masculino",
         description:
-          "Revestido de couro legítimo, nos modelos sport (sem cadarço) e clássico (com cadarço). Altíssima durabilidade.",
-        style: "sapato",
-        photo: "/produtos/portaria-calcado-social.webp",
-        colors: [preto, marrom],
+          "Jaleco com 3 bolsos, sendo 1 bordado. Os botões podem ser cobertos ou expostos, em manga longa e curta.",
+        style: "social",
+        photo: "/produtos/portaria-jaleco-masculino-em-brim-azul-marinho-com-detalhe-em-vermelho.webp",
       },
       {
-        name: "Meia social",
+        name: "Gravata Tradicional",
+        colorName: "Preta",
+        swatch: "#171717",
         description:
-          "Material poliamida, meia social preta básica.",
-        style: "meia",
-        photo: "/produtos/portaria-meia-social.webp",
-        colors: [preto, marinho, grafite, branco],
-      },
-      {
-        name: "Gravata",
-        description:
-          "Gravata em tecido que não amassa, lisa ou com listra na cor do condomínio. Também sai na versão com nó pronto e elástico, mais prática na troca de turno.",
+          "Gravata em tecido que não amassa, lisa ou com listra na cor do condomínio.",
         style: "gravata",
-        photo: "/produtos/portaria-gravata.webp",
-        colors: [marinho, preto, bordo, grafite],
+        photo: "/produtos/portaria-gravata-tradicional.webp",
       },
       {
-        name: "Cinto",
+        name: "Gravata com Nó Pronto",
+        colorName: "Preta",
+        swatch: "#171717",
+        description:
+          "Versão com nó pronto e elástico, mais prática na troca de turno.",
+        style: "gravata",
+        photo: "/produtos/portaria-gravata-no-pronto.webp",
+      },
+      {
+        name: "Cinto em Couro Dupla Face",
+        colorName: "Preto e marrom",
+        swatch: "linear-gradient(135deg, #171717 50%, #4A3324 50%)",
         description:
           "Em couro dupla face, podendo usar no preto e no marrom, com passador de cinto nas 2 cores.",
         style: "cinto",
         photo: "/produtos/portaria-cinto.webp",
+        colors: [preto, marrom],
+      },
+      {
+        name: "Meia Social em Poliamida",
+        colorName: "Preta",
+        swatch: "#171717",
+        description:
+          "Material poliamida, meia social preta básica.",
+        style: "meia",
+        photo: "/produtos/portaria-meia-social-de-poliamida.webp",
+      },
+      {
+        name: "Calçado Social em Couro Legítimo Modelo Sport",
+        colorName: "Preto",
+        swatch: "#171717",
+        description:
+          "Revestido de couro legítimo, modelo sport sem cadarço, com elástico nas laterais para calçar com facilidade. Altíssima durabilidade.",
+        style: "sapato",
+        photo: "/produtos/portaria-calcado-social-couro-sport.webp",
         colors: [preto, marrom],
       },
     ],
@@ -300,7 +546,6 @@ export const services: Service[] = [
     shortDescription:
       "Uniformes de alta resistência e confortável é mais que o essencial para alguém que zela pelo condomínio, pensado em quem e nas condições que vai ser utilizado. Um uniforme coringa para quem atua em várias áreas do prédio.",
     icon: Wrench,
-    cover: "/produtos/jaleco-oxford-cinza.png",
     eyebrow: "Linha Zeladoria",
     headline: "O uniforme que aguenta o dia inteiro de zeladoria",
     intro:
@@ -313,27 +558,27 @@ export const services: Service[] = [
     ],
     highlights: [
       {
-        title: "Feito para o desgaste",
+        title: "Durabilidade garantida",
         description:
-          "Costura reforçada nos ombros, entrepernas e bolsos — os três pontos que rasgam primeiro no uso pesado.",
+          "Usamos tecidos resistentes, próprios para quem trabalha na zeladoria.",
         icon: HardHat,
       },
       {
-        title: "Bolsos que resolvem",
+        title: "Costura reforçada nos pontos certos",
         description:
-          "Porta-ferramentas, bolso para rádio e passante de chaves posicionados para o trabalho de verdade, não para a foto.",
+          "Reforçamos gavião, entrepernas e bolsos, justamente nas partes que mais sofrem com o uso diário mediante solicitação. É um cuidado que ajuda o uniforme a durar mais.",
+        icon: Scissors,
+      },
+      {
+        title: "Espaço para o que precisa estar à mão",
+        description:
+          "Bolsos funcionais para guardar ferramentas pequenas, chaves e outros itens utilizados durante o expediente.",
         icon: KeyRound,
       },
       {
-        title: "Cor que não abre",
+        title: "Boa apresentação em todos os ambientes",
         description:
-          "Tecidos com solidez de cor testada: mesmo com lavagem pesada e sol, o azul continua azul.",
-        icon: Droplets,
-      },
-      {
-        title: "Visual de equipe",
-        description:
-          "Mesmo sendo peça de trabalho, mantém o padrão visual da portaria — o condomínio inteiro fala a mesma língua.",
+          "Modelagem, cores e acabamentos que ajudam a manter uma aparência organizada e profissional diante dos moradores e visitantes.",
         icon: Sparkles,
       },
     ],
@@ -348,45 +593,245 @@ export const services: Service[] = [
     ],
     models: [
       {
-        name: "Jaleco com 3 bolsos",
+        name: "Jaleco em Brim Azul Marinho",
+        group: "Jaleco em Brim",
+        colorName: "Azul marinho",
+        gender: "masculino",
+        swatch: "#1E2A44",
         description:
           "Jaleco com 3 bolsos, sendo 1 bordado. Os botões podem ser cobertos ou expostos, em manga longa e curta.",
         style: "social",
-        photo: "/produtos/jaleco-oxford-cinza.png",
-        colors: [branco, cinzaClaro, royal, marinho],
+        photo: "/produtos/asg-e-zeladoria-jaleco-masculino-em-brim-azul-marinho.webp",
       },
       {
-        name: "Camisa em malha gola O",
+        name: "Jaleco em Brim Bege com Detalhes em Verde Petróleo",
+        group: "Jaleco em Brim",
+        colorName: "Bege com detalhes em verde petróleo",
+        swatch: "linear-gradient(135deg, #E4DDCF 50%, #1F4E5A 50%)",
+        description:
+          "Jaleco com 3 bolsos, sendo 1 bordado. Os botões podem ser cobertos ou expostos, em manga longa e curta.",
+        style: "social",
+        photo: "/produtos/asg-e-zeladoria-jaleco-em-brim-cinza-com-detalhes-em-verde.webp",
+      },
+      {
+        name: "Jaleco em Brim Caqui",
+        group: "Jaleco em Brim",
+        colorName: "Caqui",
+        swatch: "#CFC3A6",
+        description:
+          "Jaleco com 3 bolsos, sendo 1 bordado. Os botões podem ser cobertos ou expostos, em manga longa e curta.",
+        style: "social",
+        photo: "/produtos/asg-e-zeladoria-jaleco-em-brim-caqui.webp",
+      },
+      {
+        name: "Jaleco em Brim Manga Longa",
+        colorName: "Bege com detalhes em verde petróleo",
+        swatch: "linear-gradient(135deg, #E4DDCF 50%, #1F4E5A 50%)",
+        description:
+          "Jaleco em brim manga longa, com gola e punhos em verde petróleo e 3 bolsos, sendo 1 bordado.",
+        style: "social",
+        photo: "/produtos/zeladoria-jaleco-brim-bege-verde-petroleo-manga-longa.webp",
+      },
+      {
+        name: "Camisa em Malha Gola O Azul Marinho",
+        group: "Camisa em Malha Gola O",
+        colorName: "Azul marinho",
+        gender: "masculino",
+        swatch: "#1E2A4A",
         description:
           "A peça mais usada quando se trata de melhor mobilidade e transpiração, sem gerar muito calor e mantendo bem apresentável ao mesmo tempo.",
         style: "tshirt",
-        photo: "/produtos/zeladoria-camisa-malha-gola-o.webp",
+        photo: "/produtos/asg-e-zeladoria-camisa-masculina-em-malha-azul-marinho2.webp",
       },
       {
-        name: "Camisa em malha gola polo",
+        name: "Camisa em Malha Gola O Cinza",
+        group: "Camisa em Malha Gola O",
+        colorName: "Cinza",
+        swatch: "#A3A3A3",
         description:
-          "A peça mais usada quando se trata de melhor mobilidade e transpiração, sem gerar muito calor e mantendo bem apresentável ao mesmo tempo. Mesma malha da gola O, no acabamento polo.",
+          "A peça mais usada quando se trata de melhor mobilidade e transpiração, sem gerar muito calor e mantendo bem apresentável ao mesmo tempo.",
         style: "tshirt",
-        photo: "/produtos/camisa-polo-cinza-bolso.png",
+        photo: "/produtos/asg-e-zeladoria-camisa-em-malha-cinza.webp",
       },
       {
-        name: "Calça com elástico",
+        name: "Camisa em Malha Gola O Vermelha",
+        group: "Camisa em Malha Gola O",
+        colorName: "Vermelha",
+        swatch: "#D62B30",
         description:
-          "Ótima durabilidade e boa composição com o restante dos uniformes: elástico total e 4 bolsos, podendo adicionar mais 2 nas pernas, com ou sem tampa. Confira os tecidos disponíveis!",
+          "A peça mais usada quando se trata de melhor mobilidade e transpiração, sem gerar muito calor e mantendo bem apresentável ao mesmo tempo.",
+        style: "tshirt",
+        photo: "/produtos/asg-e-zeladoria-camisa-em-malha-vermelha.webp",
+      },
+      {
+        name: "Camisa Manga Longa em Malha PV Gola Olímpica Azul Marinho",
+        group: "Camisa Manga Longa em Malha PV Gola Olímpica",
+        colorName: "Azul marinho",
+        swatch: "#192138",
+        description:
+          "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        style: "tshirt",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-azul-marinho.webp",
+      },
+      {
+        name: "Camisa Manga Longa em Malha PV Gola Olímpica Cinza",
+        group: "Camisa Manga Longa em Malha PV Gola Olímpica",
+        colorName: "Cinza",
+        swatch: "#9B9B9D",
+        description:
+          "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        style: "tshirt",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-cinza.webp",
+      },
+      {
+        name: "Camisa Manga Longa em Malha PV Gola Olímpica Cinza Escuro",
+        group: "Camisa Manga Longa em Malha PV Gola Olímpica",
+        colorName: "Cinza escuro",
+        swatch: "#48484D",
+        description:
+          "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        style: "tshirt",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-cinza-escuro.webp",
+      },
+      {
+        name: "Camisa Manga Longa em Malha PV Gola Olímpica Verde Escuro",
+        group: "Camisa Manga Longa em Malha PV Gola Olímpica",
+        colorName: "Verde escuro",
+        swatch: "#26392E",
+        description:
+          "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        style: "tshirt",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-verde-escuro.webp",
+      },
+      {
+        name: "Camisa Manga Longa em Malha PV Gola Olímpica Vermelha",
+        group: "Camisa Manga Longa em Malha PV Gola Olímpica",
+        colorName: "Vermelha",
+        swatch: "#C8102E",
+        description:
+          "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        style: "tshirt",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-vermelha.webp",
+      },
+      {
+        name: "Camisa Polo Manga Longa em Malha PV Azul Escuro",
+        group: "Camisa Polo Manga Longa em Malha PV",
+        colorName: "Azul escuro",
+        swatch: "#182645",
+        description:
+          "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
+        style: "polo",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-azul-escuro.webp",
+      },
+      {
+        name: "Camisa Polo Manga Longa em Malha PV Cinza Claro",
+        group: "Camisa Polo Manga Longa em Malha PV",
+        colorName: "Cinza claro",
+        swatch: "#9A9A9C",
+        description:
+          "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
+        style: "polo",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-cinza-claro.webp",
+      },
+      {
+        name: "Camisa Polo Manga Longa em Malha PV Cinza Escuro",
+        group: "Camisa Polo Manga Longa em Malha PV",
+        colorName: "Cinza escuro",
+        swatch: "#434348",
+        description:
+          "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
+        style: "polo",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-cinza-escuro.webp",
+      },
+      {
+        name: "Camisa Polo Manga Longa em Malha PV Verde Escuro",
+        group: "Camisa Polo Manga Longa em Malha PV",
+        colorName: "Verde escuro",
+        swatch: "#233429",
+        description:
+          "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
+        style: "polo",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-verde-escuro.webp",
+      },
+      {
+        name: "Camisa Polo Masculina em Malha",
+        colorName: "Verde escuro",
+        swatch: "#1F4D36",
+        gender: "masculino",
+        description:
+          "Mesma malha leve da camisa gola O, no acabamento polo com bolso — um pouco mais apresentável sem perder a mobilidade e a transpiração.",
+        style: "polo",
+        photo: "/produtos/asg-e-zeladoria-camisa-polo-masculina-verde-escuro.webp",
+      },
+      {
+        name: "Calça com Elástico Total e 4 Bolsos Preta (oxford)",
+        group: "Calça com Elástico Total e 4 Bolsos",
+        colorName: "Preta (oxford)",
+        swatch: "#1A1A1A",
+        description:
+          "Em brim, oxford ou prada, com 4 bolsos, elástico total e cordão, dispensa cinto e garante mais conforto ao agachar.",
         style: "calca",
-        photo: "/produtos/calca-caqui-elastico.png",
-        colors: [marinho, grafite, preto, royal],
+        photo: "/produtos/asg-e-zeladoria-calca-em-oxford.webp",
       },
       {
-        name: "Jaqueta",
+        name: "Calça com Elástico Total e 4 Bolsos Caqui (brim)",
+        group: "Calça com Elástico Total e 4 Bolsos",
+        colorName: "Caqui (brim)",
+        swatch: "#8F907F",
         description:
-          "Para o serviço externo e o começo da manhã: fechamento em zíper, punho e barra em ribana e bolsos na altura da cintura.",
-        style: "jaqueta",
-        photo: "/produtos/jaqueta-preta.png",
-        colors: [marinho, grafite, royal, preto],
+          "Em brim, oxford ou prada, com 4 bolsos, elástico total e cordão, dispensa cinto e garante mais conforto ao agachar.",
+        style: "calca",
+        photo: "/produtos/asg-e-zeladoria-calca-com-elastico-total-e-4-bolsos-em-brim-caqui.webp",
       },
       {
-        name: "Bota em couro",
+        name: "Calça com Elástico Total e 4 Bolsos Preta (oxford ou prada)",
+        group: "Calça com Elástico Total e 4 Bolsos",
+        colorName: "Preta (oxford ou prada)",
+        swatch: "#232323",
+        description:
+          "Em oxford ou prada, com 4 bolsos, elástico total e cordão, dispensa cinto e garante mais conforto ao agachar.",
+        style: "calca",
+        photo: "/produtos/asg-zeladoria-calca-elastico-oxford-prada-cordao.webp",
+      },
+      {
+        name: "Calça Jeans Masculina",
+        colorName: "Azul escuro",
+        swatch: "#1C2840",
+        gender: "masculino",
+        description:
+          "Calça jeans masculina, resistente para o dia a dia da zeladoria.",
+        style: "calca",
+        photo: "/produtos/zeladoria-calca-jeans-masculina.webp",
+      },
+      {
+        name: "Boné em Brim",
+        colorName: "Cinza",
+        swatch: "#6B6E72",
+        description:
+          "Boné em brim com aba estruturada e regulagem atrás, para o serviço no sol. Recebe o bordado do condomínio na frente.",
+        style: "bone",
+        photo: "/produtos/zeladoria-bone.webp",
+      },
+      {
+        name: "Jaqueta Forrada",
+        colorName: "Preta",
+        swatch: "#171717",
+        description:
+          "Para dias frios ou com muita ventania: jaqueta forrada com tecido 100% algodão, elástico na barra e punhos, com zíper e 2 bolsos laterais.",
+        style: "jaqueta",
+        photo: "/produtos/jaqueta-preta-forrada-100-algodao-2-bolsos.webp",
+      },
+      {
+        name: "Meia em Algodão",
+        colorName: "Branca ou preta",
+        swatch: "linear-gradient(135deg, #F1F0EC 50%, #171717 50%)",
+        description:
+          "Meias de algodão nas cores branca e preta, para o uso diário com bota ou calçado de trabalho.",
+        style: "meia",
+        photo: "/produtos/asg-e-zeladoria-meias-de-algodao.webp",
+      },
+      {
+        name: "Bota em Couro",
         description:
           "Altíssima durabilidade, em couro com elástico, preta e sem biqueira.",
         style: "bota",
@@ -394,7 +839,7 @@ export const services: Service[] = [
         colors: [preto],
       },
       {
-        name: "Bota de borracha cano curto",
+        name: "Bota de Borracha Cano Curto",
         description:
           "Impermeável e antiderrapante, para lavagem de garagem, calçada e área comum. Cano curto, mais leve no dia a dia.",
         style: "bota",
@@ -402,19 +847,12 @@ export const services: Service[] = [
         colors: [preto, branco],
       },
       {
-        name: "Bota de borracha cano alto",
+        name: "Bota de Borracha Cano Alto",
         description:
           "Cano alto e material impermeável para lavagem pesada e dias de chuva — o pé fica seco no turno inteiro, com solado antiderrapante.",
         style: "bota",
         photo: "/produtos/bota-borracha-cano-alto.png",
         colors: [preto, branco, verdeBandeira],
-      },
-      {
-        name: "Boné",
-        description:
-          "Boné em brim com aba estruturada e regulagem atrás, para o serviço no sol. Recebe o bordado do condomínio na frente.",
-        style: "bone",
-        photo: "/produtos/zeladoria-bone.webp",
       },
     ],
     colors: [royal, grafite, verdeBandeira, marinho, bege],
@@ -435,7 +873,6 @@ export const services: Service[] = [
     shortDescription:
       "Pensado para quem trabalha com produtos de limpeza, água e mais. Trabalhamos com tecidos leves e próprios para prevenir manchas, secagem rápida e conforto. Tudo em um só uniforme.",
     icon: SprayCan,
-    cover: "/produtos/camisa-polo-cinza-bolso.png",
     eyebrow: "Linha ASG",
     headline: "Limpeza pesada, uniforme leve",
     intro:
@@ -448,28 +885,28 @@ export const services: Service[] = [
     ],
     highlights: [
       {
-        title: "Leveza o dia inteiro",
+        title: "Conforto para acompanhar o expediente",
         description:
-          "Gramatura pensada para quem trabalha em movimento: a peça não pesa nem gruda depois de duas horas de serviço.",
+          "Modelagens e tecidos escolhidos para permitir liberdade de movimento, sem atrapalhar na hora de varrer, lavar ou organizar os ambientes.",
         icon: Wind,
       },
       {
-        title: "Secagem rápida",
+        title: "Mais resistência no uso diário",
         description:
-          "Tecidos que soltam a umidade depressa — essencial para quem lava área comum e trabalha perto d'água.",
+          "Costuras reforçadas e tecidos adequados para acompanhar o contato frequente com água, produtos de limpeza e atividades que exigem bastante da peça.",
         icon: Droplets,
       },
       {
-        title: "Resistência ao produto",
+        title: "Fácil de cuidar e manter",
         description:
-          "Cores selecionadas para segurar o contato com produto de limpeza sem manchar de forma visível.",
-        icon: Thermometer,
+          "Peças pensadas para a lavagem frequente, com materiais que ajudam a conservar a aparência e a estrutura do uniforme.",
+        icon: Brush,
       },
       {
-        title: "Higiene e troca",
+        title: "Apresentação sempre em dia",
         description:
-          "Kits com peças suficientes para o rodízio de lavagem: sempre há uniforme limpo para o próximo turno.",
-        icon: Brush,
+          "Uniformes com bom caimento, acabamento cuidadoso e cores que ajudam a manter uma boa aparência durante o expediente.",
+        icon: BadgeCheck,
       },
     ],
     pieces: [
@@ -483,45 +920,227 @@ export const services: Service[] = [
     ],
     models: [
       {
-        name: "Camisa em malha",
+        name: "Jaleco Feminino com 3 Bolsos",
+        colorName: "Preto com vivo branco",
+        swatch: "linear-gradient(135deg, #171717 50%, #F1F0EC 50%)",
+        gender: "feminino",
         description:
-          "Malha leve com secagem rápida e gola reforçada. Modelagem ampla para agachar e alcançar sem repuxar — é a peça mais usada no dia a dia da equipe.",
-        style: "tshirt",
-        photo: "/produtos/asg-camisa-malha.webp",
+          "Jaleco feminino com 3 bolsos, sendo 1 bordado, e vivo branco na gola, nas mangas e nos bolsos.",
+        style: "social-feminina",
+        photo: "/produtos/asg-jaleco-feminino-preto-com-03-bolsos-e-vivo-branco.webp",
       },
       {
-        name: "Camisa em malha gola polo",
+        name: "Jaleco em Brim Azul Marinho",
+        group: "Jaleco em Brim",
+        colorName: "Azul marinho",
+        gender: "masculino",
+        swatch: "#1E2A44",
+        description:
+          "Jaleco com 3 bolsos, sendo 1 bordado. Os botões podem ser cobertos ou expostos, em manga longa e curta.",
+        style: "social",
+        photo: "/produtos/asg-e-zeladoria-jaleco-masculino-em-brim-azul-marinho.webp",
+      },
+      {
+        name: "Jaleco em Brim Bege com Detalhes em Verde Petróleo",
+        group: "Jaleco em Brim",
+        colorName: "Bege com detalhes em verde petróleo",
+        swatch: "linear-gradient(135deg, #E4DDCF 50%, #1F4E5A 50%)",
+        description:
+          "Jaleco com 3 bolsos, sendo 1 bordado. Os botões podem ser cobertos ou expostos, em manga longa e curta.",
+        style: "social",
+        photo: "/produtos/asg-e-zeladoria-jaleco-em-brim-cinza-com-detalhes-em-verde.webp",
+      },
+      {
+        name: "Jaleco em Brim Caqui",
+        group: "Jaleco em Brim",
+        colorName: "Caqui",
+        swatch: "#CFC3A6",
+        description:
+          "Jaleco com 3 bolsos, sendo 1 bordado. Os botões podem ser cobertos ou expostos, em manga longa e curta.",
+        style: "social",
+        photo: "/produtos/asg-e-zeladoria-jaleco-em-brim-caqui.webp",
+      },
+      {
+        name: "Camisa em Malha Gola O Azul Marinho",
+        group: "Camisa em Malha Gola O",
+        colorName: "Azul marinho",
+        gender: "masculino",
+        swatch: "#1E2A4A",
+        description:
+          "A peça mais usada quando se trata de melhor mobilidade e transpiração, sem gerar muito calor e mantendo bem apresentável ao mesmo tempo.",
+        style: "tshirt",
+        photo: "/produtos/asg-e-zeladoria-camisa-masculina-em-malha-azul-marinho2.webp",
+      },
+      {
+        name: "Camisa em Malha Gola O Cinza",
+        group: "Camisa em Malha Gola O",
+        colorName: "Cinza",
+        swatch: "#A3A3A3",
+        description:
+          "A peça mais usada quando se trata de melhor mobilidade e transpiração, sem gerar muito calor e mantendo bem apresentável ao mesmo tempo.",
+        style: "tshirt",
+        photo: "/produtos/asg-e-zeladoria-camisa-em-malha-cinza.webp",
+      },
+      {
+        name: "Camisa em Malha Gola O Vermelha",
+        group: "Camisa em Malha Gola O",
+        colorName: "Vermelha",
+        swatch: "#D62B30",
+        description:
+          "A peça mais usada quando se trata de melhor mobilidade e transpiração, sem gerar muito calor e mantendo bem apresentável ao mesmo tempo.",
+        style: "tshirt",
+        photo: "/produtos/asg-e-zeladoria-camisa-em-malha-vermelha.webp",
+      },
+      {
+        name: "Camisa Manga Longa em Malha PV Gola Olímpica Azul Marinho",
+        group: "Camisa Manga Longa em Malha PV Gola Olímpica",
+        colorName: "Azul marinho",
+        swatch: "#192138",
+        description:
+          "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        style: "tshirt",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-azul-marinho.webp",
+      },
+      {
+        name: "Camisa Manga Longa em Malha PV Gola Olímpica Cinza",
+        group: "Camisa Manga Longa em Malha PV Gola Olímpica",
+        colorName: "Cinza",
+        swatch: "#9B9B9D",
+        description:
+          "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        style: "tshirt",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-cinza.webp",
+      },
+      {
+        name: "Camisa Manga Longa em Malha PV Gola Olímpica Cinza Escuro",
+        group: "Camisa Manga Longa em Malha PV Gola Olímpica",
+        colorName: "Cinza escuro",
+        swatch: "#48484D",
+        description:
+          "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        style: "tshirt",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-cinza-escuro.webp",
+      },
+      {
+        name: "Camisa Manga Longa em Malha PV Gola Olímpica Verde Escuro",
+        group: "Camisa Manga Longa em Malha PV Gola Olímpica",
+        colorName: "Verde escuro",
+        swatch: "#26392E",
+        description:
+          "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        style: "tshirt",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-verde-escuro.webp",
+      },
+      {
+        name: "Camisa Manga Longa em Malha PV Gola Olímpica Vermelha",
+        group: "Camisa Manga Longa em Malha PV Gola Olímpica",
+        colorName: "Vermelha",
+        swatch: "#C8102E",
+        description:
+          "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        style: "tshirt",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-vermelha.webp",
+      },
+      {
+        name: "Camisa Polo Manga Longa em Malha PV Azul Escuro",
+        group: "Camisa Polo Manga Longa em Malha PV",
+        colorName: "Azul escuro",
+        swatch: "#182645",
+        description:
+          "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
+        style: "polo",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-azul-escuro.webp",
+      },
+      {
+        name: "Camisa Polo Manga Longa em Malha PV Cinza Claro",
+        group: "Camisa Polo Manga Longa em Malha PV",
+        colorName: "Cinza claro",
+        swatch: "#9A9A9C",
+        description:
+          "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
+        style: "polo",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-cinza-claro.webp",
+      },
+      {
+        name: "Camisa Polo Manga Longa em Malha PV Cinza Escuro",
+        group: "Camisa Polo Manga Longa em Malha PV",
+        colorName: "Cinza escuro",
+        swatch: "#434348",
+        description:
+          "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
+        style: "polo",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-cinza-escuro.webp",
+      },
+      {
+        name: "Camisa Polo Manga Longa em Malha PV Verde Escuro",
+        group: "Camisa Polo Manga Longa em Malha PV",
+        colorName: "Verde escuro",
+        swatch: "#233429",
+        description:
+          "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
+        style: "polo",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-verde-escuro.webp",
+      },
+      {
+        name: "Camisa Polo Masculina em Malha",
+        colorName: "Verde escuro",
+        swatch: "#1F4D36",
+        gender: "masculino",
         description:
           "Mesma malha leve da camisa gola O, no acabamento polo com bolso — um pouco mais apresentável sem perder a mobilidade e a transpiração.",
-        style: "tshirt",
-        photo: "/produtos/camisa-polo-cinza-bolso.png",
+        style: "polo",
+        photo: "/produtos/asg-e-zeladoria-camisa-polo-masculina-verde-escuro.webp",
       },
       {
-        name: "Jaleco com 3 bolsos",
+        name: "Calça com Elástico Total e 4 Bolsos Preta (oxford)",
+        group: "Calça com Elástico Total e 4 Bolsos",
+        colorName: "Preta (oxford)",
+        swatch: "#1A1A1A",
         description:
-          "Três bolsos para pano, borrifador e celular, em tecido que segura o respingo de produto de limpeza. Protege a roupa e sai do corpo em um segundo.",
-        style: "social",
-        photo: "/produtos/jaleco-oxford-cinza.png",
-        colors: [branco, cinzaClaro, royal, marinho],
-      },
-      {
-        name: "Jaqueta",
-        description:
-          "Para a limpeza de área externa e o começo da manhã: fechamento em zíper, punho e barra em ribana e bolsos na altura da cintura.",
-        style: "jaqueta",
-        photo: "/produtos/jaqueta-preta.png",
-        colors: [marinho, grafite, royal, preto],
-      },
-      {
-        name: "Calça com elástico",
-        description:
-          "Cós com elástico e cordão: veste rápido, não aperta ao agachar e dispensa cinto. Tecido leve que seca depressa para quem trabalha perto d'água.",
+          "Em brim, oxford ou prada, com 4 bolsos, elástico total e cordão, dispensa cinto e garante mais conforto ao agachar.",
         style: "calca",
-        photo: "/produtos/calca-caqui-elastico.png",
-        colors: [marinho, grafite, preto, royal],
+        photo: "/produtos/asg-e-zeladoria-calca-em-oxford.webp",
       },
       {
-        name: "Calçado antiderrapante",
+        name: "Calça com Elástico Total e 4 Bolsos Caqui (brim)",
+        group: "Calça com Elástico Total e 4 Bolsos",
+        colorName: "Caqui (brim)",
+        swatch: "#8F907F",
+        description:
+          "Em brim, oxford ou prada, com 4 bolsos, elástico total e cordão, dispensa cinto e garante mais conforto ao agachar.",
+        style: "calca",
+        photo: "/produtos/asg-e-zeladoria-calca-com-elastico-total-e-4-bolsos-em-brim-caqui.webp",
+      },
+      {
+        name: "Calça com Elástico Total e 4 Bolsos Preta (oxford ou prada)",
+        group: "Calça com Elástico Total e 4 Bolsos",
+        colorName: "Preta (oxford ou prada)",
+        swatch: "#232323",
+        description:
+          "Em oxford ou prada, com 4 bolsos, elástico total e cordão, dispensa cinto e garante mais conforto ao agachar.",
+        style: "calca",
+        photo: "/produtos/asg-zeladoria-calca-elastico-oxford-prada-cordao.webp",
+      },
+      {
+        name: "Jaqueta Forrada",
+        colorName: "Preta",
+        swatch: "#171717",
+        description:
+          "Para dias frios ou com muita ventania: jaqueta forrada com tecido 100% algodão, elástico na barra e punhos, com zíper e 2 bolsos laterais.",
+        style: "jaqueta",
+        photo: "/produtos/jaqueta-preta-forrada-100-algodao-2-bolsos.webp",
+      },
+      {
+        name: "Meia em Algodão",
+        colorName: "Branca ou preta",
+        swatch: "linear-gradient(135deg, #F1F0EC 50%, #171717 50%)",
+        description:
+          "Meias de algodão nas cores branca e preta, para o uso diário com bota ou calçado de trabalho.",
+        style: "meia",
+        photo: "/produtos/asg-e-zeladoria-meias-de-algodao.webp",
+      },
+      {
+        name: "Calçado Antiderrapante",
         description:
           "Calçado de alta durabilidade, solado com aderência, modelo BB65, leve e bonito.",
         style: "sapato",
@@ -529,7 +1148,7 @@ export const services: Service[] = [
         colors: [preto, branco],
       },
       {
-        name: "Bota impermeável",
+        name: "Bota Impermeável",
         description:
           "Cano alto e material impermeável para lavagem de garagem, escada e área comum — o pé fica seco no turno inteiro, com o mesmo solado antiderrapante.",
         style: "bota",
@@ -537,7 +1156,7 @@ export const services: Service[] = [
         colors: [preto, branco, verdeBandeira],
       },
       {
-        name: "Bota de borracha cano curto",
+        name: "Bota de Borracha Cano Curto",
         description:
           "Impermeável e antiderrapante, para lavagem de garagem, calçada e área comum. Cano curto, mais leve no dia a dia.",
         style: "bota",
@@ -545,7 +1164,7 @@ export const services: Service[] = [
         colors: [preto, branco],
       },
       {
-        name: "Bota em couro",
+        name: "Bota em Couro",
         description:
           "Altíssima durabilidade, em couro com elástico, preta e sem biqueira.",
         style: "bota",
@@ -565,6 +1184,17 @@ export const services: Service[] = [
 
 export function getService(slug: string) {
   return services.find((service) => service.slug === slug);
+}
+
+/** Título da peça, sem a cor: o nome da família (`group`) ou o próprio nome. */
+export function modelTitle(model: Pick<UniformModel, "name" | "group">) {
+  return model.group ?? model.name;
+}
+
+/** Título + cor, para legendas, textos alternativos e mensagens. */
+export function modelLabel(model: Pick<UniformModel, "name" | "group" | "colorName">) {
+  const title = modelTitle(model);
+  return model.colorName ? `${title} — ${model.colorName}` : title;
 }
 
 /** Caminho da página de venda de um serviço. */

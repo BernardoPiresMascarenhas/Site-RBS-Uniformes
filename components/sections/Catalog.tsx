@@ -8,7 +8,7 @@ import { CardCarousel, type CarouselSlide } from "@/components/ui/CardCarousel";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { resolveCover, resolveModelPhotos, resolvePhotoModels } from "@/lib/photos";
-import { modelPath, services, servicePath } from "@/lib/services";
+import { modelLabel, modelPath, services, servicePath } from "@/lib/services";
 import { theme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
@@ -50,9 +50,9 @@ export function Catalog() {
             const slides: CarouselSlide[] = resolvePhotoModels(service.models).map(
               (model) => ({
                 src: model.photo,
-                alt: `${model.name} da linha ${service.title}`,
+                alt: `${modelLabel(model)} da linha ${service.title}`,
                 href: modelPath(service.slug, model.name),
-                caption: model.name,
+                caption: modelLabel(model),
               }),
             );
 
@@ -124,13 +124,21 @@ export function Catalog() {
                       `flex-auto` estica as etiquetas para cada linha fechar
                       rente às bordas, sem sobra à direita. */}
                   <ul className="mt-5 flex flex-wrap gap-2">
-                    {service.models.map((model) => (
+                    {/* uma etiqueta por peça: variações de cor (`group`) contam
+                        como uma só e abrem na primeira cor */}
+                    {service.models
+                      .filter(
+                        (model, i, all) =>
+                          !model.group ||
+                          all.findIndex((other) => other.group === model.group) === i,
+                      )
+                      .map((model) => (
                       <li key={model.name} className="flex-auto">
                         <Link
                           href={modelPath(service.slug, model.name)}
                           className="block rounded-full bg-brand-bg px-3 py-1.5 text-center text-xs font-medium text-brand-muted transition-colors duration-200 hover:bg-brand-green-soft hover:text-brand-green"
                         >
-                          {model.name}
+                          {model.group ?? model.name}
                         </Link>
                       </li>
                     ))}

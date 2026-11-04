@@ -29,7 +29,11 @@ import { cn } from "@/lib/utils";
  * contexto de empilhamento da coluna e o pop-up abriria por baixo dos
  * diferenciais — e também por baixo da navbar `z-50` e do FAB `z-40`.
  */
-export function VisitModal() {
+/**
+ * `triggerClassName` substitui o estilo do botão de abertura (usado pelo
+ * HeroV15); sem ele, o botão fica exatamente como sempre foi.
+ */
+export function VisitModal({ triggerClassName }: { triggerClassName?: string } = {}) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -59,7 +63,10 @@ export function VisitModal() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex min-h-[44px] items-center gap-2 rounded-brand border border-brand-heading/25 px-5 py-2.5 font-display text-sm font-semibold text-brand-heading transition-colors duration-200 hover:border-brand-heading/50 hover:bg-brand-heading/10 sm:border-transparent sm:px-2 sm:hover:bg-transparent sm:hover:text-brand-accent"
+        className={
+          triggerClassName ??
+          "inline-flex min-h-[44px] items-center gap-2 rounded-brand border border-brand-heading/25 px-5 py-2.5 font-display text-sm font-semibold text-brand-heading transition-colors duration-200 hover:border-brand-heading/50 hover:bg-brand-heading/10 sm:border-transparent sm:px-2 sm:hover:bg-transparent sm:hover:text-brand-accent"
+        }
       >
         <HelpCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
         Como funciona a visita?

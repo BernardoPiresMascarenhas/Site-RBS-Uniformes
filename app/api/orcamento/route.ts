@@ -4,6 +4,7 @@ import { Resend } from "resend";
 import { site } from "@/lib/site";
 
 interface QuotePayload {
+  requestType: string;
   name: string;
   company: string;
   phone: string;
@@ -16,6 +17,7 @@ interface QuotePayload {
 }
 
 const fields: { key: keyof QuotePayload; label: string }[] = [
+  { key: "requestType", label: "Tipo de solicitação" },
   { key: "name", label: "Nome" },
   { key: "company", label: "Condomínio" },
   { key: "phone", label: "Telefone / WhatsApp" },
@@ -59,6 +61,9 @@ export async function POST(request: Request) {
   ) as unknown as QuotePayload;
 
   const digits = data.phone.replace(/\D/g, "");
+  if (!["Visita", "Cotação"].includes(data.requestType)) {
+    return NextResponse.json({ error: "invalid_fields" }, { status: 400 });
+  }
   if (data.name.length < 3 || data.company.length < 2 || digits.length < 10) {
     return NextResponse.json({ error: "invalid_fields" }, { status: 400 });
   }
@@ -86,8 +91,8 @@ export async function POST(request: Request) {
     from: process.env.QUOTE_FROM_EMAIL ?? `Site ${site.name} <onboarding@resend.dev>`,
     to: process.env.QUOTE_TO_EMAIL ?? site.email,
     replyTo,
-    subject: `Novo orçamento — ${data.company} (${data.name})`,
-    html: `<h2 style="font-family:sans-serif">Solicitação de orçamento pelo site</h2>
+    subject: `Nova solicitação de ${data.requestType.toLowerCase()} — ${data.company} (${data.name})`,
+    html: `<h2 style="font-family:sans-serif">Solicitação de visita ou cotação pelo site</h2>
 <table style="font-family:sans-serif;font-size:14px;border-collapse:collapse">${rows}</table>`,
     text,
   });

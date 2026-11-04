@@ -1,14 +1,5 @@
 import Image from "next/image";
-import {
-  BadgeCheck,
-  CalendarDays,
-  FileText,
-  Ruler,
-  ShieldCheck,
-  Shirt,
-  Star,
-  UsersRound,
-} from "lucide-react";
+import { CalendarDays, FileText, ShieldCheck, Star } from "lucide-react";
 
 import { VisitModal } from "@/components/VisitModal";
 import { ButtonLink } from "@/components/ui/Button";
@@ -16,41 +7,8 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Container } from "@/components/ui/Section";
 import { testimonials } from "@/lib/content";
 import { defaultWhatsappMessage, whatsappLink } from "@/lib/site";
-import { tones, type Tone } from "@/lib/theme";
+import { tones } from "@/lib/theme";
 import { cn, initials } from "@/lib/utils";
-
-const highlights: {
-  icon: typeof UsersRound;
-  title: string;
-  description: string;
-  /** Cor do ícone — os textos continuam brancos. */
-  tone: Tone;
-}[] = [
-  {
-    icon: UsersRound,
-    tone: "red",
-    title: "Atendimento especializado",
-    description: "Contamos com equipes especializadas desde a cotação até a entrega.",
-  },
-  {
-    icon: Ruler,
-    tone: "red",
-    title: "Medição local",
-    description: "Deslocamos um profissional da área para tirar as medidas de cada colaborador individualmente e sem custos adicionais.",
-  },
-  {
-    icon: Shirt,
-    tone: "red",
-    title: "Visita sem compromisso",
-    description: "Apresentamos as opções de uniformes de acordo com o que for solicitado mediante interesse e contato.",
-  },
-  {
-    icon: BadgeCheck,
-    tone: "red",
-    title: "Entrega gratuita",
-    description: "Entrega realizada pela RBS com acompanhamento da localização em tempo real.",
-  },
-];
 
 export function Hero() {
   return (
@@ -253,52 +211,6 @@ export function Hero() {
           </div>
 
         </div>
-
-        {/* ======================================================
-            DIFERENCIAIS
-        ====================================================== */}
-        <Reveal
-          delay={470}
-          className="relative z-20 mt-9 overflow-hidden rounded-brand-lg border border-rbs-yellow bg-brand-bg shadow-brand-lg"
-        >
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4">
-            {highlights.map(
-              ({ icon: Icon, title, description, tone }, index) => (
-                <Reveal
-                  key={title}
-                  delay={560 + index * 90}
-                  className={[
-                    "flex items-center gap-3 px-4 py-2.5 lg:px-5",
-                    "transition-colors duration-200 hover:bg-brand-heading/[0.04]",
-
-                    index !== 0
-                      ? "border-t border-rbs-yellow/40 sm:border-l sm:border-t-0"
-                      : "",
-
-                    index === 2
-                      ? "sm:border-l-0 sm:border-t lg:border-l lg:border-t-0"
-                      : "",
-                  ].join(" ")}
-                >
-                  <Icon
-                    className={cn("h-5 w-5 shrink-0 stroke-[1.75]", tones[tone].text)}
-                    aria-hidden="true"
-                  />
-
-                  <div>
-                    <h2 className="text-[0.8125rem] font-bold leading-tight">
-                      {title}
-                    </h2>
-
-                    <p className="mt-0.5 text-xs leading-[1.35] text-brand-muted">
-                      {description}
-                    </p>
-                  </div>
-                </Reveal>
-              ),
-            )}
-          </div>
-        </Reveal>
       </Container>
     </section>
   );
