@@ -15,7 +15,9 @@ import { cn } from "@/lib/utils";
 const SIZES = {
   /** Faixas largas, na largura da tela (Clientes). */
   lg: { height: 240, className: "h-40 sm:h-52 lg:h-60", sizes: "(min-width: 1024px) 420px, (min-width: 640px) 320px, 240px" },
-  /** Faixas dentro de uma coluna de texto (Bordados). */
+  /** Faixa única na largura do conteúdo, ~6 fotos visíveis no desktop (Bordados). */
+  md: { height: 112, className: "h-20 sm:h-24 lg:h-28", sizes: "(min-width: 1024px) 220px, 180px" },
+  /** Faixas dentro de uma coluna de texto. */
   sm: { height: 128, className: "h-24 sm:h-28 lg:h-32", sizes: "(min-width: 1024px) 240px, 200px" },
 } as const;
 

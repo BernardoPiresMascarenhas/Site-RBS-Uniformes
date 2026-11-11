@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { UniformMockup } from "@/components/decor/UniformMockup";
 import { ButtonLink } from "@/components/ui/Button";
-import { CardCarousel, type CarouselSlide } from "@/components/ui/CardCarousel";
+import { CardCarousel, CardCarouselGroup, type CarouselSlide } from "@/components/ui/CardCarousel";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { resolveCover, resolveModelPhotos, resolvePhotoModels } from "@/lib/photos";
@@ -13,6 +13,19 @@ import { theme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 export function Catalog() {
+  // carrossel com as peças que já têm foto; cada slide abre a peça na página
+  // da linha. Calculado aqui para os três cards andarem em grupo e nunca
+  // mostrarem a mesma foto ao mesmo tempo (`CardCarouselGroup`).
+  const allSlides: CarouselSlide[][] = services.map((service) =>
+    resolvePhotoModels(service.models).map((model) => ({
+      src: model.photo,
+      alt: `${modelLabel(model)} da linha ${service.title}`,
+      href: modelPath(service.slug, model.name),
+      caption: modelLabel(model),
+    })),
+  );
+  const carouselLists = allSlides.map((slides) => slides.map((slide) => slide.src));
+
   return (
     <Section id="catalogo" surface="light">
       <Container>
@@ -35,6 +48,7 @@ export function Catalog() {
           }
         />
 
+        <CardCarouselGroup lists={carouselLists}>
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => {
             // a capa do card é a foto declarada em `cover`; sem ela, cai na
@@ -45,16 +59,7 @@ export function Catalog() {
             const coverPhoto = resolveCover(service.cover);
             const cover = coverPhoto ?? firstModel.photo;
 
-            // carrossel com as peças que já têm foto; cada slide abre a peça
-            // na página da linha
-            const slides: CarouselSlide[] = resolvePhotoModels(service.models).map(
-              (model) => ({
-                src: model.photo,
-                alt: `${modelLabel(model)} da linha ${service.title}`,
-                href: modelPath(service.slug, model.name),
-                caption: modelLabel(model),
-              }),
-            );
+            const slides = allSlides[index];
 
             return (
               <Reveal
@@ -72,6 +77,7 @@ export function Catalog() {
                 {slides.length > 0 ? (
                   <CardCarousel
                     slides={slides}
+                    group={index}
                     className="aspect-[4/3] border-b border-brand-border bg-brand-green-soft"
                   />
                 ) : (
@@ -127,6 +133,7 @@ export function Catalog() {
                     {/* uma etiqueta por peça: variações de cor (`group`) contam
                         como uma só e abrem na primeira cor */}
                     {service.models
+                      .filter((model) => !model.hideInCatalog)
                       .filter(
                         (model, i, all) =>
                           !model.group ||
@@ -162,6 +169,7 @@ export function Catalog() {
             );
           })}
         </div>
+        </CardCarouselGroup>
 
         <Reveal className="mt-12 flex flex-col items-center gap-4 text-center">
           <p className="text-sm text-brand-muted">

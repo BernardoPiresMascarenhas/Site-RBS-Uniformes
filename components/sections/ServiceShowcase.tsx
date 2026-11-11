@@ -3,7 +3,7 @@
 import { ChevronRight, MessageCircle, ZoomIn } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 
 import { PhotoMarquee } from "@/components/PhotoMarquee";
 import { PhotoZoom } from "@/components/PhotoZoom";
@@ -12,7 +12,15 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section } from "@/components/ui/Section";
 import { embroidery as embroideryText } from "@/lib/content";
 import type { PartnerImage } from "@/lib/partners";
-import { modelLabel, modelSlug, modelTitle, type PhotoModel } from "@/lib/services";
+import {
+  modelCategories,
+  modelCategory,
+  modelLabel,
+  modelSlug,
+  modelTitle,
+  type ModelCategory,
+  type PhotoModel,
+} from "@/lib/services";
 import { site, whatsappLink } from "@/lib/site";
 import { theme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
@@ -96,6 +104,19 @@ export function ServiceShowcase({
     }
   }
 
+  const photoRef = useRef<HTMLDivElement>(null);
+
+  /**
+   * Os cards de modelo ficam abaixo da foto grande: ao escolher um deles, se a
+   * foto saiu da tela, a página sobe até ela para mostrar a troca.
+   */
+  function revealPhoto() {
+    const box = photoRef.current?.getBoundingClientRect();
+    if (!box || (box.top >= 0 && box.bottom <= window.innerHeight)) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: window.scrollY + box.top - 120, behavior: reduce ? "auto" : "smooth" });
+  }
+
   function selectModel(option: PhotoModel) {
     setModel(option);
 
@@ -110,7 +131,10 @@ export function ServiceShowcase({
   useEffect(() => {
     const wanted = new URLSearchParams(window.location.search).get("modelo");
     const match = wanted && models.find((option) => modelSlug(option.name) === wanted);
-    if (match) selectModel(match);
+    if (match) {
+      selectModel(match);
+      setCategory(modelCategory(match));
+    }
     // só na montagem
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -128,9 +152,39 @@ export function ServiceShowcase({
       ? models
       : models.filter((option) => !option.gender || option.gender === gender);
 
+  // ---- Categorias (Camisas, Jalecos…) ----
+  // Só as que têm peça no filtro de público atual. Abre na categoria do
+  // modelo escolhido; trocar de categoria não troca a peça da foto até o
+  // visitante clicar num card.
+  const categories = modelCategories
+    .map((name) => ({
+      name,
+      count: new Set(
+        filteredModels.filter((option) => modelCategory(option) === name).map(familyOf),
+      ).size,
+    }))
+    .filter((item) => item.count > 0);
+  const [categoryChoice, setCategory] = useState<ModelCategory>(() => modelCategory(models[0]));
+  const category = categories.some((item) => item.name === categoryChoice)
+    ? categoryChoice
+    : categories[0]?.name ?? categoryChoice;
+
+  // No celular a fileira de categorias rola para o lado: mantém a ativa à
+  // vista (só rola a fileira, nunca a página).
+  const tabsRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const row = tabsRef.current;
+    const tab = row?.querySelector<HTMLElement>('[aria-selected="true"]');
+    if (!row || !tab) return;
+    const left = tab.offsetLeft - row.offsetLeft;
+    if (left < row.scrollLeft || left + tab.offsetWidth > row.scrollLeft + row.clientWidth) {
+      row.scrollLeft = left - 20;
+    }
+  }, [category]);
+
   // Variações de cor da mesma peça (`group`) viram um card só.
   const families: { key: string; variants: PhotoModel[] }[] = [];
-  for (const option of filteredModels) {
+  for (const option of filteredModels.filter((item) => modelCategory(item) === category)) {
     const key = familyOf(option);
     const family = families.find((item) => item.key === key);
     if (family) family.variants.push(option);
@@ -152,6 +206,8 @@ export function ServiceShowcase({
   }
 
   const message = `Olá! Vim pelo site da ${site.name} e tenho interesse na linha de ${title}. Modelo: ${modelLabel(model)}.`;
+
+  const colorMessage = `Olá! Vim pelo site da ${site.name} e estou procurando outra cor para ${modelLabel(model)}.`;
 
   return (
     // padding-top maior que o normal: a navbar é fixa e mais alta no desktop,
@@ -194,8 +250,9 @@ export function ServiceShowcase({
 
         <div className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
           {/* ---------- Coluna visual: peça + seletores ---------- */}
-          <Reveal variant="left" className="lg:sticky lg:top-28 lg:self-start">
+          <Reveal variant="left" className="lg:self-start">
             <div
+              ref={photoRef}
               // no mobile a peça fica um pouco mais baixa que quadrada, para os
               // seletores caberem na primeira rolada
               className={cn(
@@ -266,7 +323,8 @@ export function ServiceShowcase({
                   Cor:{" "}
                   <span className="font-normal text-brand-heading">{model.colorName}</span>
                 </legend>
-                <div className="mt-2.5 flex flex-wrap gap-2.5">
+                <div className="mt-2.5 flex flex-wrap items-center gap-x-8 gap-y-4">
+                <div className="flex flex-wrap gap-2.5">
                   {colorVariants.map((option) => {
                     const active = option.name === model.name;
                     return (
@@ -288,111 +346,36 @@ export function ServiceShowcase({
                     );
                   })}
                 </div>
+
+                {/* Cor que não está na cartela */}
+                <p className="min-w-[14rem] flex-1 text-sm leading-snug text-brand-muted">
+                  <span className="block font-display font-semibold text-brand-heading">
+                    A cor que você procura não está aqui? Nós temos!
+                  </span>
+                  <Link
+                    href="/#contato"
+                    className="font-semibold text-brand-green underline-offset-4 hover:underline"
+                  >
+                    Agende uma visita
+                  </Link>{" "}
+                  ou{" "}
+                  <a
+                    href={whatsappLink(colorMessage)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-brand-green underline-offset-4 hover:underline"
+                  >
+                    nos chame no WhatsApp
+                  </a>
+                </p>
+                </div>
               </fieldset>
             ) : null}
 
-            {/* Modelos */}
-            <fieldset className="mt-6">
-              <legend className="sr-only">Modelo</legend>
-              {/* rótulo visível + filtro na mesma linha */}
-              <div className="flex min-h-[2.25rem] items-center justify-between gap-3">
-                <span aria-hidden="true" className={theme.ui.caption}>
-                  Modelo
-                </span>
-
-                {hasGenderSplit ? (
-                  <div
-                    role="group"
-                    aria-label="Filtrar por público"
-                    className="inline-flex rounded-full border border-brand-border bg-brand-surface p-1"
-                  >
-                    {genderOptions.map((option) => {
-                      const active = gender === option.value;
-                      return (
-                        <button
-                          key={option.value}
-                          type="button"
-                          onClick={() => changeGender(option.value)}
-                          aria-pressed={active}
-                          className={cn(
-                            "rounded-full px-3.5 py-1.5 font-display text-xs font-semibold transition-colors duration-200",
-                            active
-                              ? "bg-brand-green text-white"
-                              : "text-brand-muted hover:text-brand-heading",
-                          )}
-                        >
-                          {option.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                ) : null}
-              </div>
-
-              <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {families.map(({ key, variants }) => {
-                  const active = key === familyOf(model);
-                  // card da família ativa mostra a cor escolhida
-                  const shown = active ? model : variants[0];
-
-                  return (
-                    <button
-                      key={key}
-                      type="button"
-                      onClick={() => {
-                        if (!active) selectModel(variants[0]);
-                      }}
-                      aria-pressed={active}
-                      className={cn(
-                        "group flex flex-col items-center gap-2 rounded-brand border p-2 transition-all",
-                        active
-                          ? "border-brand-green bg-brand-green/[0.07] shadow-brand"
-                          : "border-brand-border hover:border-brand-green/60",
-                      )}
-                    >
-                      <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-brand bg-brand-green-soft">
-                        <Image
-                          src={shown.photo}
-                          alt=""
-                          fill
-                          // 3 colunas dentro da coluna de ~709px, menos o
-                          // gap-3 e o p-2 do botão: ~210px no desktop
-                          sizes="(min-width: 1024px) 215px, (min-width: 640px) 30vw, 45vw"
-                          quality={90}
-                          className="object-cover"
-                        />
-                      </span>
-                      <span
-                        className={cn(
-                          "px-1 text-center text-xs leading-tight",
-                          active ? "text-brand-heading" : "text-brand-muted",
-                        )}
-                      >
-                        {key}
-                      </span>
-                      {variants.length > 1 ? (
-                        <span className="flex items-center gap-1 pb-1" aria-label={`${variants.length} cores`}>
-                          {variants.map((variant) => (
-                            <span
-                              key={variant.name}
-                              aria-hidden="true"
-                              className="h-2.5 w-2.5 rounded-full border border-black/10"
-                              style={swatchStyle(variant.swatch)}
-                            />
-                          ))}
-                        </span>
-                      ) : (
-                        <span className="pb-1" />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </fieldset>
           </Reveal>
 
           {/* ---------- Coluna de conteúdo ---------- */}
-          <Reveal variant="right" delay={120} className="flex min-w-0 flex-col">
+          <Reveal variant="right" delay={120} className="order-3 flex min-w-0 flex-col lg:order-none">
             <p className={theme.ui.caption}>
               Modelo selecionado
             </p>
@@ -461,30 +444,184 @@ export function ServiceShowcase({
               confirmar a cor, agende uma visita ou nos envie uma mensagem que
               enviamos um vídeo da peça escolhida.
             </p>
+          </Reveal>
 
-            {/* ---------- Bordados ---------- */}
-            {embroidery.length > 0 ? (
-              <div className="mt-10 border-t border-brand-border pt-8">
-                <span className={cn(theme.ui.eyebrow, "text-brand-red")}>Personalização</span>
-                <h3 className="mt-2 text-xl leading-tight tracking-tight sm:text-2xl">
-                  {embroideryText.title}
-                </h3>
-                <div className="mt-3 space-y-3 text-sm leading-relaxed text-brand-muted">
-                  {embroideryText.paragraphs.map((paragraph) => (
-                    <p key={paragraph.slice(0, 24)}>{paragraph}</p>
-                  ))}
+          {/* ---------- Modelos ----------
+              Largura toda, 6 por linha no desktop, abaixo da peça e da descrição.
+              No celular vem logo depois da peça (order-2), antes da descrição. */}
+          <Reveal className="order-2 min-w-0 lg:order-none lg:col-span-2">
+              {/* min-w-0: fieldset tem min-width: min-content por padrão e a fileira
+                  de categorias alargaria a página no celular */}
+              <fieldset className="min-w-0">
+                <legend className="sr-only">Modelo</legend>
+                {/* rótulo visível + filtro na mesma linha */}
+                <div className="flex min-h-[2.25rem] items-center justify-between gap-3">
+                  <span aria-hidden="true" className={theme.ui.caption}>
+                    Modelo
+                  </span>
+
+                  {hasGenderSplit ? (
+                    <div
+                      role="group"
+                      aria-label="Filtrar por público"
+                      className="inline-flex rounded-full border border-brand-border bg-brand-surface p-1"
+                    >
+                      {genderOptions.map((option) => {
+                        const active = gender === option.value;
+                        return (
+                          <button
+                            key={option.value}
+                            type="button"
+                            onClick={() => changeGender(option.value)}
+                            aria-pressed={active}
+                            className={cn(
+                              "rounded-full px-3.5 py-1.5 font-display text-xs font-semibold transition-colors duration-200",
+                              active
+                                ? "bg-brand-green text-white"
+                                : "text-brand-muted hover:text-brand-heading",
+                            )}
+                          >
+                            {option.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : null}
                 </div>
-                <div className="mt-6">
-                  <PhotoMarquee
-                    photos={embroidery}
-                    label="Matrizes de bordado computadorizado"
-                    size="sm"
-                  />
+
+                {/* Categorias: no celular a fileira rola para o lado */}
+                {categories.length > 1 ? (
+                  <div
+                    ref={tabsRef}
+                    role="tablist"
+                    aria-label="Categorias de peças"
+                    className="-mx-5 mt-4 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0"
+                  >
+                    {categories.map((item) => {
+                      const active = item.name === category;
+                      return (
+                        <button
+                          key={item.name}
+                          type="button"
+                          role="tab"
+                          aria-selected={active}
+                          onClick={() => setCategory(item.name)}
+                          className={cn(
+                            "inline-flex shrink-0 items-center gap-2 rounded-brand border px-4 py-2.5 font-display text-sm font-semibold transition-colors duration-200",
+                            active
+                              ? "border-brand-green bg-brand-green text-white"
+                              : "border-brand-border bg-brand-surface text-brand-heading hover:border-brand-green/60 hover:text-brand-green",
+                          )}
+                        >
+                          {item.name}
+                          <span
+                            className={cn(
+                              "rounded-full px-1.5 text-xs font-medium",
+                              active ? "bg-white/20 text-white" : "bg-brand-bg text-brand-muted",
+                            )}
+                          >
+                            {item.count}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ) : null}
+
+                <div
+                  role={categories.length > 1 ? "tabpanel" : undefined}
+                  aria-label={categories.length > 1 ? category : undefined}
+                  className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6"
+                >
+                  {families.map(({ key, variants }) => {
+                    const active = key === familyOf(model);
+                    // card da família ativa mostra a cor escolhida
+                    const shown = active ? model : variants[0];
+
+                    return (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() => {
+                          if (!active) selectModel(variants[0]);
+                        revealPhoto();
+                        }}
+                        aria-pressed={active}
+                        className={cn(
+                          "group flex flex-col items-center gap-2 rounded-brand border p-2 transition-all",
+                          active
+                            ? "border-brand-green bg-brand-green/[0.07] shadow-brand"
+                            : "border-brand-border hover:border-brand-green/60",
+                        )}
+                      >
+                        <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-brand bg-brand-green-soft">
+                          <Image
+                            src={shown.photo}
+                            alt=""
+                            fill
+                            // 3 colunas dentro da coluna de ~709px, menos o
+                            // gap-3 e o p-2 do botão: ~210px no desktop
+                            sizes="(min-width: 1024px) 215px, (min-width: 640px) 30vw, 45vw"
+                            quality={90}
+                            className="object-cover"
+                          />
+                        </span>
+                        <span
+                          className={cn(
+                            "px-1 text-center text-xs leading-tight",
+                            active ? "text-brand-heading" : "text-brand-muted",
+                          )}
+                        >
+                          {key}
+                        </span>
+                        {variants.length > 1 ? (
+                          <span className="flex items-center gap-1 pb-1" aria-label={`${variants.length} cores`}>
+                            {variants.map((variant) => (
+                              <span
+                                key={variant.name}
+                                aria-hidden="true"
+                                className="h-2.5 w-2.5 rounded-full border border-black/10"
+                                style={swatchStyle(variant.swatch)}
+                              />
+                            ))}
+                          </span>
+                        ) : (
+                          <span className="pb-1" />
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
-              </div>
-            ) : null}
+              </fieldset>
           </Reveal>
         </div>
+
+        {/* ---------- Bordados ----------
+            Faixa na largura toda, abaixo da peça e da descrição: uma linha só
+            deslizando, com ~6 matrizes visíveis de cada vez no desktop. */}
+        {embroidery.length > 0 ? (
+          <Reveal className="mt-14 border-t border-brand-border pt-10 lg:mt-20">
+            <div className="max-w-3xl">
+              <span className={cn(theme.ui.eyebrow, "text-brand-red")}>Personalização</span>
+              <h3 className="mt-2 text-xl leading-tight tracking-tight sm:text-2xl">
+                {embroideryText.title}
+              </h3>
+              <div className="mt-3 space-y-3 text-sm leading-relaxed text-brand-muted">
+                {embroideryText.paragraphs.map((paragraph) => (
+                  <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+                ))}
+              </div>
+            </div>
+            <div className="mt-7">
+              <PhotoMarquee
+                photos={embroidery}
+                label="Matrizes de bordado computadorizado"
+                size="md"
+                rows={1}
+              />
+            </div>
+          </Reveal>
+        ) : null}
       </Container>
     </Section>
   );

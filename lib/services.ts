@@ -85,6 +85,13 @@ export interface UniformModel {
    * a cartela da linha (`Service.colors`).
    */
   colors?: UniformColor[];
+  /**
+   * Categoria da peça no seletor da página da linha (Camisas, Jalecos…). Sem
+   * valor, sai do nome da peça — ver `modelCategory`.
+   */
+  category?: ModelCategory;
+  /** Esconde a peça das etiquetas dos cards da página inicial (continua na página da linha). */
+  hideInCatalog?: boolean;
 }
 
 /**
@@ -223,6 +230,17 @@ export const services: Service[] = [
     ],
     models: [
       {
+        name: "Camisa Social Masculina Manga Curta Icelandic",
+        group: "Camisa Social Masculina Manga Curta",
+        colorName: "Icelandic",
+        gender: "masculino",
+        swatch: "#ACBAD1",
+        description:
+          "A camisa mais usada para portaria, bordado do condomínio, com 1 bolso, nesse modelo manga curta. Consulte os tipos de tecidos e composição.",
+        style: "social",
+        photo: "/produtos/portaria-camisa-social-masculina-manga-curta-icelandic-c.webp",
+      },
+      {
         name: "Camisa Social Masculina Manga Curta Azul",
         group: "Camisa Social Masculina Manga Curta",
         colorName: "Azul",
@@ -245,17 +263,6 @@ export const services: Service[] = [
         photo: "/produtos/portaria-camisa-social-masculina-manga-curta-azul-prisma.webp",
       },
       {
-        name: "Camisa Social Masculina Manga Curta Azul Turquesa",
-        group: "Camisa Social Masculina Manga Curta",
-        colorName: "Azul turquesa",
-        gender: "masculino",
-        swatch: "#7FD3F0",
-        description:
-          "A camisa mais usada para portaria, bordado do condomínio, com 1 bolso, nesse modelo manga curta. Consulte os tipos de tecidos e composição.",
-        style: "social",
-        photo: "/produtos/portaria-camisa-social-masculina-manga-curta-cor-azul-prisma.webp",
-      },
-      {
         name: "Camisa Social Masculina Manga Curta Azul Motorista",
         group: "Camisa Social Masculina Manga Curta",
         colorName: "Azul motorista",
@@ -265,17 +272,6 @@ export const services: Service[] = [
           "A camisa mais usada para portaria, bordado do condomínio, com 1 bolso, nesse modelo manga curta. Consulte os tipos de tecidos e composição.",
         style: "social",
         photo: "/produtos/portaria-camisa-social-masculina-manga-curta-azul-motorista.webp",
-      },
-      {
-        name: "Camisa Social Masculina Manga Curta Icelandic",
-        group: "Camisa Social Masculina Manga Curta",
-        colorName: "Icelandic",
-        gender: "masculino",
-        swatch: "#ACBAD1",
-        description:
-          "A camisa mais usada para portaria, bordado do condomínio, com 1 bolso, nesse modelo manga curta. Consulte os tipos de tecidos e composição.",
-        style: "social",
-        photo: "/produtos/portaria-camisa-social-masculina-manga-curta-icelandic-c.webp",
       },
       {
         name: "Camisa Social Masculina Manga Curta Cinza",
@@ -289,28 +285,6 @@ export const services: Service[] = [
         photo: "/produtos/portaria-camisa-social-masculina-manga-curta-cor-cinza.webp",
       },
       {
-        name: "Camisa Social Masculina Manga Curta com Detalhe Amarela com Vivo Azul Marinho",
-        group: "Camisa Social Masculina Manga Curta com Detalhe",
-        colorName: "Amarela com vivo azul marinho",
-        gender: "masculino",
-        swatch: "linear-gradient(135deg, #F1E3A4 50%, #1B2A45 50%)",
-        description:
-          "Camisa social com vivo contrastante no abotoamento e nas mangas, bordado do condomínio e 1 bolso. Consulte os tipos de tecidos e composição.",
-        style: "social",
-        photo: "/produtos/portaria-camisa-social-masculina-com-detalhes-em-vivo-no-abotoamento-e-mangas.webp",
-      },
-      {
-        name: "Camisa Social Masculina Manga Curta com Detalhe Azul com Vivo Preto",
-        group: "Camisa Social Masculina Manga Curta com Detalhe",
-        colorName: "Azul com vivo preto",
-        gender: "masculino",
-        swatch: "linear-gradient(135deg, #6F9BD1 50%, #171717 50%)",
-        description:
-          "Camisa social com vivo preto no abotoamento e nas mangas, bordado do condomínio e 1 bolso. Consulte os tipos de tecidos e composição.",
-        style: "social",
-        photo: "/produtos/portaria-camisa-social-masculina-com-detalhes-no-abotoamento-em-vivo-preto-e-mangas.webp",
-      },
-      {
         name: "Camisa Social Masculina Manga Longa Azul Claro",
         group: "Camisa Social Masculina Manga Longa",
         colorName: "Azul claro",
@@ -318,6 +292,7 @@ export const services: Service[] = [
         gender: "masculino",
         description:
           "Camisa social com bordado do condomínio e bolso, no modelo manga longa. Consulte os tipos de tecidos e composição.",
+        hideInCatalog: true,
         style: "social",
         photo: "/produtos/portaria-camisa-social-manga-longa-azul-claro.webp",
       },
@@ -329,6 +304,7 @@ export const services: Service[] = [
         swatch: "#8EA5CE",
         description:
           "Camisa social com bordado do condomínio e bolso, no modelo manga longa. Consulte os tipos de tecidos e composição.",
+        hideInCatalog: true,
         style: "social",
         photo: "/produtos/portaria-camisa-social-manga-longa-azul-motorista.webp",
       },
@@ -340,6 +316,7 @@ export const services: Service[] = [
         swatch: "#ADB8CF",
         description:
           "Camisa social com bordado do condomínio e bolso, no modelo manga longa. Consulte os tipos de tecidos e composição.",
+        hideInCatalog: true,
         style: "social",
         photo: "/produtos/portaria-camisa-social-manga-longa-ice.webp",
       },
@@ -351,6 +328,7 @@ export const services: Service[] = [
         swatch: "#C4C4C6",
         description:
           "Camisa social com bordado do condomínio e bolso, no modelo manga longa. Consulte os tipos de tecidos e composição.",
+        hideInCatalog: true,
         style: "social",
         photo: "/produtos/portaria-camisa-social-manga-longa-cinza-claro.webp",
       },
@@ -362,6 +340,7 @@ export const services: Service[] = [
         swatch: "#99CBC1",
         description:
           "Camisa social com bordado do condomínio e bolso, no modelo manga longa. Consulte os tipos de tecidos e composição.",
+        hideInCatalog: true,
         style: "social",
         photo: "/produtos/portaria-camisa-social-manga-longa-verde-claro.webp",
       },
@@ -373,8 +352,33 @@ export const services: Service[] = [
         swatch: "#3A3A3D",
         description:
           "Camisa social com bordado do condomínio e bolso, no modelo manga longa. Consulte os tipos de tecidos e composição.",
+        hideInCatalog: true,
         style: "social",
         photo: "/produtos/portaria-camisa-social-manga-longa-preto.webp",
+      },
+      {
+        name: "Camisa Social Masculina Manga Curta com Detalhe Amarela com Vivo Azul Marinho",
+        group: "Camisa Social Masculina Manga Curta com Detalhe",
+        colorName: "Amarela com vivo azul marinho",
+        gender: "masculino",
+        swatch: "linear-gradient(135deg, #F1E3A4 50%, #1B2A45 50%)",
+        description:
+          "Camisa social com vivo contrastante no abotoamento e nas mangas, bordado do condomínio e 1 bolso. Consulte os tipos de tecidos e composição.",
+        hideInCatalog: true,
+        style: "social",
+        photo: "/produtos/portaria-camisa-social-masculina-com-detalhes-em-vivo-no-abotoamento-e-mangas.webp",
+      },
+      {
+        name: "Camisa Social Masculina Manga Curta com Detalhe Azul com Vivo Preto",
+        group: "Camisa Social Masculina Manga Curta com Detalhe",
+        colorName: "Azul com vivo preto",
+        gender: "masculino",
+        swatch: "linear-gradient(135deg, #6F9BD1 50%, #171717 50%)",
+        description:
+          "Camisa social com vivo preto no abotoamento e nas mangas, bordado do condomínio e 1 bolso. Consulte os tipos de tecidos e composição.",
+        hideInCatalog: true,
+        style: "social",
+        photo: "/produtos/portaria-camisa-social-masculina-com-detalhes-no-abotoamento-em-vivo-preto-e-mangas.webp",
       },
       {
         name: "Camisa Social Masculina Manga Longa com Detalhe Amarela",
@@ -384,6 +388,7 @@ export const services: Service[] = [
         swatch: "linear-gradient(135deg, #F1E3A4 50%, #1B2A45 50%)",
         description:
           "Camisa social manga longa com vivo contrastante no abotoamento e nos punhos, bordado do condomínio e 1 bolso. Consulte os tipos de tecidos e composição.",
+        hideInCatalog: true,
         style: "social",
         photo: "/produtos/portaria-manga-longa-com-detalhe-amarela.webp",
       },
@@ -395,19 +400,9 @@ export const services: Service[] = [
         swatch: "#A9C6E6",
         description:
           "Camisa social manga longa com 2 bolsos com lapela e bordado do condomínio. Consulte os tipos de tecidos e composição.",
+        hideInCatalog: true,
         style: "social",
         photo: "/produtos/portaria-manga-longa-com-detalhe.webp",
-      },
-      {
-        name: "Blusete Feminina Manga Curta Rosa",
-        group: "Blusete Feminina Manga Curta",
-        colorName: "Rosa",
-        gender: "feminino",
-        swatch: "#C9757A",
-        description:
-          "Segue a mesma proposta da camisa masculina: pinças para ajustar ao corpo e modelagem própria.",
-        style: "social-feminina",
-        photo: "/produtos/portaria-blusete-feminina-cor-rosa.webp",
       },
       {
         name: "Blusete Feminina Manga Curta Verde Água",
@@ -421,6 +416,53 @@ export const services: Service[] = [
         photo: "/produtos/portaria-blusete-feminina-verde-agua2.webp",
       },
       {
+        name: "Blusete Feminina Manga Curta Rosa",
+        group: "Blusete Feminina Manga Curta",
+        colorName: "Rosa",
+        gender: "feminino",
+        swatch: "#C9757A",
+        description:
+          "Segue a mesma proposta da camisa masculina: pinças para ajustar ao corpo e modelagem própria.",
+        style: "social-feminina",
+        photo: "/produtos/portaria-blusete-feminina-cor-rosa.webp",
+      },
+      {
+        name: "Camisa Social Feminina Manga Longa Branca",
+        group: "Camisa Social Feminina Manga Longa",
+        colorName: "Branca",
+        gender: "feminino",
+        swatch: "#F4F4F2",
+        description:
+          "Camisa social feminina manga longa com bordado, pinças para ajustar ao corpo e modelagem própria. Consulte os tipos de tecidos e composição.",
+        hideInCatalog: true,
+        style: "social-feminina",
+        photo: "/produtos/portaria-camisa-social-feminina-manga-longa-branca.webp",
+      },
+      {
+        name: "Camisa Social Feminina Manga Longa Rosa",
+        group: "Camisa Social Feminina Manga Longa",
+        colorName: "Rosa",
+        gender: "feminino",
+        swatch: "#C9757A",
+        description:
+          "Camisa social feminina manga longa com bordado, pinças para ajustar ao corpo e modelagem própria. Consulte os tipos de tecidos e composição.",
+        hideInCatalog: true,
+        style: "social-feminina",
+        photo: "/produtos/portaria-camisa-social-feminina-manga-longa-rosa.webp",
+      },
+      {
+        name: "Camisa Social Feminina Manga Longa Preta",
+        group: "Camisa Social Feminina Manga Longa",
+        colorName: "Preta",
+        gender: "feminino",
+        swatch: "#3A3A3D",
+        description:
+          "Camisa social feminina manga longa com bordado, pinças para ajustar ao corpo e modelagem própria. Consulte os tipos de tecidos e composição.",
+        hideInCatalog: true,
+        style: "social-feminina",
+        photo: "/produtos/portaria-camisa-social-feminina-manga-longa-preta.webp",
+      },
+      {
         name: "Camisa Social Feminina Manga Curta com Detalhe Amarela com Vivo Azul Marinho",
         group: "Camisa Social Feminina Manga Curta com Detalhe",
         colorName: "Amarela com vivo azul marinho",
@@ -428,6 +470,7 @@ export const services: Service[] = [
         swatch: "linear-gradient(135deg, #F1E3A4 50%, #1B2A45 50%)",
         description:
           "Mesma proposta da masculina, com vivo contrastante no abotoamento e nas mangas: pinças para ajustar ao corpo e modelagem própria.",
+        hideInCatalog: true,
         style: "social-feminina",
         photo: "/produtos/portaria-camisa-social-feminina-com-detalhes-em-vivo-no-abotoamento-e-mangas.webp",
       },
@@ -439,17 +482,42 @@ export const services: Service[] = [
         swatch: "linear-gradient(135deg, #6F9BD1 50%, #171717 50%)",
         description:
           "Mesma proposta da masculina, com vivo preto no abotoamento e nas mangas: pinças para ajustar ao corpo e modelagem própria.",
+        hideInCatalog: true,
         style: "social-feminina",
         photo: "/produtos/portaria-camisa-social-feminina-com-detalhes-no-abotoamento-em-vivo-preto-e-mangas.webp",
       },
       {
-        name: "Calça Social em Oxford",
+        name: "Camisa Social Feminina Manga Longa com Detalhe Azul com Vivo Azul Marinho",
+        group: "Camisa Social Feminina Manga Longa com Detalhe",
+        colorName: "Azul com vivo azul marinho",
+        gender: "feminino",
+        swatch: "linear-gradient(135deg, #6F9BD1 50%, #1B2A45 50%)",
+        description:
+          "Camisa social feminina manga longa com vivo contrastante no abotoamento e nos punhos, bordado e 1 bolso: pinças para ajustar ao corpo e modelagem própria.",
+        hideInCatalog: true,
+        style: "social-feminina",
+        photo: "/produtos/portaria-camisa-social-feminina-manga-longa-com-detalhe-azul.webp",
+      },
+      {
+        name: "Blusete Social Manga 3/4 Rosa",
+        group: "Blusete Social Manga 3/4",
+        colorName: "Rosa",
+        gender: "feminino",
+        swatch: "#C9677A",
+        description:
+          "Camisa social feminina com manga 3/4 e punho, pinças para ajustar ao corpo e modelagem própria. Consulte os tipos de tecidos e composição.",
+        style: "social-feminina",
+        photo: "/produtos/portaria-camisa-social-feminina-manga-3-4-rosa.webp",
+      },
+      {
+        name: "Calça Social Feminina em Oxford",
         colorName: "Preta",
         swatch: "#171717",
+        gender: "feminino",
         description:
-          "Em oxford, com 2 bolsos no modelo faca e 2 bolsos embutidos com botão, passantes, fecho com gancho e botão.",
+          "Calça social feminina em oxford, com cós alto, pregas e fecho com botões. Consulte os tipos de tecidos e composição.",
         style: "calca",
-        photo: "/produtos/portaria-calca-social-preta-em-oxford.webp",
+        photo: "/produtos/portaria-calca-social-feminina-em-oxford-preto.webp",
       },
       {
         name: "Blazer Masculino em Oxford",
@@ -469,16 +537,6 @@ export const services: Service[] = [
           "Para dias frios ou com muita ventania: jaqueta forrada com tecido 100% algodão, elástico na barra e punhos, com zíper e 2 bolsos laterais.",
         style: "jaqueta",
         photo: "/produtos/jaqueta-preta-forrada-100-algodao-2-bolsos.webp",
-      },
-      {
-        name: "Jaleco Masculino em Brim",
-        colorName: "Azul marinho com detalhes em vermelho",
-        swatch: "linear-gradient(135deg, #1E2A44 50%, #D62B30 50%)",
-        gender: "masculino",
-        description:
-          "Jaleco com 3 bolsos, sendo 1 bordado. Os botões podem ser cobertos ou expostos, em manga longa e curta.",
-        style: "social",
-        photo: "/produtos/portaria-jaleco-masculino-em-brim-azul-marinho-com-detalhe-em-vermelho.webp",
       },
       {
         name: "Gravata Tradicional",
@@ -593,8 +651,18 @@ export const services: Service[] = [
     ],
     models: [
       {
-        name: "Jaleco em Brim Azul Marinho",
-        group: "Jaleco em Brim",
+        name: "Jaleco Masculino Manga Curta Caqui",
+        group: "Jaleco Masculino Manga Curta",
+        colorName: "Caqui",
+        swatch: "#CFC3A6",
+        description:
+          "Jaleco com 3 bolsos, sendo 1 bordado. Os botões podem ser cobertos ou expostos, em manga longa e curta.",
+        style: "social",
+        photo: "/produtos/asg-e-zeladoria-jaleco-em-brim-caqui.webp",
+      },
+      {
+        name: "Jaleco Masculino Manga Curta Azul Marinho",
+        group: "Jaleco Masculino Manga Curta",
         colorName: "Azul marinho",
         gender: "masculino",
         swatch: "#1E2A44",
@@ -604,8 +672,8 @@ export const services: Service[] = [
         photo: "/produtos/asg-e-zeladoria-jaleco-masculino-em-brim-azul-marinho.webp",
       },
       {
-        name: "Jaleco em Brim Bege com Detalhes em Verde Petróleo",
-        group: "Jaleco em Brim",
+        name: "Jaleco Masculino Manga Curta Bege com Detalhes em Verde Petróleo",
+        group: "Jaleco Masculino Manga Curta",
         colorName: "Bege com detalhes em verde petróleo",
         swatch: "linear-gradient(135deg, #E4DDCF 50%, #1F4E5A 50%)",
         description:
@@ -614,14 +682,14 @@ export const services: Service[] = [
         photo: "/produtos/asg-e-zeladoria-jaleco-em-brim-cinza-com-detalhes-em-verde.webp",
       },
       {
-        name: "Jaleco em Brim Caqui",
-        group: "Jaleco em Brim",
-        colorName: "Caqui",
-        swatch: "#CFC3A6",
+        name: "Jaleco Masculino Manga Curta com Detalhe",
+        colorName: "Azul marinho com detalhes em vermelho",
+        swatch: "linear-gradient(135deg, #1E2A44 50%, #D62B30 50%)",
+        gender: "masculino",
         description:
           "Jaleco com 3 bolsos, sendo 1 bordado. Os botões podem ser cobertos ou expostos, em manga longa e curta.",
         style: "social",
-        photo: "/produtos/asg-e-zeladoria-jaleco-em-brim-caqui.webp",
+        photo: "/produtos/portaria-jaleco-masculino-em-brim-azul-marinho-com-detalhe-em-vermelho.webp",
       },
       {
         name: "Jaleco em Brim Manga Longa",
@@ -629,8 +697,19 @@ export const services: Service[] = [
         swatch: "linear-gradient(135deg, #E4DDCF 50%, #1F4E5A 50%)",
         description:
           "Jaleco em brim manga longa, com gola e punhos em verde petróleo e 3 bolsos, sendo 1 bordado.",
+        hideInCatalog: true,
         style: "social",
         photo: "/produtos/zeladoria-jaleco-brim-bege-verde-petroleo-manga-longa.webp",
+      },
+      {
+        name: "Camisa em Malha Gola O Cinza",
+        group: "Camisa em Malha Gola O",
+        colorName: "Cinza",
+        swatch: "#A3A3A3",
+        description:
+          "A peça mais usada quando se trata de melhor mobilidade e transpiração, sem gerar muito calor e mantendo bem apresentável ao mesmo tempo.",
+        style: "tshirt",
+        photo: "/produtos/asg-e-zeladoria-camisa-em-malha-cinza.webp",
       },
       {
         name: "Camisa em Malha Gola O Azul Marinho",
@@ -642,16 +721,6 @@ export const services: Service[] = [
           "A peça mais usada quando se trata de melhor mobilidade e transpiração, sem gerar muito calor e mantendo bem apresentável ao mesmo tempo.",
         style: "tshirt",
         photo: "/produtos/asg-e-zeladoria-camisa-masculina-em-malha-azul-marinho2.webp",
-      },
-      {
-        name: "Camisa em Malha Gola O Cinza",
-        group: "Camisa em Malha Gola O",
-        colorName: "Cinza",
-        swatch: "#A3A3A3",
-        description:
-          "A peça mais usada quando se trata de melhor mobilidade e transpiração, sem gerar muito calor e mantendo bem apresentável ao mesmo tempo.",
-        style: "tshirt",
-        photo: "/produtos/asg-e-zeladoria-camisa-em-malha-cinza.webp",
       },
       {
         name: "Camisa em Malha Gola O Vermelha",
@@ -670,6 +739,7 @@ export const services: Service[] = [
         swatch: "#192138",
         description:
           "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        hideInCatalog: true,
         style: "tshirt",
         photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-azul-marinho.webp",
       },
@@ -680,6 +750,7 @@ export const services: Service[] = [
         swatch: "#9B9B9D",
         description:
           "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        hideInCatalog: true,
         style: "tshirt",
         photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-cinza.webp",
       },
@@ -690,6 +761,7 @@ export const services: Service[] = [
         swatch: "#48484D",
         description:
           "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        hideInCatalog: true,
         style: "tshirt",
         photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-cinza-escuro.webp",
       },
@@ -700,6 +772,7 @@ export const services: Service[] = [
         swatch: "#26392E",
         description:
           "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        hideInCatalog: true,
         style: "tshirt",
         photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-verde-escuro.webp",
       },
@@ -710,8 +783,20 @@ export const services: Service[] = [
         swatch: "#C8102E",
         description:
           "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        hideInCatalog: true,
         style: "tshirt",
         photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-vermelha.webp",
+      },
+      {
+        name: "Camisa Polo Manga Longa em Malha PV Cinza Escuro",
+        group: "Camisa Polo Manga Longa em Malha PV",
+        colorName: "Cinza escuro",
+        swatch: "#434348",
+        description:
+          "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
+        hideInCatalog: true,
+        style: "polo",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-cinza-escuro.webp",
       },
       {
         name: "Camisa Polo Manga Longa em Malha PV Azul Escuro",
@@ -720,6 +805,7 @@ export const services: Service[] = [
         swatch: "#182645",
         description:
           "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
+        hideInCatalog: true,
         style: "polo",
         photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-azul-escuro.webp",
       },
@@ -730,18 +816,9 @@ export const services: Service[] = [
         swatch: "#9A9A9C",
         description:
           "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
+        hideInCatalog: true,
         style: "polo",
         photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-cinza-claro.webp",
-      },
-      {
-        name: "Camisa Polo Manga Longa em Malha PV Cinza Escuro",
-        group: "Camisa Polo Manga Longa em Malha PV",
-        colorName: "Cinza escuro",
-        swatch: "#434348",
-        description:
-          "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
-        style: "polo",
-        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-cinza-escuro.webp",
       },
       {
         name: "Camisa Polo Manga Longa em Malha PV Verde Escuro",
@@ -750,6 +827,7 @@ export const services: Service[] = [
         swatch: "#233429",
         description:
           "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
+        hideInCatalog: true,
         style: "polo",
         photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-verde-escuro.webp",
       },
@@ -920,18 +998,18 @@ export const services: Service[] = [
     ],
     models: [
       {
-        name: "Jaleco Feminino com 3 Bolsos",
-        colorName: "Preto com vivo branco",
-        swatch: "linear-gradient(135deg, #171717 50%, #F1F0EC 50%)",
-        gender: "feminino",
+        name: "Jaleco Masculino Manga Curta Caqui",
+        group: "Jaleco Masculino Manga Curta",
+        colorName: "Caqui",
+        swatch: "#CFC3A6",
         description:
-          "Jaleco feminino com 3 bolsos, sendo 1 bordado, e vivo branco na gola, nas mangas e nos bolsos.",
-        style: "social-feminina",
-        photo: "/produtos/asg-jaleco-feminino-preto-com-03-bolsos-e-vivo-branco.webp",
+          "Jaleco com 3 bolsos, sendo 1 bordado. Os botões podem ser cobertos ou expostos, em manga longa e curta.",
+        style: "social",
+        photo: "/produtos/asg-e-zeladoria-jaleco-em-brim-caqui.webp",
       },
       {
-        name: "Jaleco em Brim Azul Marinho",
-        group: "Jaleco em Brim",
+        name: "Jaleco Masculino Manga Curta Azul Marinho",
+        group: "Jaleco Masculino Manga Curta",
         colorName: "Azul marinho",
         gender: "masculino",
         swatch: "#1E2A44",
@@ -941,8 +1019,8 @@ export const services: Service[] = [
         photo: "/produtos/asg-e-zeladoria-jaleco-masculino-em-brim-azul-marinho.webp",
       },
       {
-        name: "Jaleco em Brim Bege com Detalhes em Verde Petróleo",
-        group: "Jaleco em Brim",
+        name: "Jaleco Masculino Manga Curta Bege com Detalhes em Verde Petróleo",
+        group: "Jaleco Masculino Manga Curta",
         colorName: "Bege com detalhes em verde petróleo",
         swatch: "linear-gradient(135deg, #E4DDCF 50%, #1F4E5A 50%)",
         description:
@@ -951,14 +1029,24 @@ export const services: Service[] = [
         photo: "/produtos/asg-e-zeladoria-jaleco-em-brim-cinza-com-detalhes-em-verde.webp",
       },
       {
-        name: "Jaleco em Brim Caqui",
-        group: "Jaleco em Brim",
-        colorName: "Caqui",
-        swatch: "#CFC3A6",
+        name: "Jaleco Masculino Manga Curta com Detalhe",
+        colorName: "Azul marinho com detalhes em vermelho",
+        swatch: "linear-gradient(135deg, #1E2A44 50%, #D62B30 50%)",
+        gender: "masculino",
         description:
           "Jaleco com 3 bolsos, sendo 1 bordado. Os botões podem ser cobertos ou expostos, em manga longa e curta.",
         style: "social",
-        photo: "/produtos/asg-e-zeladoria-jaleco-em-brim-caqui.webp",
+        photo: "/produtos/portaria-jaleco-masculino-em-brim-azul-marinho-com-detalhe-em-vermelho.webp",
+      },
+      {
+        name: "Camisa em Malha Gola O Cinza",
+        group: "Camisa em Malha Gola O",
+        colorName: "Cinza",
+        swatch: "#A3A3A3",
+        description:
+          "A peça mais usada quando se trata de melhor mobilidade e transpiração, sem gerar muito calor e mantendo bem apresentável ao mesmo tempo.",
+        style: "tshirt",
+        photo: "/produtos/asg-e-zeladoria-camisa-em-malha-cinza.webp",
       },
       {
         name: "Camisa em Malha Gola O Azul Marinho",
@@ -970,16 +1058,6 @@ export const services: Service[] = [
           "A peça mais usada quando se trata de melhor mobilidade e transpiração, sem gerar muito calor e mantendo bem apresentável ao mesmo tempo.",
         style: "tshirt",
         photo: "/produtos/asg-e-zeladoria-camisa-masculina-em-malha-azul-marinho2.webp",
-      },
-      {
-        name: "Camisa em Malha Gola O Cinza",
-        group: "Camisa em Malha Gola O",
-        colorName: "Cinza",
-        swatch: "#A3A3A3",
-        description:
-          "A peça mais usada quando se trata de melhor mobilidade e transpiração, sem gerar muito calor e mantendo bem apresentável ao mesmo tempo.",
-        style: "tshirt",
-        photo: "/produtos/asg-e-zeladoria-camisa-em-malha-cinza.webp",
       },
       {
         name: "Camisa em Malha Gola O Vermelha",
@@ -998,6 +1076,7 @@ export const services: Service[] = [
         swatch: "#192138",
         description:
           "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        hideInCatalog: true,
         style: "tshirt",
         photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-azul-marinho.webp",
       },
@@ -1008,6 +1087,7 @@ export const services: Service[] = [
         swatch: "#9B9B9D",
         description:
           "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        hideInCatalog: true,
         style: "tshirt",
         photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-cinza.webp",
       },
@@ -1018,6 +1098,7 @@ export const services: Service[] = [
         swatch: "#48484D",
         description:
           "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        hideInCatalog: true,
         style: "tshirt",
         photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-cinza-escuro.webp",
       },
@@ -1028,6 +1109,7 @@ export const services: Service[] = [
         swatch: "#26392E",
         description:
           "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        hideInCatalog: true,
         style: "tshirt",
         photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-verde-escuro.webp",
       },
@@ -1038,8 +1120,20 @@ export const services: Service[] = [
         swatch: "#C8102E",
         description:
           "Malha PV (poliéster e viscose) em manga longa com gola olímpica: leve, com boa transpiração e mais proteção para os braços no serviço externo.",
+        hideInCatalog: true,
         style: "tshirt",
         photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-gola-olimpica-vermelha.webp",
+      },
+      {
+        name: "Camisa Polo Manga Longa em Malha PV Cinza Escuro",
+        group: "Camisa Polo Manga Longa em Malha PV",
+        colorName: "Cinza escuro",
+        swatch: "#434348",
+        description:
+          "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
+        hideInCatalog: true,
+        style: "polo",
+        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-cinza-escuro.webp",
       },
       {
         name: "Camisa Polo Manga Longa em Malha PV Azul Escuro",
@@ -1048,6 +1142,7 @@ export const services: Service[] = [
         swatch: "#182645",
         description:
           "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
+        hideInCatalog: true,
         style: "polo",
         photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-azul-escuro.webp",
       },
@@ -1058,18 +1153,9 @@ export const services: Service[] = [
         swatch: "#9A9A9C",
         description:
           "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
+        hideInCatalog: true,
         style: "polo",
         photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-cinza-claro.webp",
-      },
-      {
-        name: "Camisa Polo Manga Longa em Malha PV Cinza Escuro",
-        group: "Camisa Polo Manga Longa em Malha PV",
-        colorName: "Cinza escuro",
-        swatch: "#434348",
-        description:
-          "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
-        style: "polo",
-        photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-cinza-escuro.webp",
       },
       {
         name: "Camisa Polo Manga Longa em Malha PV Verde Escuro",
@@ -1078,6 +1164,7 @@ export const services: Service[] = [
         swatch: "#233429",
         description:
           "Mesma malha PV em manga longa, no acabamento polo com botões — um pouco mais apresentável, com a mesma leveza e transpiração.",
+        hideInCatalog: true,
         style: "polo",
         photo: "/produtos/asg-zeladoria-manga-longa-malha-pv-polo-verde-escuro.webp",
       },
@@ -1090,6 +1177,16 @@ export const services: Service[] = [
           "Mesma malha leve da camisa gola O, no acabamento polo com bolso — um pouco mais apresentável sem perder a mobilidade e a transpiração.",
         style: "polo",
         photo: "/produtos/asg-e-zeladoria-camisa-polo-masculina-verde-escuro.webp",
+      },
+      {
+        name: "Jaleco Feminino Manga Curta com Detalhe",
+        colorName: "Preto com vivo branco",
+        swatch: "linear-gradient(135deg, #171717 50%, #F1F0EC 50%)",
+        gender: "feminino",
+        description:
+          "Jaleco feminino com 3 bolsos, sendo 1 bordado, e vivo branco na gola, nas mangas e nos bolsos.",
+        style: "social-feminina",
+        photo: "/produtos/asg-jaleco-feminino-preto-com-03-bolsos-e-vivo-branco.webp",
       },
       {
         name: "Calça com Elástico Total e 4 Bolsos Preta (oxford)",
@@ -1181,6 +1278,33 @@ export const services: Service[] = [
     ],
   },
 ];
+
+/** Categorias do seletor de modelos, na ordem em que aparecem. */
+export const modelCategories = [
+  "Camisas",
+  "Jalecos",
+  "Calças",
+  "Jaquetas e blazers",
+  "Calçados e botas",
+  "Acessórios",
+] as const;
+
+export type ModelCategory = (typeof modelCategories)[number];
+
+/**
+ * Categoria da peça: a declarada em `category` ou, sem ela, a deduzida pelo
+ * começo do nome. O que não se encaixa em nada vai para "Acessórios".
+ */
+export function modelCategory(model: Pick<UniformModel, "name" | "group" | "category">): ModelCategory {
+  if (model.category) return model.category;
+  const title = modelTitle(model);
+  if (/^(Camisa|Blusete)/.test(title)) return "Camisas";
+  if (title.startsWith("Jaleco")) return "Jalecos";
+  if (title.startsWith("Calça ")) return "Calças";
+  if (/^(Jaqueta|Blazer)/.test(title)) return "Jaquetas e blazers";
+  if (/^(Calçado|Bota)/.test(title)) return "Calçados e botas";
+  return "Acessórios";
+}
 
 export function getService(slug: string) {
   return services.find((service) => service.slug === slug);

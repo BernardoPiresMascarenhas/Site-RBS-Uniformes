@@ -3,7 +3,16 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type PointerEvent,
+  type ReactNode,
+} from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -21,6 +30,101 @@ const INTERVALO_MS = 3500;
 const LIMIAR_ARRASTO = 40;
 
 /**
+ * Primeira posição (a partir de `from`) cuja foto não está em `taken`. Se todas
+ * estiverem ocupadas, cai na seguinte, sem pular nada.
+ */
+function nextFree(list: string[], from: number, taken: Set<string>) {
+  for (let step = 0; step < list.length; step++) {
+    const index = (from + step) % list.length;
+    if (!taken.has(list[index])) return index;
+  }
+  return from % list.length;
+}
+
+interface GroupValue {
+  active: number[];
+  go: (card: number, index: number) => void;
+  setPaused: (card: number, paused: boolean) => void;
+}
+
+const GroupContext = createContext<GroupValue | null>(null);
+
+/**
+ * Sincroniza vários carrosséis: um relógio só para todos, e a foto que cada um
+ * mostra nunca é a mesma de outro no mesmo instante. Uma peça que existe em
+ * mais de uma linha continua em todas elas, mas em momentos diferentes.
+ *
+ * `lists[i]` é a lista de fotos (`src`) do carrossel `i`.
+ */
+export function CardCarouselGroup({
+  lists,
+  children,
+}: {
+  lists: string[][];
+  children: ReactNode;
+}) {
+  const [active, setActive] = useState<number[]>(() => {
+    const result: number[] = [];
+    const taken = new Set<string>();
+    lists.forEach((list) => {
+      const index = list.length ? nextFree(list, 0, taken) : 0;
+      if (list.length) taken.add(list[index]);
+      result.push(index);
+    });
+    return result;
+  });
+  const paused = useRef<boolean[]>(lists.map(() => false));
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReducedMotion(query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+    const timer = window.setInterval(() => {
+      setActive((current) => {
+        const next = [...current];
+        lists.forEach((list, card) => {
+          if (list.length < 2 || paused.current[card]) return;
+          // ocupadas: o que os outros mostram agora (os que já andaram neste
+          // ciclo contam na nova posição)
+          const taken = new Set<string>();
+          lists.forEach((other, i) => {
+            if (i !== card && other.length) taken.add(other[next[i]]);
+          });
+          next[card] = nextFree(list, current[card] + 1, taken);
+        });
+        return next;
+      });
+    }, INTERVALO_MS);
+    return () => window.clearInterval(timer);
+  }, [lists, reducedMotion]);
+
+  const go = useCallback((card: number, index: number) => {
+    setActive((current) => {
+      const next = [...current];
+      next[card] = index;
+      return next;
+    });
+  }, []);
+
+  const setPaused = useCallback((card: number, value: boolean) => {
+    paused.current[card] = value;
+  }, []);
+
+  return (
+    <GroupContext.Provider value={{ active, go, setPaused }}>
+      {children}
+    </GroupContext.Provider>
+  );
+}
+
+/**
  * Vitrine em carrossel dos cards do catálogo: as fotos deslizam para o lado
  * sozinhas e cada uma leva para a peça correspondente na página da linha.
  *
@@ -30,20 +134,37 @@ const LIMIAR_ARRASTO = 40;
 export function CardCarousel({
   slides,
   className,
+  group,
 }: {
   slides: CarouselSlide[];
   className?: string;
+  /** Posição deste carrossel dentro de um `CardCarouselGroup`; sem ela, anda sozinho. */
+  group?: number;
 }) {
-  const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const shared = useContext(GroupContext);
+  const grouped = shared !== null && group !== undefined;
+  const [localActive, setLocalActive] = useState(0);
+  const [paused, setPausedLocal] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const dragStart = useRef<number | null>(null);
   const dragged = useRef(false);
 
   const total = slides.length;
+  const active = grouped ? shared.active[group] : localActive;
   const go = useCallback(
-    (index: number) => setActive(((index % total) + total) % total),
-    [total],
+    (index: number) => {
+      const wrapped = ((index % total) + total) % total;
+      if (grouped) shared.go(group, wrapped);
+      else setLocalActive(wrapped);
+    },
+    [total, grouped, shared, group],
+  );
+  const setPaused = useCallback(
+    (value: boolean) => {
+      setPausedLocal(value);
+      if (grouped) shared.setPaused(group, value);
+    },
+    [grouped, shared, group],
   );
 
   useEffect(() => {
@@ -55,10 +176,10 @@ export function CardCarousel({
   }, []);
 
   useEffect(() => {
-    if (paused || reducedMotion || total < 2) return;
+    if (grouped || paused || reducedMotion || total < 2) return;
     const timer = window.setTimeout(() => go(active + 1), INTERVALO_MS);
     return () => window.clearTimeout(timer);
-  }, [active, paused, reducedMotion, total, go]);
+  }, [active, paused, reducedMotion, total, go, grouped]);
 
   function onPointerDown(event: PointerEvent) {
     if (event.pointerType === "mouse") return;
