@@ -291,11 +291,6 @@ export const faq = [
       "Não trabalhamos com pedido mínimo, é possível pedir em toda e qualquer valor e quantidade.",
   },
   {
-    question: "O bordado é incluso no valor?",
-    answer:
-      "Sim, os bordados são inclusos no valor de cada item que pode ser bordado.",
-  },
-  {
     question: "Quais as condições de pagamento e descontos?",
     answer:
       "As condições de pagamento são: á vista abaixo de R$1.000,00 e acima disso, funcionamos com sinal de 50% no ato do pedido e 50% com 30 dias, com opções de desconto à vista aplicáveis ao valor total, demais condições de pagamento podem ser negociadas com nossos vendedores.",

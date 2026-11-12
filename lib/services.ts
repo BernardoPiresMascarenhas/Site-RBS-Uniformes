@@ -520,6 +520,16 @@ export const services: Service[] = [
         photo: "/produtos/portaria-calca-social-feminina-em-oxford-preto.webp",
       },
       {
+        name: "Calça Social em Oxford",
+        colorName: "Preta",
+        swatch: "#171717",
+        gender: "masculino",
+        description:
+          "Em oxford, com 2 bolsos no modelo faca e 2 bolsos embutidos com botão, passantes, fecho com gancho e botão.",
+        style: "calca",
+        photo: "/produtos/portaria-calca-social-preta-em-oxford.webp",
+      },
+      {
         name: "Blazer Masculino em Oxford",
         colorName: "Preto",
         swatch: "#171717",

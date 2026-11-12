@@ -142,8 +142,8 @@ export function QuoteForm() {
         Solicite sua visita ou cotação
       </h3>
       <p className="mt-2 text-sm text-brand-muted">
-        Preencha em um minuto e respondemos em menos de 5. Confira preços,
-        prazos e a resposta de suas dúvidas.
+        Por aqui você solicita uma visita ou uma cotação de uniformes conforme
+        a sua demanda.
       </p>
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2">
@@ -225,7 +225,7 @@ export function QuoteForm() {
           />
         </Field>
 
-        <Field id="email" label="E-mail" error={errors.email} labelClass={labelClass}>
+        <Field id="email" label="E-mail (opcional)" error={errors.email} labelClass={labelClass}>
           <input
             id="email"
             name="email"
