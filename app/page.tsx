@@ -4,8 +4,9 @@ import { HomePage } from "@/components/HomePage";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: `${site.name} — Uniformes que vestem a sua autoridade`,
+  title: { absolute: site.title },
   description: site.description,
+  alternates: { canonical: "/" },
 };
 
 export default function Page() {

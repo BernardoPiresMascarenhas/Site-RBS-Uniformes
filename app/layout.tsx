@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
+import { JsonLd } from "@/components/JsonLd";
 import { site } from "@/lib/site";
 
 import "./globals.css";
@@ -30,11 +31,13 @@ const manrope = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — ${site.tagline}`,
+    default: site.title,
     template: `%s | ${site.name}`,
   },
   description: site.description,
+  applicationName: site.name,
   keywords: [
     "uniformes para condomínios",
     "uniforme de portaria",
@@ -43,12 +46,22 @@ export const metadata: Metadata = {
     "auxiliar de serviços gerais",
     "confecção de uniformes",
   ],
+  // a canônica é definida em cada página indexável (home e /servicos/[slug]);
+  // aqui não, para os rascunhos em /preview não apontarem para a home
   openGraph: {
-    title: `${site.name} — ${site.tagline}`,
+    title: site.title,
     description: site.description,
+    url: "/",
     type: "website",
     locale: "pt_BR",
     siteName: site.name,
+    // a imagem vem de app/opengraph-image.png
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.title,
+    description: site.description,
+    // a imagem vem de app/twitter-image.png
   },
 };
 
@@ -68,7 +81,10 @@ export default function RootLayout({
           </style>
         </noscript>
       </head>
-      <body>{children}</body>
+      <body>
+        <JsonLd />
+        {children}
+      </body>
     </html>
   );
 }

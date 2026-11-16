@@ -8,10 +8,19 @@
 export const site = {
   name: "RBS Uniformes",
   legalName: "RBS Uniformes Ltda",
-  tagline: "Uniformes de alta qualidade e confecção própria",
+  tagline: "Atendimento Exclusivo a Condomínios",
+  /**
+   * Endereço público do site (sem barra final). É o host que responde 200 em
+   * produção: `rbsuniforme.com.br` (sem www) redireciona para o `www`. Se o
+   * domínio principal na Vercel mudar, troque aqui — canônicas, sitemap,
+   * robots e dados estruturados seguem esta constante.
+   */
+  url: "https://www.rbsuniforme.com.br",
+  /** Título da home nos resultados de busca e nas abas. */
+  title: "RBS Uniformes: Atendimento Exclusivo a Condomínios",
   /** Descrição usada nas meta tags (SEO) e nos compartilhamentos. */
   description:
-    "Confecção de uniformes corporativos, industriais, hospitalares e escolares com tecidos de alta performance, modelagem sob medida e entrega no prazo.",
+    "Uniformes para Portaria, Zeladoria e ASG´s, unindo durabilidade, conforto e praticidade em um só uniforme há mais de 30 anos.",
   /** Frase curta exibida abaixo da logo no rodapé. */
   footerText:
     "Empresa especializada no atendimento a condomínios, a única em Belo Horizonte, trazendo comodidade e satisfação aos nossos clientes há mais de 30 anos.",
