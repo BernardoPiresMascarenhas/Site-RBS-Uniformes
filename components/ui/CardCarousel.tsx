@@ -1,7 +1,6 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import {
   createContext,
@@ -14,6 +13,7 @@ import {
   type ReactNode,
 } from "react";
 
+import { Photo } from "@/components/ui/Photo";
 import { cn } from "@/lib/utils";
 
 export interface CarouselSlide {
@@ -151,6 +151,30 @@ export function CardCarousel({
 
   const total = slides.length;
   const active = grouped ? shared.active[group] : localActive;
+
+  // Só monta a foto do slide da vez; quando ela termina de carregar entra a do
+  // seguinte (o próximo passo do carrossel automático), que já baixa pronta. A
+  // do anterior só entra quando o visitante encosta no carrossel — é para quem
+  // vai usar a seta. Os demais slides ficam como quadros vazios até a vez deles,
+  // e quem já foi mostrado continua montado (volta sem baixar de novo). Antes o
+  // carrossel montava todas as fotos da linha.
+  const [ready, setReady] = useState(false);
+  const [engaged, setEngaged] = useState(false);
+  const [seen, setSeen] = useState<ReadonlySet<number>>(() => new Set());
+  const next = (active + 1) % total;
+  const previous = (active - 1 + total) % total;
+  const mountedNow = (index: number) =>
+    index === active ||
+    seen.has(index) ||
+    (ready && (index === next || (engaged && index === previous)));
+
+  useEffect(() => {
+    setSeen((current) => {
+      const wanted = [active, ...(ready ? [next] : []), ...(ready && engaged ? [previous] : [])];
+      return wanted.every((i) => current.has(i)) ? current : new Set([...Array.from(current), ...wanted]);
+    });
+  }, [active, next, previous, ready, engaged]);
+
   const go = useCallback(
     (index: number) => {
       const wrapped = ((index % total) + total) % total;
@@ -183,6 +207,7 @@ export function CardCarousel({
 
   function onPointerDown(event: PointerEvent) {
     if (event.pointerType === "mouse") return;
+    setEngaged(true);
     dragStart.current = event.clientX;
     dragged.current = false;
   }
@@ -204,9 +229,15 @@ export function CardCarousel({
       className={cn("group/carousel relative overflow-hidden", className)}
       role="region"
       aria-roledescription="carrossel"
-      onMouseEnter={() => setPaused(true)}
+      onMouseEnter={() => {
+        setPaused(true);
+        setEngaged(true);
+      }}
       onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
+      onFocus={() => {
+        setPaused(true);
+        setEngaged(true);
+      }}
       onBlur={() => setPaused(false)}
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
@@ -235,19 +266,22 @@ export function CardCarousel({
               }}
               className="relative block h-full w-full shrink-0"
             >
-              <Image
-                src={slide.src}
-                alt={slide.alt}
-                fill
-                sizes="(min-width: 1024px) 480px, (min-width: 768px) 45vw, 100vw"
-                // acima do padrão (75): o fundo escuro e liso das fotos é onde
-                // a compressão vira faixa e mancha visíveis
-                quality={90}
-                // só a primeira entra no carregamento inicial; as demais vêm sob demanda
-                loading={index === 0 ? "eager" : "lazy"}
-                draggable={false}
-                className="object-cover transition-transform duration-500 group-hover/carousel:scale-[1.03]"
-              />
+              {mountedNow(index) ? (
+                <Photo
+                  src={slide.src}
+                  alt={slide.alt}
+                  fill
+                  // no celular o card ocupa a largura da tela menos as margens do container
+                  sizes="(min-width: 1024px) 480px, (min-width: 768px) 45vw, calc(100vw - 40px)"
+                  // o catálogo fica abaixo da primeira dobra: a foto da vez
+                  // carrega quando a seção se aproxima; as vizinhas, em seguida
+                  loading={index === active ? "lazy" : "eager"}
+                  fetchPriority={index === active ? undefined : "low"}
+                  onLoad={index === active ? () => setReady(true) : undefined}
+                  draggable={false}
+                  className="object-cover transition-transform duration-500 group-hover/carousel:scale-[1.03]"
+                />
+              ) : null}
             </Link>
           );
         })}

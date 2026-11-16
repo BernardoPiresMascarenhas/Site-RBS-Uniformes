@@ -1,12 +1,12 @@
 "use client";
 
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
-import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import type { PartnerImage } from "@/lib/partners";
 import { cn } from "@/lib/utils";
+import { Photo } from "@/components/ui/Photo";
 
 /**
  * Tamanhos do card. `height` é a altura no desktop, usada para estimar a
@@ -14,12 +14,23 @@ import { cn } from "@/lib/utils";
  */
 const SIZES = {
   /** Faixas largas, na largura da tela (Clientes). */
-  lg: { height: 240, className: "h-40 sm:h-52 lg:h-60", sizes: "(min-width: 1024px) 420px, (min-width: 640px) 320px, 240px" },
+  lg: { height: 240, className: "h-40 sm:h-52 lg:h-60", heights: [160, 208, 240] },
   /** Faixa única na largura do conteúdo, ~6 fotos visíveis no desktop (Bordados). */
-  md: { height: 112, className: "h-20 sm:h-24 lg:h-28", sizes: "(min-width: 1024px) 220px, 180px" },
+  md: { height: 112, className: "h-20 sm:h-24 lg:h-28", heights: [80, 96, 112] },
   /** Faixas dentro de uma coluna de texto. */
-  sm: { height: 128, className: "h-24 sm:h-28 lg:h-32", sizes: "(min-width: 1024px) 240px, 200px" },
+  sm: { height: 128, className: "h-24 sm:h-28 lg:h-32", heights: [96, 112, 128] },
 } as const;
+
+/**
+ * `sizes` de uma foto: o card tem altura fixa por breakpoint (`heights`, em px,
+ * do celular ao desktop), então a largura é a altura vezes a proporção da foto —
+ * dá ao navegador a largura real para escolher a variante certa do `srcset`.
+ */
+function sizesFor(size: (typeof SIZES)[keyof typeof SIZES], photo: PartnerImage) {
+  const [base, sm, lg] = size.heights;
+  const width = (height: number) => Math.round((height * photo.width) / photo.height);
+  return `(min-width: 1024px) ${width(lg)}px, (min-width: 640px) ${width(sm)}px, ${width(base)}px`;
+}
 
 const GAP = 16;
 /** Metade da faixa precisa cobrir telas muito largas, senão sobra vão no loop. */
@@ -127,11 +138,11 @@ function MarqueeRow({
               className={cn("group relative shrink-0 overflow-hidden rounded-brand-lg border border-brand-border bg-brand-surface shadow-brand", size.className)}
               style={{ aspectRatio: `${photo.width} / ${photo.height}` }}
             >
-              <Image
+              <Photo
                 src={photo.src}
                 alt={clone ? "" : photo.alt}
                 fill
-                sizes={size.sizes}
+                sizes={sizesFor(size, photo)}
                 className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
               />
               {/* Véu + ícone de ampliar no hover */}
@@ -221,7 +232,7 @@ function Lightbox({
           <ChevronLeft className="h-5 w-5" />
         </button>
 
-        <Image
+        <Photo
           key={photo.src}
           src={photo.src}
           alt={photo.alt}

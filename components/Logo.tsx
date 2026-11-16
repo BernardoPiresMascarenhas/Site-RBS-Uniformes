@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { site } from "@/lib/site";
 import { theme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
+import { Photo } from "@/components/ui/Photo";
 
 /**
  * A logo é usada solta, sem moldura: o arquivo `-transparente` tem o fundo
@@ -14,10 +14,16 @@ import { cn } from "@/lib/utils";
 export function Logo({
   className,
   sizeClassName = "h-16 sm:h-20",
+  sizes = "(min-width: 640px) 168px, 144px",
+  priority = true,
   showWordmark = false,
 }: {
   className?: string;
   sizeClassName?: string;
+  /** Largura em que a logo aparece (a arte tem proporção 3:2): escolhe a variante certa do `srcset`. */
+  sizes?: string;
+  /** A logo do topo carrega já; a do rodapé (fora da primeira dobra) não precisa. */
+  priority?: boolean;
   showWordmark?: boolean;
 }) {
   return (
@@ -26,12 +32,13 @@ export function Logo({
       className={cn("group flex items-center gap-3", className)}
       aria-label={`${site.name} — página inicial`}
     >
-      <Image
+      <Photo
         src={theme.logo.src}
         alt={theme.logo.alt}
         width={theme.logo.width}
         height={theme.logo.height}
-        priority
+        sizes={sizes}
+        priority={priority}
         className={cn(
           "w-auto max-w-full object-contain transition-transform duration-300",
           sizeClassName,

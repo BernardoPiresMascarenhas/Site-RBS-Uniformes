@@ -1,5 +1,4 @@
 import { ArrowRight, MessageCircle, Palette, Shirt } from "lucide-react";
-import { getImageProps } from "next/image";
 import Link from "next/link";
 
 import { MountainScape } from "@/components/decor/Scenery";
@@ -9,6 +8,7 @@ import { Process } from "@/components/sections/Process";
 import { ServiceShowcase } from "@/components/sections/ServiceShowcase";
 import { SiteShell } from "@/components/SiteShell";
 import { ButtonLink } from "@/components/ui/Button";
+import { photoSources } from "@/components/ui/Photo";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { getEmbroideryPhotos } from "@/lib/partners";
@@ -36,24 +36,35 @@ function ColorChart({
   chart: NonNullable<Service["colorChart"]>;
   alt: string;
 }) {
-  const common = { alt, sizes: "(min-width: 1280px) 1200px, 100vw" };
-  const {
-    props: { srcSet: desktopSrcSet },
-  } = getImageProps({ ...common, ...chart.desktop });
-  const { props: mobile } = getImageProps({ ...common, ...chart.mobile });
+  const sizes = "(min-width: 1280px) 1200px, 100vw";
+  const desktop = photoSources(chart.desktop.src);
+  const mobile = photoSources(chart.mobile.src);
+
+  const dims = { width: chart.desktop.width, height: chart.desktop.height };
 
   return (
     <picture>
       {/* largura e altura na <source> reservam o espaço certo antes da
-          imagem carregar, já que as duas artes têm proporções diferentes */}
-      <source
-        media="(min-width: 768px)"
-        srcSet={desktopSrcSet}
-        sizes={common.sizes}
-        width={chart.desktop.width}
-        height={chart.desktop.height}
+          imagem carregar, já que as duas artes têm proporções diferentes.
+          AVIF primeiro (cor inteira, sem borrar a borda das amostras); o WebP
+          fica de reserva para navegadores sem AVIF. */}
+      {desktop.avifSrcSet ? (
+        <source media="(min-width: 768px)" type="image/avif" srcSet={desktop.avifSrcSet} sizes={sizes} {...dims} />
+      ) : null}
+      <source media="(min-width: 768px)" srcSet={desktop.srcSet ?? desktop.src} sizes={sizes} {...dims} />
+      {mobile.avifSrcSet ? <source type="image/avif" srcSet={mobile.avifSrcSet} sizes={sizes} /> : null}
+      {/* eslint-disable-next-line @next/next/no-img-element -- o `srcset` já vem pronto de `photoSources` */}
+      <img
+        src={mobile.src}
+        srcSet={mobile.srcSet}
+        sizes={sizes}
+        alt={alt}
+        width={chart.mobile.width}
+        height={chart.mobile.height}
+        loading="lazy"
+        decoding="async"
+        className="h-auto w-full"
       />
-      <img {...mobile} className="h-auto w-full" />
     </picture>
   );
 }

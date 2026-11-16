@@ -40,7 +40,7 @@ export function Footer() {
       <Container size="wide" className="py-16">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <Reveal className="lg:col-span-1">
-            <Logo sizeClassName="h-24 sm:h-28" />
+            <Logo sizeClassName="h-24 sm:h-28" priority={false} />
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-brand-muted">
               {site.footerText}
             </p>

@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "images": "node scripts/optimize-images.mjs",
+    "predev": "npm run images",
     "dev": "next dev",
+    "prebuild": "npm run images",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "npm run images && tsc --noEmit"
   },
   "dependencies": {
     "clsx": "^2.1.1",

@@ -1,13 +1,13 @@
 "use client";
 
 import { ChevronRight, MessageCircle, ZoomIn } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 
 import { PhotoMarquee } from "@/components/PhotoMarquee";
 import { PhotoZoom } from "@/components/PhotoZoom";
 import { ButtonLink } from "@/components/ui/Button";
+import { Photo } from "@/components/ui/Photo";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section } from "@/components/ui/Section";
 import { embroidery as embroideryText } from "@/lib/content";
@@ -61,6 +61,16 @@ function familyOf(option: PhotoModel) {
   return modelTitle(option);
 }
 
+/** Roda `run` quando o navegador estiver ocioso; devolve a função que cancela. */
+function whenIdle(run: () => void) {
+  if (typeof window.requestIdleCallback === "function") {
+    const id = window.requestIdleCallback(run, { timeout: 2000 });
+    return () => window.cancelIdleCallback(id);
+  }
+  const id = window.setTimeout(run, 300);
+  return () => window.clearTimeout(id);
+}
+
 export function ServiceShowcase({
   title,
   eyebrow,
@@ -83,11 +93,16 @@ export function ServiceShowcase({
 }) {
   const [model, setModel] = useState(models[0]);
 
-  // Todas as fotos da linha ficam montadas no palco, empilhadas, e baixam junto
-  // com a página: o clique só troca a opacidade. Enquanto a foto do modelo novo
-  // não termina de carregar, a anterior continua na tela — nunca aparece o
-  // palco vazio.
-  const photos = Array.from(new Set(models.map((option) => option.photo)));
+  // As fotos da linha ficam empilhadas no palco e o clique só troca a opacidade
+  // — a troca é instantânea. Mas só entram no palco (e só baixam) as que já
+  // fazem sentido: a foto aberta, as outras cores dela, as vizinhas no seletor
+  // e a do card em que o visitante encosta o mouse ou o dedo. As demais entram
+  // quando forem escolhidas. Enquanto a foto do modelo novo não termina de
+  // carregar, a anterior continua na tela — nunca aparece o palco vazio.
+  const [mounted, setMounted] = useState<ReadonlySet<string>>(() => new Set([models[0].photo]));
+  const photos = Array.from(new Set(models.map((option) => option.photo))).filter((photo) =>
+    mounted.has(photo),
+  );
   const [loaded, setLoaded] = useState<ReadonlySet<string>>(() => new Set());
   const [shown, setShown] = useState(models[0].photo);
 
@@ -96,8 +111,19 @@ export function ServiceShowcase({
   const [zoomOpen, setZoomOpen] = useState(false);
   const closeZoom = useCallback(() => setZoomOpen(false), []);
 
+  /** Coloca fotos no palco, para começarem a baixar. */
+  const want = useCallback((...sources: string[]) => {
+    setMounted((current) => {
+      if (sources.every((src) => current.has(src))) return current;
+      const next = new Set(current);
+      sources.forEach((src) => next.add(src));
+      return next;
+    });
+  }, []);
+
+  // pode ser chamada de novo a cada renderização (ver `Photo`): só age na primeira vez
   function handlePhotoLoad(src: string) {
-    setLoaded((current) => new Set(current).add(src));
+    setLoaded((current) => (current.has(src) ? current : new Set(current).add(src)));
 
     if (src === model.photo) {
       setShown(src);
@@ -119,6 +145,7 @@ export function ServiceShowcase({
 
   function selectModel(option: PhotoModel) {
     setModel(option);
+    want(option.photo);
 
     if (loaded.has(option.photo)) {
       setShown(option.photo);
@@ -195,6 +222,24 @@ export function ServiceShowcase({
     (option) => familyOf(option) === familyOf(model),
   );
 
+  // Antecipa as próximas fotos: depois que a da vez terminou de carregar (ela
+  // tem prioridade na rede) e com o navegador ocioso, entram as outras cores da
+  // peça e as duas peças seguintes (e a anterior) do seletor.
+  const currentLoaded = loaded.has(model.photo);
+  useEffect(() => {
+    if (!currentLoaded) return;
+
+    const at = families.findIndex((family) => family.key === familyOf(model));
+    const neighbours = [
+      ...families.slice(at + 1, at + 3),
+      ...(at > 0 ? [families[at - 1]] : []),
+    ].map((family) => family.variants[0]);
+
+    return whenIdle(() => want(...[...colorVariants, ...neighbours].map((option) => option.photo)));
+    // `families` e `colorVariants` são derivados de `model`, `category` e `gender`
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentLoaded, model, category, gender, want]);
+
   function changeGender(next: GenderFilter) {
     setGender(next);
     const stillVisible =
@@ -263,7 +308,7 @@ export function ServiceShowcase({
                 const visible = photo === visiblePhoto;
 
                 return (
-                  <Image
+                  <Photo
                     key={photo}
                     src={photo}
                     alt={visible ? `${modelLabel(model)} da linha ${title}` : ""}
@@ -275,13 +320,12 @@ export function ServiceShowcase({
                     // menos o gap-14 (56px), o grid 1.05fr/1fr deixa ~709px.
                     // Abaixo de lg a coluna some e o card ocupa o container.
                     sizes="(min-width: 1536px) 710px, (min-width: 1024px) 52vw, (min-width: 640px) calc(100vw - 64px), calc(100vw - 40px)"
-                    // acima do padrão (75): o fundo da foto é um gradiente
-                    // liso, onde a compressão vira faixa e mancha visíveis
-                    quality={95}
-                    // a primeira foto é a que aparece ao abrir a página; as
-                    // demais baixam logo em seguida, antes do clique
+                    // a primeira foto é a que aparece ao abrir a página e tem
+                    // prioridade; as outras já estão no palco só para a troca
+                    // ser instantânea e baixam depois, com prioridade baixa
                     priority={photo === models[0].photo}
-                    loading={photo === models[0].photo ? undefined : "eager"}
+                    loading="eager"
+                    fetchPriority={photo === models[0].photo ? undefined : "low"}
                     onLoad={() => handlePhotoLoad(photo)}
                     className={cn(
                       "object-cover transition-opacity duration-300 motion-reduce:transition-none",
@@ -332,6 +376,7 @@ export function ServiceShowcase({
                         key={option.name}
                         type="button"
                         onClick={() => selectModel(option)}
+                        onPointerEnter={() => want(option.photo)}
                         aria-pressed={active}
                         aria-label={option.colorName ?? option.name}
                         title={option.colorName ?? option.name}
@@ -547,6 +592,9 @@ export function ServiceShowcase({
                         revealPhoto();
                         }}
                         aria-pressed={active}
+                        // encostar no card já traz a foto grande, para o clique ser instantâneo
+                        onPointerEnter={() => want(variants[0].photo)}
+                        onFocus={() => want(variants[0].photo)}
                         className={cn(
                           "group flex flex-col items-center gap-2 rounded-brand border p-2 transition-all",
                           active
@@ -555,14 +603,13 @@ export function ServiceShowcase({
                         )}
                       >
                         <span className="relative block aspect-[4/3] w-full overflow-hidden rounded-brand bg-brand-green-soft">
-                          <Image
+                          <Photo
                             src={shown.photo}
                             alt=""
                             fill
                             // 3 colunas dentro da coluna de ~709px, menos o
                             // gap-3 e o p-2 do botão: ~210px no desktop
                             sizes="(min-width: 1024px) 215px, (min-width: 640px) 30vw, 45vw"
-                            quality={90}
                             className="object-cover"
                           />
                         </span>

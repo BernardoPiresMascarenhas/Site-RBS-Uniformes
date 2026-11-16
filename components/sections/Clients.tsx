@@ -1,6 +1,6 @@
-import Image from "next/image";
 
 import { PhotoMarquee } from "@/components/PhotoMarquee";
+import { Photo } from "@/components/ui/Photo";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { getAdministrators, getClientPhotos, getSuppliers, type PartnerImage } from "@/lib/partners";
@@ -115,7 +115,7 @@ function LogoCard({
               columns === 4 && "xl:basis-[calc(25%-0.75rem)]",
             )}
           >
-            <Image
+            <Photo
               src={logo.src}
               alt={logo.alt}
               width={logo.width}

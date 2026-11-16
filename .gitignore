@@ -11,3 +11,7 @@ yarn-error.log*
 .vercel
 next-env.d.ts
 *.tsbuildinfo
+
+# imagens responsivas geradas no build (scripts/optimize-images.mjs)
+/public/_img/
+/lib/generated/

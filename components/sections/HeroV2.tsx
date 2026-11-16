@@ -1,7 +1,7 @@
-import Image from "next/image";
 import { ArrowRight, Check } from "lucide-react";
 
 import { ButtonLink } from "@/components/ui/Button";
+import { Photo } from "@/components/ui/Photo";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container } from "@/components/ui/Section";
 
@@ -125,12 +125,11 @@ export function HeroV2() {
             <div className="relative aspect-square overflow-hidden rounded-[1.25rem] shadow-[0_30px_60px_-30px_rgb(var(--rbs-ink)/0.45)] lg:aspect-[4/5] xl:aspect-square">
               {/* Recorte pela direita: o degradê verde da arte original fica
                   fora do quadro e a foto aparece limpa. */}
-              <Image
+              <Photo
                 src="/hero/hero5.png"
                 alt="Mesa de produção da RBS com camisas polo dobradas e máquina de costura"
                 fill
                 priority
-                quality={90}
                 sizes="(min-width: 1024px) 45vw, 100vw"
                 className="object-cover object-right lg:object-[92%_center]"
               />

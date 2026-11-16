@@ -1,8 +1,8 @@
-import Image from "next/image";
 import { CalendarDays, FileText, ShieldCheck, Star } from "lucide-react";
 
 import { VisitModal } from "@/components/VisitModal";
 import { ButtonLink } from "@/components/ui/Button";
+import { Photo } from "@/components/ui/Photo";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container } from "@/components/ui/Section";
 import { testimonials } from "@/lib/content";
@@ -206,12 +206,11 @@ export function HeroV4() {
 
             <div className="relative aspect-[4/5] overflow-hidden rounded-[1.25rem] shadow-[0_18px_40px_-22px_rgb(var(--rbs-ink)/0.35)]">
               {/* recorte pela direita: o degradê verde da arte original fica fora do quadro */}
-              <Image
+              <Photo
                 src="/hero/hero5.png"
                 alt="Fábrica da RBS: mesa de produção com camisas polo dobradas e máquinas de costura"
                 fill
                 priority
-                quality={90}
                 sizes="(min-width: 1536px) 31rem, (min-width: 1280px) 26rem, 80vw"
                 className="object-cover object-[88%_center]"
               />
@@ -221,11 +220,10 @@ export function HeroV4() {
                 A própria foto já vem cortada no rosto (ver relatório). */}
             <div className="absolute bottom-0 left-0 w-[47%] overflow-hidden rounded-xl ring-4 ring-white shadow-[0_14px_32px_-16px_rgb(var(--rbs-ink)/0.4)]">
               <div className="relative aspect-[3/2]">
-                <Image
+                <Photo
                   src="/hero/hero7.png"
                   alt="Profissional da RBS tirando medidas de um funcionário no condomínio"
                   fill
-                  quality={90}
                   sizes="(min-width: 1536px) 16rem, (min-width: 1280px) 14rem, 45vw"
                   className="object-cover object-top"
                 />

@@ -55,7 +55,7 @@ export function Navbar() {
       )}
     >
       <Container size="wide" className="flex items-center justify-between gap-4 py-2">
-        <Logo sizeClassName="h-[4.5rem] sm:h-20" />
+        <Logo sizeClassName="h-[4.5rem] sm:h-20" sizes="(min-width: 640px) 120px, 108px" />
 
         {/* 9 itens: o menu completo só cabe a partir de xl (1280px); abaixo disso
             vale o botão de menu */}

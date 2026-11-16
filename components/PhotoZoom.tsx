@@ -1,11 +1,11 @@
 "use client";
 
 import { Minus, Plus, X } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { createPortal } from "react-dom";
 
 import { cn } from "@/lib/utils";
+import { Photo } from "@/components/ui/Photo";
 
 const ZOOM = 2.5;
 
@@ -131,12 +131,11 @@ export function PhotoZoom({
           }}
           style={{ touchAction: zoomed ? "none" : "auto" }}
         >
-          <Image
+          <Photo
             src={src}
             alt={alt}
             fill
             sizes="100vw"
-            quality={95}
             className="object-contain transition-transform duration-200 ease-out motion-reduce:transition-none"
             style={{
               transform: zoomed ? `scale(${ZOOM})` : "scale(1)",

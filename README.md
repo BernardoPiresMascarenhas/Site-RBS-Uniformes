@@ -52,10 +52,32 @@ O recorte foi feito por flood fill a partir das bordas, então só o fundo
 conectado ficou transparente — os contornos escuros internos foram preservados. O
 tamanho é controlado pela prop `sizeClassName` do `<Logo />` (altura; largura em
 `auto`), e a proporção declarada em `lib/theme.ts` (`width`/`height`) precisa
-bater com a do arquivo, senão o `next/image` reserva espaço errado.
+bater com a do arquivo, senão o `<Photo />` reserva espaço errado.
 
 Como a arte já contém “RBS UNIFORMES”, o wordmark em texto ao lado vem
 desligado. Para reativá-lo: `<Logo showWordmark />`.
+
+## Imagens
+
+As imagens **não** passam pelo Image Optimization da Vercel (cobrado por
+transformação). Elas são geradas no build e servidas como arquivos estáticos:
+
+1. Os originais ficam em `public/` e nunca são alterados.
+2. `scripts/optimize-images.mjs` (roda sozinho em `npm run dev` e `npm run
+   build`, ou à mão com `npm run images`) varre o código atrás das imagens em
+   uso e gera, com `sharp`, só as larguras necessárias — nunca acima da
+   resolução original — em `public/_img/` (WebP; o hero e as cartelas de cor
+   também em AVIF). Também escreve `lib/generated/image-manifest.json`.
+   Nada disso vai para o git (ver `.gitignore`).
+3. O componente `components/ui/Photo.tsx` monta o `srcset` a partir do manifesto.
+   Use sempre `<Photo />` (mesma API do `next/image`: `fill`, `sizes`,
+   `priority`, `loading`), nunca `next/image`.
+
+Para **incluir ou trocar uma foto**: solte o arquivo em `public/` (ou numa das
+pastas listadas pelo site: `clientes`, `bordados`, `administradoras`,
+`fornecedores`) e rode o build. A receita de compressão de cada tipo de imagem
+(larguras e qualidade) está em `GROUPS`, no começo do script. Os arquivos de
+`public/_img/` têm o hash do conteúdo no nome e são servidos como `immutable`.
 
 ## Como o sistema de temas funciona
 
@@ -156,6 +178,4 @@ Estes dados são **placeholders** e precisam ser substituídos:
   (“+15 anos”, “+500 empresas”…). Nada disso foi verificado; são valores de
   preenchimento de layout.
 - Fotos reais: o bloco visual da seção Sobre está marcado com um comentário no
-  código indicando onde entra a `<Image />` do catálogo.
-- `public/logopremiumtransparente1.png` tem ~2,6 MB. Vale converter para WebP
-  antes de publicar.
+  código indicando onde entra a `<Photo />` do catálogo.

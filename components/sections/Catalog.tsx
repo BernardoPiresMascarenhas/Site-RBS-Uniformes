@@ -1,10 +1,10 @@
 import { ArrowRight } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 import { UniformMockup } from "@/components/decor/UniformMockup";
 import { ButtonLink } from "@/components/ui/Button";
 import { CardCarousel, CardCarouselGroup, type CarouselSlide } from "@/components/ui/CardCarousel";
+import { Photo } from "@/components/ui/Photo";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { resolveCover, resolveModelPhotos, resolvePhotoModels } from "@/lib/photos";
@@ -91,7 +91,7 @@ export function Catalog() {
                   )}
                 >
                   {cover ? (
-                    <Image
+                    <Photo
                       src={cover}
                       alt={
                         coverPhoto
@@ -99,10 +99,7 @@ export function Catalog() {
                           : `${firstModel.name} da linha ${service.title}`
                       }
                       fill
-                      sizes="(min-width: 1024px) 480px, (min-width: 768px) 45vw, 100vw"
-                      // acima do padrão (75): o fundo escuro e liso das fotos é
-                      // onde a compressão vira faixa e mancha visíveis
-                      quality={90}
+                      sizes="(min-width: 1024px) 480px, (min-width: 768px) 45vw, calc(100vw - 40px)"
                       className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                     />
                   ) : (

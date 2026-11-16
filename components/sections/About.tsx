@@ -1,6 +1,6 @@
-import Image from "next/image";
 
 import { ButtonLink } from "@/components/ui/Button";
+import { Photo } from "@/components/ui/Photo";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { about } from "@/lib/content";
@@ -31,13 +31,12 @@ export function About() {
                 "rounded-brand-lg bg-brand-bg shadow-brand-lg",
               )}
             >
-              <Image
+              <Photo
                 src={about.showcase.photo}
                 alt={about.showcase.alt}
                 fill
                 // a coluna é metade do Container (1440px) menos o gap-14
                 sizes="(min-width: 1024px) 692px, (min-width: 640px) calc(100vw - 64px), calc(100vw - 40px)"
-                quality={90}
                 className="object-cover"
               />
 

@@ -1,8 +1,8 @@
-import Image from "next/image";
 import { CalendarDays, FileText, ShieldCheck, Star } from "lucide-react";
 
 import { VisitModal } from "@/components/VisitModal";
 import { ButtonLink } from "@/components/ui/Button";
+import { Photo } from "@/components/ui/Photo";
 import { Reveal } from "@/components/ui/Reveal";
 import { Container } from "@/components/ui/Section";
 import { testimonials } from "@/lib/content";
@@ -55,12 +55,11 @@ export function HeroV15() {
         aria-hidden="true"
         className="absolute inset-x-0 bottom-0 top-[var(--header-h)] -z-20 overflow-hidden"
       >
-        <Image
+        <Photo
           src="/hero/hero5.png"
           alt=""
           fill
           priority
-          quality={92}
           sizes="100vw"
           className="object-cover object-[70%_center] lg:object-center"
         />
