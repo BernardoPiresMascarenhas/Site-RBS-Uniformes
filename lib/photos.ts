@@ -52,6 +52,11 @@ export function resolveModelPhotos(models: UniformModel[]): ShowcaseModel[] {
   return models.map((model) => ({
     ...model,
     photo: encontrarFoto(model.photo),
+    // fotos extras da galeria: só as que já existem em `public/`
+    gallery: model.gallery?.flatMap((image) => {
+      const src = encontrarFoto(image.src);
+      return src ? [{ ...image, src }] : [];
+    }),
   }));
 }
 

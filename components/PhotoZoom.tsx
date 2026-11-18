@@ -1,6 +1,6 @@
 "use client";
 
-import { Minus, Plus, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Minus, Plus, X } from "lucide-react";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { createPortal } from "react-dom";
 
@@ -15,6 +15,8 @@ const ZOOM = 2.5;
  * - Clique (ou toque) na foto alterna entre a foto inteira e o zoom de 2,5×;
  *   com zoom, a área ampliada acompanha o mouse/dedo.
  * - Botões + / − fazem o mesmo, e Esc fecha.
+ * - Com `onPrev`/`onNext` (galeria), setas na tela, ← / → e arrastar para o
+ *   lado trocam de foto.
  *
  * Renderizado num portal no `<body>`: o card da peça fica dentro de um
  * `Reveal`, cujo `transform` prenderia um `position: fixed` à coluna.
@@ -24,16 +26,32 @@ export function PhotoZoom({
   alt,
   open,
   onClose,
+  onPrev,
+  onNext,
+  position,
+  note,
 }: {
   src: string;
   alt: string;
   open: boolean;
   onClose: () => void;
+  /** Foto anterior da galeria; sem ela, a seta some. */
+  onPrev?: () => void;
+  /** Próxima foto da galeria; sem ela, a seta some. */
+  onNext?: () => void;
+  /** Posição na galeria, ex.: "1 de 2". */
+  position?: string;
+  /** Selo da foto, ex.: "Foto ilustrativa". */
+  note?: string;
 }) {
   const [mounted, setMounted] = useState(false);
   const [zoomed, setZoomed] = useState(false);
   const [origin, setOrigin] = useState("50% 50%");
   const closeRef = useRef<HTMLButtonElement>(null);
+  // setas do teclado leem sempre a versão atual, sem refazer o efeito do diálogo
+  const nav = useRef({ onPrev, onNext, zoomed });
+  nav.current = { onPrev, onNext, zoomed };
+  const swipeStart = useRef<number | null>(null);
 
   useEffect(() => setMounted(true), []);
 
@@ -44,6 +62,9 @@ export function PhotoZoom({
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
+      if (nav.current.zoomed) return;
+      if (event.key === "ArrowLeft") nav.current.onPrev?.();
+      if (event.key === "ArrowRight") nav.current.onNext?.();
     };
     document.addEventListener("keydown", onKeyDown);
     document.body.style.overflow = "hidden";
@@ -54,6 +75,12 @@ export function PhotoZoom({
       document.body.style.overflow = "";
     };
   }, [open, onClose]);
+
+  // trocar de foto volta para a foto inteira
+  useEffect(() => {
+    setZoomed(false);
+    setOrigin("50% 50%");
+  }, [src]);
 
   function follow(event: MouseEvent<HTMLDivElement>) {
     const box = event.currentTarget.getBoundingClientRect();
@@ -82,6 +109,8 @@ export function PhotoZoom({
       >
         <p className="min-w-0 truncate font-display text-sm font-semibold text-white/90">
           {alt}
+          {note ? <span className="ml-2 font-normal text-white/60">· {note}</span> : null}
+          {position ? <span className="ml-2 font-normal text-white/60">({position})</span> : null}
         </p>
         <div className="flex shrink-0 items-center gap-2">
           <button
@@ -115,7 +144,23 @@ export function PhotoZoom({
       </div>
 
       {/* Foto */}
-      <div className="flex min-h-0 flex-1 items-center justify-center px-4 pb-4 sm:px-6 sm:pb-6">
+      <div
+        className="relative flex min-h-0 flex-1 items-center justify-center px-4 pb-4 sm:px-16 sm:pb-6"
+        onPointerDown={(event) => {
+          swipeStart.current = zoomed ? null : event.clientX;
+        }}
+        onPointerUp={(event) => {
+          if (swipeStart.current === null) return;
+          const dx = event.clientX - swipeStart.current;
+          swipeStart.current = null;
+          if (Math.abs(dx) < 50) return;
+          (dx < 0 ? onNext : onPrev)?.();
+          // não deixa o clique do fim do arrasto ampliar a foto nem fechar o diálogo
+          const stop = (click: Event) => click.stopPropagation();
+          window.addEventListener("click", stop, { capture: true, once: true });
+          window.setTimeout(() => window.removeEventListener("click", stop, { capture: true }), 0);
+        }}
+      >
         <div
           className={cn(
             "relative aspect-[4/3] max-h-full w-full max-w-[min(100%,calc((100svh-6rem)*4/3))] overflow-hidden rounded-brand-lg bg-white",
@@ -143,6 +188,33 @@ export function PhotoZoom({
             }}
           />
         </div>
+
+        {onPrev || onNext ? (
+          <>
+            <button
+              type="button"
+              className={cn(control, "absolute left-2 top-1/2 -translate-y-1/2 sm:left-3", !onPrev && "invisible")}
+              onClick={(event) => {
+                event.stopPropagation();
+                onPrev?.();
+              }}
+              aria-label="Foto anterior"
+            >
+              <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              className={cn(control, "absolute right-2 top-1/2 -translate-y-1/2 sm:right-3", !onNext && "invisible")}
+              onClick={(event) => {
+                event.stopPropagation();
+                onNext?.();
+              }}
+              aria-label="Próxima foto"
+            >
+              <ChevronRight className="h-5 w-5" aria-hidden="true" />
+            </button>
+          </>
+        ) : null}
       </div>
 
       <p className="pb-4 text-center text-xs text-white/60" aria-hidden="true">

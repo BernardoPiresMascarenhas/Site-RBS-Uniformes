@@ -92,6 +92,21 @@ export interface UniformModel {
   category?: ModelCategory;
   /** Esconde a peça das etiquetas dos cards da página inicial (continua na página da linha). */
   hideInCatalog?: boolean;
+  /**
+   * Fotos extras da peça, exibidas depois de `photo` na galeria do produto
+   * (`ProductImageGallery`). Arquivo ausente em `public/` é ignorado.
+   */
+  gallery?: GalleryImage[];
+}
+
+/** Foto extra da galeria de uma peça. */
+export interface GalleryImage {
+  /** Caminho em `public/`. */
+  src: string;
+  /** Texto alternativo: descreve o que está na foto. */
+  alt: string;
+  /** Selo sobre a foto, ex.: "Foto ilustrativa" quando não é a mesma peça. */
+  note?: string;
 }
 
 /**
@@ -427,6 +442,25 @@ export const services: Service[] = [
         photo: "/produtos/portaria-blusete-feminina-cor-rosa.webp",
       },
       {
+        name: "Camisa Social Feminina Manga Longa Preta",
+        group: "Camisa Social Feminina Manga Longa",
+        colorName: "Preta",
+        gender: "feminino",
+        swatch: "#3A3A3D",
+        description:
+          "Camisa social feminina manga longa com bordado, pinças para ajustar ao corpo e modelagem própria. Consulte os tipos de tecidos e composição.",
+        hideInCatalog: true,
+        style: "social-feminina",
+        photo: "/produtos/portaria-camisa-social-feminina-manga-longa-preta.webp",
+        // foto vestida na miniatura da galeria
+        gallery: [
+          {
+            src: "/produtosNovos/portaria_foto_mulher_jaleco_com_detalhe.jpeg",
+            alt: "Funcionária vestindo a camisa social feminina manga longa preta com logotipo bordado",
+          },
+        ],
+      },
+      {
         name: "Camisa Social Feminina Manga Longa Branca",
         group: "Camisa Social Feminina Manga Longa",
         colorName: "Branca",
@@ -449,18 +483,6 @@ export const services: Service[] = [
         hideInCatalog: true,
         style: "social-feminina",
         photo: "/produtos/portaria-camisa-social-feminina-manga-longa-rosa.webp",
-      },
-      {
-        name: "Camisa Social Feminina Manga Longa Preta",
-        group: "Camisa Social Feminina Manga Longa",
-        colorName: "Preta",
-        gender: "feminino",
-        swatch: "#3A3A3D",
-        description:
-          "Camisa social feminina manga longa com bordado, pinças para ajustar ao corpo e modelagem própria. Consulte os tipos de tecidos e composição.",
-        hideInCatalog: true,
-        style: "social-feminina",
-        photo: "/produtos/portaria-camisa-social-feminina-manga-longa-preta.webp",
       },
       {
         name: "Camisa Social Feminina Manga Curta com Detalhe Amarela com Vivo Azul Marinho",

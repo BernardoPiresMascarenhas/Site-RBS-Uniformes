@@ -98,6 +98,8 @@ const WEBP_ONLY = new Set([]);
 
 function groupFor(publicPath, format) {
   if (publicPath.startsWith("/produtos/")) return format === "webp" ? "produto" : "produtoPng";
+  // fotos de produto entregues em JPEG (galerias): mesma receita das PNG de produto
+  if (publicPath.startsWith("/produtosNovos/")) return "produtoPng";
   if (publicPath.startsWith("/hero/")) return "hero";
   if (publicPath.startsWith("/cor/")) return "cartela";
   if (publicPath.startsWith("/administradoras/") || publicPath.startsWith("/fornecedores/")) return "logo";

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 
 import { PhotoMarquee } from "@/components/PhotoMarquee";
+import { ProductImageGallery } from "@/components/ProductImageGallery";
 import { PhotoZoom } from "@/components/PhotoZoom";
 import { ButtonLink } from "@/components/ui/Button";
 import { Photo } from "@/components/ui/Photo";
@@ -296,8 +297,25 @@ export function ServiceShowcase({
         <div className="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
           {/* ---------- Coluna visual: peça + seletores ---------- */}
           <Reveal variant="left" className="lg:self-start">
+            <div ref={photoRef}>
+            {/* Peça com fotos extras: galeria. As demais seguem no palco de sempre. */}
+            {model.gallery?.length ? (
+              <ProductImageGallery
+                // trocar de peça volta para a 1ª foto
+                key={model.name}
+                images={[
+                  { src: model.photo, alt: `${modelLabel(model)} da linha ${title}` },
+                  ...model.gallery,
+                ]}
+                label={modelLabel(model)}
+                // mesma conta do palco abaixo: a foto cobre o quadro na largura toda
+                sizes={"(min-width: 1536px) 710px, (min-width: 1024px) 52vw, (min-width: 640px) calc(100vw - 64px), calc(100vw - 40px)"}
+                priority={model.photo === models[0].photo}
+                // mesmo quadro do palco abaixo, com fundo branco (o das fotos) para a troca não mostrar outra cor
+                className="aspect-[5/4] rounded-brand-lg border border-brand-border bg-white sm:aspect-[4/3]"
+              />
+            ) : (
             <div
-              ref={photoRef}
               // no mobile a peça fica um pouco mais baixa que quadrada, para os
               // seletores caberem na primeira rolada
               className={cn(
@@ -351,6 +369,8 @@ export function ServiceShowcase({
                 <ZoomIn className="h-4 w-4" aria-hidden="true" />
                 Ampliar
               </button>
+            </div>
+            )}
             </div>
 
             <PhotoZoom
