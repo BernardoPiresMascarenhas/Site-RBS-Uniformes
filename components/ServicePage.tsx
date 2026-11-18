@@ -1,4 +1,4 @@
-import { ArrowRight, MessageCircle, Palette, Shirt } from "lucide-react";
+import { ArrowRight, MessageCircle } from "lucide-react";
 import Link from "next/link";
 
 import { MountainScape } from "@/components/decor/Scenery";
@@ -15,15 +15,13 @@ import { getEmbroideryPhotos } from "@/lib/partners";
 import { resolvePhotoModels } from "@/lib/photos";
 import { services, servicePath, type Service } from "@/lib/services";
 import { site, whatsappLink } from "@/lib/site";
-import { theme, tones, type Tone } from "@/lib/theme";
+import { theme, tones } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 /**
  * Página de venda de uma linha de uniforme. A ordem segue uma página de
  * produto: primeiro a peça com os modelos, depois os argumentos.
  */
-const cycle: Tone[] = ["green", "yellow", "red"];
-const toneAt = (index: number) => tones[cycle[index % cycle.length]].box;
 
 /**
  * Cartela em `<picture>`: o navegador baixa só a arte do seu tamanho de tela
@@ -126,7 +124,7 @@ export async function ServicePage({ service }: { service: Service }) {
             }
           />
 
-          <div className="mt-14 grid gap-6 md:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2">
             {service.highlights.map((highlight, index) => {
               const HighlightIcon = highlight.icon;
 
@@ -203,81 +201,6 @@ export async function ServicePage({ service }: { service: Service }) {
         <MountainScape className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-28 sm:h-36" />
       </section>
 
-      {/* ---------------- Peças e personalização ---------------- */}
-      <Section surface="light">
-        <Container>
-          <SectionHeading
-            eyebrow="O que compõe"
-            title="Conheça nossos kits para portaria"
-            description="Nossos kit's vestem um funcionário dos pés á cabeça, conheça as ofertas, kit's básicos e completos."
-          />
-
-          <div className="mt-14 grid gap-6 md:grid-cols-2">
-            <Reveal variant="left" className={cn("p-7 sm:p-8", theme.ui.card)}>
-              <span
-                className={cn(
-                  "inline-flex h-12 w-12 items-center justify-center",
-                  theme.ui.iconBox,
-                  tones.green.box,
-                )}
-              >
-                <Shirt className="h-6 w-6" aria-hidden="true" />
-              </span>
-              <h3 className="mt-5 text-lg">
-                Peças da linha
-              </h3>
-              <ul className="mt-5 space-y-3">
-                {service.pieces.map((piece) => (
-                  <li
-                    key={piece}
-                    className="flex items-start gap-3 border-b border-brand-border/60 pb-3 text-sm text-brand-text last:border-0 last:pb-0"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-green"
-                    />
-                    {piece}
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-
-            <Reveal
-              variant="right"
-              delay={120}
-              className={cn("p-7 sm:p-8", theme.ui.card)}
-            >
-              <span
-                className={cn(
-                  "inline-flex h-12 w-12 items-center justify-center",
-                  theme.ui.iconBox,
-                  tones.yellow.box,
-                )}
-              >
-                <Palette className="h-6 w-6" aria-hidden="true" />
-              </span>
-              <h3 className="mt-5 text-lg">
-                Personalização
-              </h3>
-              <ul className="mt-5 space-y-3">
-                {service.customizations.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 border-b border-brand-border/60 pb-3 text-sm text-brand-text last:border-0 last:pb-0"
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-green"
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-          </div>
-        </Container>
-      </Section>
-
       <Process />
 
       {/* ---------------- Outras linhas ---------------- */}
@@ -285,33 +208,22 @@ export async function ServicePage({ service }: { service: Service }) {
         <Container>
           <SectionHeading
             eyebrow="Outras linhas"
-            title="uniformes para todas funções"
+            title="Uniformes para todas funções"
             description="Conheça outras linhas de uniformes para todas as áreas de seu condomínio."
           />
 
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
             {others.map((other, index) => {
-              const OtherIcon = other.icon;
-
               return (
                 <Reveal key={other.slug} delay={index * 120}>
                   <Link
                     href={servicePath(other.slug)}
                     className={cn(
-                      "group flex h-full items-start gap-5 p-7",
+                      "group flex h-full items-start p-7",
                       theme.ui.card,
                       theme.ui.cardHover,
                     )}
                   >
-                    <span
-                      className={cn(
-                        "inline-flex h-12 w-12 shrink-0 items-center justify-center",
-                        theme.ui.iconBox,
-                        toneAt(index + 1),
-                      )}
-                    >
-                      <OtherIcon className="h-6 w-6" aria-hidden="true" />
-                    </span>
                     <span>
                       <span className="flex items-center gap-2 font-display text-lg font-bold text-brand-heading">
                         {other.title}

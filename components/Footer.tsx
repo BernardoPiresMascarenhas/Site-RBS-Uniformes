@@ -1,7 +1,5 @@
 import {
-  Facebook,
   Instagram,
-  Linkedin,
   Mail,
   MapPin,
   MessageCircle,
@@ -22,8 +20,6 @@ export function Footer() {
 
   const socials = [
     { icon: Instagram, href: site.social.instagram, label: "Instagram" },
-    { icon: Facebook, href: site.social.facebook, label: "Facebook" },
-    { icon: Linkedin, href: site.social.linkedin, label: "LinkedIn" },
   ];
 
   return (

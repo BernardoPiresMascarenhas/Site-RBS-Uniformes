@@ -57,9 +57,7 @@ export const site = {
 
   // --- Redes sociais (PLACEHOLDER) ---
   social: {
-    instagram: "https://instagram.com/",
-    facebook: "https://facebook.com/",
-    linkedin: "https://linkedin.com/",
+    instagram: "https://www.instagram.com/rbsuniformes/",
   },
 
   // --- Números institucionais (PLACEHOLDER) ---
